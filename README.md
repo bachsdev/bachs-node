@@ -120,6 +120,8 @@ Response guards validate the fields promised by supported types, return the actu
 
 Run `npm install`, then `npm run check`: strict positive/negative type fixtures, both builds and 30 local scenarios covering client, resources and webhook/reliability behavior. Local tests cannot establish real provider processing or webhook delivery.
 
+GitHub Actions runs the same `npm run check` command on Node 22 and 24 after installing locked dependencies with `npm ci`. It runs on pushes and pull requests, and can be started manually from the Actions tab. These checks use local fixtures, require no Bachs API key, and do not publish the package.
+
 `node examples/sandbox-check.mjs --key-file <local-file>` uses the real sandbox for read-only SDK checks and saves sanitized local results. Only after approval, `--create-approved-records` additionally creates one USD12 monthly product, one unpaid checkout and one USD1-to-NGN quote. It never pays a checkout, sends a payout, cancels a subscription, creates a portal session or creates a destination. New writes use recorded unique operation keys and preserve uncertain outcomes. Do not rerun the write mode blindly: each new run describes new operations.
 
 Read-only and authorized product/checkout/quote checks passed against the sandbox. Actual payment completion/renewal, cancellation, portal issuance, destination creation, payout submission and real signed webhook delivery still need integration acceptance. Package publication requires explicit approval; a green test count alone is not stable-release acceptance.
