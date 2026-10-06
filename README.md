@@ -68,6 +68,8 @@ const portal = await bachs.customerPortal.createSession('cust_synthetic');
 
 Bachs manages recurring billing after checkout. The merchant must authorize the requesting customer before lookup, cancellation or portal creation. A portal URL carries a credential: redirect the customer to it and do not log/share it. The SDK does not provide a customer portal UI, entitlement rules or renewal orchestration.
 
+**Renewal verification limitation:** Bachs owns automatic recurring billing. This release has verified the first subscription payment and immediate/period-end cancellation responses in sandbox, but has not observed a second billing-cycle payment or its renewal webhook. No supported public sandbox cycle-advance/test-clock operation was found in the inspected API and CLI. Renewal behavior remains unverified by this SDK acceptance run; do not treat initial payment or sample/replayed events as renewal evidence.
+
 ## Payouts
 
 ```ts
@@ -75,11 +77,14 @@ const quote = await bachs.payoutQuotes.create({
   from_currency: 'USD', to_currency: 'NGN', amount: '120.00'
 });
 const payout = await bachs.payouts.create({
-  destination: 'pd_synthetic', quote_id: quote.quote_id
+  destination: 'pd_synthetic', quote_id: quote.quote_id,
+  reference: 'unique-payout-reference-retained-by-your-app'
 }, { idempotencyKey: 'durable-operation-key-from-your-app' });
 ```
 
 This is illustrative, not a request to send funds. Cross-currency payouts use `quote_id`; same-currency payouts use `amount` in the destination currency. Supply exactly one. `amount`/`currency` describe the recipient side; `fee`/`total_debited` use `source_currency`. A quote is not a payout, and an accepted/pending payout is not final delivery. Use retrieval/history and verified payout-result events to track progress.
+
+Supply a unique payout `reference` and retain it for that operation, separately from its idempotency key. Although the API marks `reference` optional, the tested sandbox rejected an omitted reference with "Reference already exists for this organization". The SDK preserves API optionality; this workaround does not change its request type.
 
 Use the provider's `is_usable` flag when preparing destinations. SDK payout creation does not secretly resolve/create a destination, fetch balances or impose a guessed admin policy. `banks.resolveAccount` can return `resolved: false` with a message without an HTTP error. Send bank codes from `banks.list`, not bank names.
 
@@ -124,6 +129,6 @@ GitHub Actions runs the same `npm run check` command on Node 22 and 24 after ins
 
 `node examples/sandbox-check.mjs --key-file <local-file>` uses the real sandbox for read-only SDK checks and saves sanitized local results. Only after approval, `--create-approved-records` additionally creates one USD12 monthly product, one unpaid checkout and one USD1-to-NGN quote. It never pays a checkout, sends a payout, cancels a subscription, creates a portal session or creates a destination. New writes use recorded unique operation keys and preserve uncertain outcomes. Do not rerun the write mode blindly: each new run describes new operations.
 
-Read-only and authorized product/checkout/quote checks passed against the sandbox. Actual payment completion/renewal, cancellation, portal issuance, destination creation, payout submission and real signed webhook delivery still need integration acceptance. Package publication requires explicit approval; a green test count alone is not stable-release acceptance.
+Sandbox acceptance verified an initial USD12 subscription purchase, matching checkout/payment/subscription records, hosted portal access, both SDK cancellation modes, sandbox destination create/get/list, and a completed USD10-to-NGN payout with a USD1 fee. A genuine signed payout webhook was forwarded by the official Bachs CLI, correlated to that payout and rejected after byte tampering. The documented sandbox bank fixture returned `resolved: false` but was approved and usable when saved; positive account-name resolution and production destination review were not established. Genuine renewal remains unverified as described above. These are bounded sandbox observations, not guarantees of production settlement, public webhook delivery retries or application deduplication. Final release review remains required; a green test count alone is not stable-release acceptance.
 
 Both development logs are local working records. Never stage, commit, push or include them in the package.
