@@ -1,0 +1,66 @@
+name: Release
+
+# Publishes @bachs/sdk to npm when a version tag (for example v1.0.0) is
+# pushed. Authentication uses npm trusted publishing (OIDC), so no npm token
+# is stored in this repository. The package's trusted publisher on npmjs.com
+# must name this repository and this workflow file.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      # Trusted publishing needs npm 11.5.1 or later.
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Check the tag matches package.json
+        run: |
+          version="v$(node -p "require('./package.json').version")"
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json $version" >&2
+            exit 1
+          fi
+
+      - name: Check types, builds and tests
+        run: npm run check
+
+      - name: Verify package contents
+        run: |
+          mkdir -p .package-check
+          npm pack --json --pack-destination .package-check > .package-check/pack-result.json
+          node scripts/verify-package.mjs "" .package-check/pack-result.json .
+
+      # A version with a hyphen (1.1.0-rc.1) is published under the next tag,
+      # so `npm install @bachs/sdk` keeps resolving to the last stable release.
+      - name: Publish to npm with provenance
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            npm publish --provenance --access public --tag next
+          else
+            npm publish --provenance --access public
+          fi
