@@ -53,50 +53,54 @@ const Caption: React.FC<{ children: React.ReactNode; color?: string; top?: numbe
   </div>
 );
 
-/* 1. Cold open ---------------------------------------------------------- */
+/* 1. Cold open: Claude Code in a terminal ----------------------------- */
+const TLine: React.FC<{ children: React.ReactNode; color?: string; indent?: boolean; mt?: number }> = ({ children, color = '#e8e7f2', indent, mt = 0 }) => (
+  <div style={{ color, paddingLeft: indent ? 34 : 0, marginTop: mt }}>{children}</div>
+);
+const Prompt: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <TLine mt={22}>
+    <span style={{ color: sk.coral, marginRight: 16 }}>&gt;</span>
+    {children}
+  </TLine>
+);
+
 export const FrameColdOpen: React.FC = () => (
   <Base>
     <Caption>
-      Your assistant doesn't know Bachs. <span style={{ color: sk.coral }}>Yet.</span>
+      Teach your assistant Bachs. <span style={{ color: sk.coral }}>Two commands.</span>
     </Caption>
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: 1180, marginTop: 70 }}>
-        <div style={{ fontFamily: fonts.mono, fontSize: 18, letterSpacing: '0.16em', color: sk.muted, marginBottom: 18, paddingLeft: 6 }}>
-          ~/acme-app&nbsp;&nbsp;·&nbsp;&nbsp;AI ASSISTANT
+      <div
+        style={{
+          width: 1320,
+          marginTop: 90,
+          background: sk.ink,
+          borderRadius: 20,
+          overflow: 'hidden',
+          boxShadow: `12px 12px 0 ${sk.lilac}`,
+          border: `1.5px solid ${sk.ink}`,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 9, height: 50, padding: '0 20px', background: sk.inkDeep }}>
+          {[sk.coral, sk.peach, sk.lilac].map((c) => (
+            <div key={c} style={{ width: 13, height: 13, borderRadius: 7, background: c }} />
+          ))}
+          <div style={{ flex: 1, textAlign: 'center', marginRight: 70, fontFamily: fonts.mono, fontSize: 17, color: '#8d8fab' }}>~/acme-app — claude</div>
         </div>
-        <div
-          style={{
-            background: sk.card,
-            border: `1.5px solid ${sk.ink}`,
-            borderRadius: 22,
-            padding: '44px 48px 30px',
-            boxShadow: `10px 10px 0 ${sk.lilac}`,
-          }}
-        >
-          <div style={{ fontFamily: fonts.mono, fontSize: 46, color: sk.ink, display: 'flex', alignItems: 'center' }}>
-            Add subscriptions to this app.
-            <span style={{ display: 'inline-block', width: 22, height: 54, background: sk.coral, marginLeft: 8 }} />
+        <div style={{ padding: '34px 44px 40px', fontFamily: fonts.mono, fontSize: 30, lineHeight: 1.55 }}>
+          <TLine color="#8d8fab">$ claude</TLine>
+          <Prompt>/plugin marketplace add bachsdev/bachs-skills</Prompt>
+          <TLine indent color="#9fe0b0">✓ Added marketplace: bachs</TLine>
+          <Prompt>/plugin install bachs@bachs</Prompt>
+          <TLine indent color="#9fe0b0">✓ Installed plugin: bachs@bachs</TLine>
+          <div style={{ marginTop: 30, border: `1.5px solid rgba(233,113,126,0.55)`, borderRadius: 12, padding: '18px 24px', display: 'flex', alignItems: 'center' }}>
+            <span style={{ color: sk.coral, marginRight: 16 }}>&gt;</span>
+            <span style={{ color: '#fff' }}>Add subscriptions to this app.</span>
+            <span style={{ display: 'inline-block', width: 16, height: 38, background: sk.coral, marginLeft: 6 }} />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', marginTop: 46, borderTop: `1px solid ${sk.line}`, paddingTop: 22 }}>
-            <span style={{ fontFamily: fonts.mono, fontSize: 18, color: sk.faint }}>⏎ to send</span>
-            <div
-              style={{
-                marginLeft: 'auto',
-                width: 54,
-                height: 54,
-                borderRadius: 27,
-                background: sk.ink,
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: fonts.sans,
-                fontSize: 28,
-              }}
-            >
-              ↑
-            </div>
-          </div>
+          <TLine color="#6d6f8c" mt={14}>
+            <span style={{ fontSize: 20 }}>skill available: bachs · /bachs:bachs</span>
+          </TLine>
         </div>
       </div>
     </AbsoluteFill>
