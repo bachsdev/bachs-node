@@ -1,0 +1,62 @@
+{
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "overlap": 14,
+  "scenes": [
+    {
+      "id": "intro",
+      "from": 0,
+      "dur": 110
+    },
+    {
+      "id": "snapkit",
+      "from": 96,
+      "dur": 190
+    },
+    {
+      "id": "install",
+      "from": 272,
+      "dur": 130
+    },
+    {
+      "id": "code",
+      "from": 388,
+      "dur": 350
+    },
+    {
+      "id": "checkout",
+      "from": 724,
+      "dur": 255
+    },
+    {
+      "id": "dashboard",
+      "from": 965,
+      "dur": 300
+    },
+    {
+      "id": "languages",
+      "from": 1251,
+      "dur": 170
+    },
+    {
+      "id": "outro",
+      "from": 1407,
+      "dur": 173
+    }
+  ],
+  "total": 1580,
+  "checkout": {
+    "plus": [
+      40,
+      49,
+      57,
+      64,
+      72,
+      79
+    ],
+    "buy": 100,
+    "modal": 106,
+    "pay": 182
+  }
+}
