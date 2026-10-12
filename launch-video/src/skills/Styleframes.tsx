@@ -19,7 +19,7 @@ export const sk = {
   receipt: '#fbf8f1',
 };
 
-const Base: React.FC<{ bg?: string; children: React.ReactNode; dots?: boolean }> = ({ bg = sk.paper, children, dots = true }) => (
+export const Base: React.FC<{ bg?: string; children: React.ReactNode; dots?: boolean }> = ({ bg = sk.paper, children, dots = true }) => (
   <AbsoluteFill style={{ background: bg }}>
     <style>{fontFaceCss}</style>
     {dots && (
