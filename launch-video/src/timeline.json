@@ -7,45 +7,45 @@
     {
       "id": "intro",
       "from": 0,
-      "dur": 110
+      "dur": 225
     },
     {
       "id": "snapkit",
-      "from": 96,
+      "from": 211,
       "dur": 190
     },
     {
       "id": "install",
-      "from": 272,
+      "from": 387,
       "dur": 130
     },
     {
       "id": "code",
-      "from": 388,
+      "from": 503,
       "dur": 350
     },
     {
       "id": "checkout",
-      "from": 724,
+      "from": 839,
       "dur": 255
     },
     {
       "id": "dashboard",
-      "from": 965,
+      "from": 1080,
       "dur": 300
     },
     {
       "id": "languages",
-      "from": 1251,
+      "from": 1366,
       "dur": 170
     },
     {
       "id": "outro",
-      "from": 1407,
+      "from": 1522,
       "dur": 173
     }
   ],
-  "total": 1580,
+  "total": 1695,
   "checkout": {
     "plus": [
       40,

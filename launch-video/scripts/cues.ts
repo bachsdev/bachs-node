@@ -1,7 +1,7 @@
 // Emits the frame of every sound-worthy event so the audio mix can be
 // generated in lockstep with the animation (scripts/make_audio.py).
 import { writeFileSync } from 'node:fs';
-import { routeCode, typeSchedule, typing, type Line } from '../src/code';
+import { introTyping, routeCode, typeSchedule, typing, type Line } from '../src/code';
 import timeline from '../src/timeline.json';
 
 const at = (id: string) => timeline.scenes.find((s) => s.id === id)!.from;
@@ -11,7 +11,11 @@ const add = (f: number, kind: string, v = 1) => cues.push({ f: Math.round(f * 10
 timeline.scenes.slice(1).forEach((s) => add(s.from - 2, 'whoosh', 0.8));
 
 add(at('intro') + 4, 'bloom');
-add(at('intro') + 30, 'shimmer', 0.6);
+introTyping().events.forEach((e, i, all) => {
+  const isLast = i === all.length - 1;
+  add(at('intro') + e.f, e.kind === 'back' ? 'back' : 'key', isLast ? 1 : 0.85);
+  if (isLast) add(at('intro') + e.f + 2, 'shimmer', 0.8);
+});
 add(at('snapkit') + 8, 'rise');
 
 const keys = (lines: Line[], start: number, cps: number, seed: string, offset: number, vol: number) => {

@@ -128,3 +128,35 @@ export const routeCode: Line[] = [
   [[`  return`, K], [` Response.`, T], [`json`, F], [`({ `, U], [`url`, P], [`: `, U], [`checkout.`, T], [`checkout_url`, P], [` });`, U]],
   [[`}`, U]],
 ];
+
+// Intro tagline: "for ___" types a word, holds, backspaces, and moves on.
+// Returns every keystroke so the audio can follow along.
+export const introWords = ['TypeScript', 'Python', 'Go', 'you'];
+export const introTyping = (start = 34) => {
+  const events: { f: number; kind: 'key' | 'back'; text: string }[] = [];
+  let t = start;
+  introWords.forEach((word, w) => {
+    const last = w === introWords.length - 1;
+    if (last) t += 8; // a breath before the payoff
+    for (let i = 1; i <= word.length; i++) {
+      t += 1.7 + random(`intro-${w}-${i}`) * 1.6;
+      events.push({ f: t, kind: 'key', text: word.slice(0, i) });
+    }
+    if (last) return;
+    t += 20 - w * 2; // read it
+    for (let i = word.length - 1; i >= 0; i--) {
+      t += 0.9 + random(`intro-b-${w}-${i}`) * 0.4;
+      events.push({ f: t, kind: 'back', text: word.slice(0, i) });
+    }
+    t += 5;
+  });
+  return { events, end: t };
+};
+export const introTextAt = (frame: number, events: { f: number; text: string }[]) => {
+  let text = '';
+  for (const e of events) {
+    if (frame >= e.f) text = e.text;
+    else break;
+  }
+  return text;
+};

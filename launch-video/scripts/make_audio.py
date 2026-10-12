@@ -251,6 +251,9 @@ for c in cues["cues"]:
     k = c["kind"]
     if k == "key":
         place(sfx, key_click(), at, 0.5 * v * rng.uniform(0.7, 1.15), pan=rng.uniform(-0.25, 0.25))
+    elif k == "back":
+        # Backspace: a little duller and lower than a letter key.
+        place(sfx, fft_filter(key_click(), hi=4000), at, 0.55 * v * rng.uniform(0.8, 1.1), pan=rng.uniform(-0.15, 0.15))
     elif k == "space":
         place(sfx, fft_filter(key_click(), hi=3000), at, 0.8 * v, pan=rng.uniform(-0.1, 0.1))
     elif k == "enter":

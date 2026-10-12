@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Browser, Caption, CaptionSeq, Cursor, Stage, Words } from './components';
-import { CodeBlock, routeCode, syn, typeSchedule, typing, type Line } from './code';
+import { CodeBlock, introTextAt, introTyping, routeCode, syn, typeSchedule, typing, type Line } from './code';
 import { clamp, ease, glide, soft } from './motion';
 import { SnapKitSite } from './SnapKitSite';
 import { bachs, fonts } from './theme';
@@ -34,19 +34,85 @@ export const Intro: React.FC = () => {
         />
         <div
           style={{
-            marginTop: 6,
-            fontFamily: fonts.pixel,
-            fontSize: 64,
-            color: bachs.indigo,
+            marginTop: 10,
+            height: 80,
+            alignSelf: 'stretch',
+            position: 'relative',
             opacity: interpolate(pixel, [0, 0.7], [0, 1], clamp),
             filter: `blur(${(1 - Math.min(pixel, 1)) * 8}px)`,
             transform: `translateY(${(1 - pixel) * 20}px)`,
           }}
         >
-          for TypeScript
+          <Tagline />
         </div>
       </div>
     </AbsoluteFill>
+  );
+};
+
+// "for TypeScript" → erase → "for Python" → … → "for you".
+const intro = introTyping();
+const CW = 0.58; // em per character; each glyph sits in a fixed cell
+const Tagline: React.FC = () => {
+  const frame = useCurrentFrame();
+  const text = introTextAt(frame, intro.events);
+  const full = 'for ' + text;
+  // Re-centre smoothly as the line grows and shrinks, instead of jumping per key.
+  let acc = 0;
+  let wsum = 0;
+  for (let k = 0; k < 12; k++) {
+    const w = Math.pow(0.78, k);
+    acc += w * (4 + introTextAt(frame - k, intro.events).length + 1);
+    wsum += w;
+  }
+  const len = acc / wsum;
+  const done = frame >= intro.end;
+  const lastKey = [...intro.events].reverse().find((e) => frame >= e.f)?.f ?? 0;
+  const typing = frame - lastKey < 8;
+  const caretOn = typing || Math.floor(frame / 14) % 2 === 0;
+  const caretFade = done ? ease(frame, [intro.end + 14, intro.end + 24], [1, 0]) : 1;
+  const isYou = text === 'you' && done;
+  const youPop = isYou ? soft(frame, 30, intro.events[intro.events.length - 1].f, 12) : 0;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: '50%',
+        top: 0,
+        display: 'flex',
+        alignItems: 'center',
+        fontFamily: fonts.pixel,
+        fontSize: 64,
+        lineHeight: '80px',
+        whiteSpace: 'pre',
+        transform: `translateX(${(-len * CW * 64) / 2}px)`,
+      }}
+    >
+      {full.split('').map((ch, i) => (
+        <span
+          key={i}
+          style={{
+            display: 'inline-block',
+            width: `${CW}em`,
+            textAlign: 'center',
+            color: i < 4 ? bachs.muted : isYou ? bachs.ink : bachs.indigo,
+            transform: i >= 4 && isYou ? `translateY(${-Math.sin(Math.min(youPop, 1) * Math.PI) * 6}px)` : undefined,
+          }}
+        >
+          {ch}
+        </span>
+      ))}
+      <span
+        style={{
+          display: 'inline-block',
+          width: 6,
+          height: 62,
+          marginLeft: 4,
+          background: bachs.indigo,
+          opacity: (caretOn ? 1 : 0) * caretFade,
+        }}
+      />
+    </div>
   );
 };
 
