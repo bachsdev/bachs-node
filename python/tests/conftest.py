@@ -11,7 +11,7 @@ import httpx
 import pytest
 
 import bachs._transport as transport_module
-from bachs import Bachs
+from bachs import AsyncBachs, Bachs
 
 KEY = "synthetic-key-only-for-local-tests"
 
@@ -84,9 +84,19 @@ class Mock:
         settings.update(options)
         return Bachs(**settings, http_client=httpx.Client(transport=httpx.MockTransport(self)))
 
+    def async_client(self, **options: Any) -> AsyncBachs:
+        settings: dict[str, Any] = {"api_key": KEY, "environment": "sandbox"}
+        settings.update(options)
+        return AsyncBachs(**settings, http_client=httpx.AsyncClient(transport=httpx.MockTransport(self)))
+
 
 def json_response(body: Any, status: int = 200, headers: dict[str, str] | None = None) -> httpx.Response:
     return httpx.Response(status, json=body, headers=headers)
+
+
+@pytest.fixture(params=["asyncio", "trio"])
+def anyio_backend(request: pytest.FixtureRequest) -> str:
+    return str(request.param)
 
 
 @pytest.fixture
