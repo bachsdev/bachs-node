@@ -1,6 +1,6 @@
 {
   "name": "@bachs/sdk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": false,
   "description": "Official Bachs server-side TypeScript SDK",
   "license": "MIT",
@@ -31,7 +31,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "typecheck": "node scripts/typecheck.mjs",
-    "test": "node --test test/batch-3.test.mjs test/batch-4.test.mjs test/batch-5.test.mjs",
+    "test": "node --test test/batch-3.test.mjs test/batch-4.test.mjs test/batch-5.test.mjs test/batch-6.test.mjs",
     "check": "node scripts/check.mjs"
   },
   "devDependencies": {

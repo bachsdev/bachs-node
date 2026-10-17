@@ -9,6 +9,8 @@ import { Banks } from './resources/banks.js';
 import { PayoutDestinations } from './resources/payout-destinations.js';
 import { PayoutQuotes } from './resources/payout-quotes.js';
 import { Payouts } from './resources/payouts.js';
+import { WebhookEndpoints } from './resources/webhook-endpoints.js';
+import { WebhookEvents } from './resources/webhook-events.js';
 import { webhooks } from './webhooks.js';
 import type { BachsOptions } from './types.js';
 
@@ -23,6 +25,8 @@ export class Bachs {
   readonly payoutDestinations: PayoutDestinations;
   readonly payoutQuotes: PayoutQuotes;
   readonly payouts: Payouts;
+  readonly webhookEndpoints: WebhookEndpoints;
+  readonly webhookEvents: WebhookEvents;
   readonly webhooks = webhooks;
   constructor(options: BachsOptions) {
     const transport = new Transport(options);
@@ -36,6 +40,8 @@ export class Bachs {
     this.payoutDestinations = new PayoutDestinations(transport);
     this.payoutQuotes = new PayoutQuotes(transport);
     this.payouts = new Payouts(transport);
+    this.webhookEndpoints = new WebhookEndpoints(transport);
+    this.webhookEvents = new WebhookEvents(transport);
   }
 }
 export { BachsError, BachsApiError, BachsNetworkError, BachsTimeoutError, BachsAbortError, BachsResponseError, BachsConfigError, BachsWebhookError } from './errors.js';

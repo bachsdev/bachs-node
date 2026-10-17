@@ -18,7 +18,7 @@ for (const file of metadata.files) {
 for (const required of ['LICENSE', 'README.md', 'package.json', 'dist/esm/index.js', 'dist/esm/index.d.ts', 'dist/cjs/index.js', 'dist/cjs/index.d.ts', 'dist/cjs/package.json']) assert.ok(metadata.files.some(file => file.path === required), required);
 const pkg = JSON.parse(readFileSync(resolve(contentRoot, 'package.json'), 'utf8'));
 assert.equal(pkg.name, '@bachs/sdk');
-assert.equal(pkg.version, '1.0.0');
+assert.equal(pkg.version, metadata.version);
 assert.equal(pkg.license, 'MIT');
 assert.notEqual(pkg.private, true);
 console.log(JSON.stringify({ package: metadata.filename, files: metadata.files.length, whitelist_verified: true, credential_scan: key ? 'passed' : 'not-run' }));

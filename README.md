@@ -1,11 +1,11 @@
 # Bachs TypeScript SDK
 
-Official server-side TypeScript SDK for Bachs. SDK version `1.0.0` and backend API `/v1` are separate version systems. Licensed under MIT; see LICENSE.
+Official server-side TypeScript SDK for Bachs. SDK version `1.1.0` and backend API `/v1` are separate version systems. Licensed under MIT; see LICENSE.
 
 Server-side Node.js 22 or newer. Native fetch and crypto, no runtime dependencies. ES-module import and CommonJS require share the same runtime classes and errors.
 
 ```sh
-npm install @bachs/sdk@1.0.0
+npm install @bachs/sdk@1.1.0
 ```
 
 ```ts
@@ -49,6 +49,8 @@ Configure the SDK on your backend; keep the secret key out of frontend code. Con
 | `payoutDestinations` | `create`, `get`, `list` | Destination records and provider review/usability state |
 | `payoutQuotes` | `create` | Cross-currency source/recipient amounts and quote expiry |
 | `payouts` | `create`, `get`, `list` | Own-balance payout request, status and history |
+| `webhookEndpoints` | `get`, `list`, `listEvents` | Your webhook endpoints, whether Bachs turned one off, and each event's delivery results for one endpoint |
+| `webhookEvents` | `get`, `list` | Events Bachs sent you, with every delivery attempt: the HTTP status and response your server gave, and the next retry |
 | `webhooks` | `constructEvent` | Verify raw signed bytes and return the event envelope |
 
 Creation uses `(input, options?)`, retrieval uses `(id, options?)`, and listing uses `(filters?, options?)`. `subscriptions.cancel` uses `(id, input?, options?)`; `customerPortal.createSession` uses `(customerId, options?)`. `balances.get` has only options. No automatic pagination. Payment list items retain `id`; a retrieved payment retains `payment_id`. Payout and destination lists retain their own distinct envelopes.

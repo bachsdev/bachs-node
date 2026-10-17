@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0
+
+- `webhookEndpoints` (`get`, `list`, `listEvents`) and `webhookEvents` (`get`, `list`) read your webhook endpoints and delivery history. `webhookEvents.get` returns every delivery attempt with the HTTP status, the start of your server's response, the error and the next retry time. Use them to find out why a webhook did not arrive.
+- These need an API key with the `webhooks:read` scope. They are read-only: creating, changing, resending and reading signing secrets are not included.
+
 ## 1.0.0
 
 First release of the official Bachs server-side SDK for Node.js and TypeScript.

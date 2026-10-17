@@ -95,6 +95,6 @@ test('50 — both entry points expose the same errors/helpers and only agreed V1
   for (const name of Object.keys(esm)) assert.equal(esm[name], cjs[name], name);
   assert.ok(new cjs.BachsWebhookError('Synthetic') instanceof esm.BachsError);
   const sdk = client(); assert.equal(sdk.webhooks, webhooks); assert.equal(Object.isFrozen(webhooks), true);
-  for (const resource of ['products', 'checkoutSessions', 'payments', 'subscriptions', 'customerPortal', 'balances', 'banks', 'payoutDestinations', 'payoutQuotes', 'payouts']) assert.ok(sdk[resource]);
+  for (const resource of ['products', 'checkoutSessions', 'payments', 'subscriptions', 'customerPortal', 'balances', 'banks', 'payoutDestinations', 'payoutQuotes', 'payouts', 'webhookEndpoints', 'webhookEvents']) assert.ok(sdk[resource]);
   assert.equal(sdk.connect, undefined); assert.equal(sdk.payments.create, undefined); assert.equal(sdk.subscriptions.create, undefined); assert.ok(!JSON.stringify(sdk).includes('synthetic-key'));
 });

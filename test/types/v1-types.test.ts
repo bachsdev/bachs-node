@@ -30,3 +30,7 @@ void bachs.payments.create({ amount: '1.00' });
 // @ts-expect-error Write retry controls are excluded.
 void bachs.subscriptions.cancel('sub_synthetic', {}, { maxRetries: 2 });
 void [both, empty, numeric, two, missing];
+void bachs.webhookEvents.get('evt_synthetic').then(event => { const status: number | null | undefined = event.attempts[0]?.http_status; void status; });
+void bachs.webhookEndpoints.listEvents('we_synthetic', { limit: 10 }).then(page => { const failed: number | undefined = page.items[0]?.failed; void failed; });
+// @ts-expect-error webhook resources are read-only
+void bachs.webhookEndpoints.create;

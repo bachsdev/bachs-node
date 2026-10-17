@@ -218,6 +218,67 @@ export interface PayoutResponse {
 }
 export interface PayoutListParams { limit?: number; offset?: number; status_filter?: 'requested' | 'pending' | 'processing' | 'approved' | 'rejected' | 'completed' | 'failed' }
 export interface PayoutListResponse { [key: string]: unknown; total: number; items: PayoutResponse[] }
+export interface WebhookEndpointResponse {
+  [key: string]: unknown;
+  endpoint_id: string;
+  name: string;
+  url?: string | null;
+  enabled: boolean;
+  /** Set only when Bachs turned the endpoint off, for example after repeated failed deliveries. */
+  disabled_at?: string | null;
+  disabled_reason?: string | null;
+  event_types: string[];
+  event_source: string;
+  created_at: string;
+  updated_at: string;
+}
+export interface WebhookEndpointListParams { limit?: number; offset?: number; cursor?: string }
+export interface WebhookEndpointListResponse { [key: string]: unknown; items: WebhookEndpointResponse[]; pagination: PaginationResponse }
+export interface WebhookEventListParams { limit?: number; offset?: number }
+export interface WebhookDeliverySummary {
+  [key: string]: unknown;
+  event_id: string;
+  event_type: string;
+  entity_id?: string | null;
+  attempts: number;
+  success: number;
+  failed: number;
+  last_attempt_status?: string | null;
+  last_attempt_http_status?: number | null;
+  last_attempt_error?: string | null;
+  last_attempt_at?: string | null;
+}
+export interface WebhookEventListItem extends WebhookDeliverySummary { entity_type?: string | null; created_at: string; account?: string | null }
+export interface WebhookEventListResponse { [key: string]: unknown; items: WebhookEventListItem[]; total: number; limit: number; offset: number }
+export interface WebhookEndpointEventListResponse { [key: string]: unknown; items: WebhookDeliverySummary[]; total: number; limit: number; offset: number }
+export interface WebhookDeliveryAttempt {
+  [key: string]: unknown;
+  attempt_id: string;
+  attempt_no: number;
+  status: string;
+  endpoint_id?: string | null;
+  /** A resend starts a new run and counts attempt_no from 1 again; this tells the runs apart. */
+  delivery_id?: string | null;
+  callback_url?: string | null;
+  /** The status code the receiving server answered with. */
+  http_status?: number | null;
+  /** The start of the receiving server's response body. Written by that server, not by Bachs. */
+  response_snippet?: string | null;
+  last_error?: string | null;
+  next_retry_at?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+export interface WebhookEventDetail {
+  [key: string]: unknown;
+  event_id: string;
+  event_type: string;
+  entity_type?: string | null;
+  entity_id?: string | null;
+  created_at: string;
+  payload: unknown;
+  attempts: WebhookDeliveryAttempt[];
+}
 export interface WebhookEvent { [key: string]: unknown; id: string; type: string; created_at: string; organization_id: string; data: Record<string, unknown> }
 export type WebhookHeaders = Headers | Record<string, string | string[] | undefined>;
 export interface WebhookOptions { toleranceSeconds?: number }

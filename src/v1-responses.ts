@@ -1,5 +1,5 @@
 import type { PaginationResponse, SubscriptionCadence } from './types.js';
-import type { Balance, BalancesResponse, Bank, BankListResponse, CheckoutIdentity, CheckoutSessionCreated, CheckoutSessionResponse, PaymentResponse, PaymentListItem, PaymentPagination, PaymentListResponse, SubscriptionCustomer, SubscriptionItem, SubscriptionResponse, SubscriptionListResponse, PortalSessionResponse, ResolveBankAccountResponse, PayoutDestinationResponse, PayoutDestinationListResponse, PayoutQuoteResponse, PayoutResponse, PayoutListResponse } from './v1-types.js';
+import type { Balance, BalancesResponse, Bank, BankListResponse, CheckoutIdentity, CheckoutSessionCreated, CheckoutSessionResponse, PaymentResponse, PaymentListItem, PaymentPagination, PaymentListResponse, SubscriptionCustomer, SubscriptionItem, SubscriptionResponse, SubscriptionListResponse, PortalSessionResponse, ResolveBankAccountResponse, PayoutDestinationResponse, PayoutDestinationListResponse, PayoutQuoteResponse, PayoutResponse, PayoutListResponse, WebhookEndpointResponse, WebhookEndpointListResponse, WebhookDeliverySummary, WebhookEventListItem, WebhookEventListResponse, WebhookEndpointEventListResponse, WebhookDeliveryAttempt, WebhookEventDetail } from './v1-types.js';
 
 export function record(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -48,6 +48,21 @@ function destination(value: unknown): value is PayoutDestinationResponse {
 function payout(value: unknown): value is PayoutResponse {
   return record(value) && strings(value, ['id', 'status', 'amount', 'currency'], [], ['source_currency', 'fee', 'total_debited', 'destination', 'reference', 'failure_reason', 'created_at', 'completed_at']);
 }
+const nullableNum = (value: unknown) => value === null || num(value);
+function webhookEndpoint(value: unknown): value is WebhookEndpointResponse {
+  return record(value) && strings(value, ['endpoint_id', 'name', 'event_source', 'created_at', 'updated_at'], [], ['url', 'disabled_at', 'disabled_reason'])
+    && bool(value.enabled) && Array.isArray(value.event_types) && value.event_types.every(str);
+}
+function deliverySummary(value: unknown): value is WebhookDeliverySummary {
+  return record(value) && strings(value, ['event_id', 'event_type'], [], ['entity_id', 'last_attempt_status', 'last_attempt_error', 'last_attempt_at'])
+    && ['attempts', 'success', 'failed'].every(k => num(value[k])) && optional(value, 'last_attempt_http_status', nullableNum);
+}
+function webhookEventListItem(value: unknown): value is WebhookEventListItem { return deliverySummary(value) && strings(value, ['created_at'], [], ['entity_type', 'account']); }
+function deliveryAttempt(value: unknown): value is WebhookDeliveryAttempt {
+  return record(value) && strings(value, ['attempt_id', 'status', 'created_at', 'updated_at'], [], ['endpoint_id', 'delivery_id', 'callback_url', 'response_snippet', 'last_error', 'next_retry_at'])
+    && num(value.attempt_no) && optional(value, 'http_status', nullableNum);
+}
+const offsetPage = (v: Record<string, unknown>) => ['total', 'limit', 'offset'].every(k => num(v[k]));
 function decode<T>(value: unknown, check: (v: unknown) => v is T, shape: string): T {
   if (!check(value)) throw new Error('Response does not match the supported ' + shape + ' shape.');
   return value;
@@ -66,6 +81,12 @@ function resolvedAccount(v: unknown): v is ResolveBankAccountResponse { return r
 function destinations(v: unknown): v is PayoutDestinationListResponse { return record(v) && Array.isArray(v.destinations) && v.destinations.every(destination) && ['total', 'limit', 'offset'].every(k => num(v[k])); }
 function quote(v: unknown): v is PayoutQuoteResponse { return record(v) && strings(v, ['quote_id', 'from_currency', 'to_currency', 'from_amount', 'to_amount', 'exchange_rate', 'expires_at']); }
 function payouts(v: unknown): v is PayoutListResponse { return record(v) && num(v.total) && Array.isArray(v.items) && v.items.every(payout); }
+function webhookEndpoints(v: unknown): v is WebhookEndpointListResponse { return record(v) && Array.isArray(v.items) && v.items.every(webhookEndpoint) && pagination(v.pagination); }
+function webhookEvents(v: unknown): v is WebhookEventListResponse { return record(v) && Array.isArray(v.items) && v.items.every(webhookEventListItem) && offsetPage(v); }
+function endpointEvents(v: unknown): v is WebhookEndpointEventListResponse { return record(v) && Array.isArray(v.items) && v.items.every(deliverySummary) && offsetPage(v); }
+function webhookEventDetail(v: unknown): v is WebhookEventDetail {
+  return record(v) && strings(v, ['event_id', 'event_type', 'created_at'], [], ['entity_type', 'entity_id']) && 'payload' in v && Array.isArray(v.attempts) && v.attempts.every(deliveryAttempt);
+}
 export const decodeCheckoutCreated = (v: unknown) => decode(v, createdCheckout, 'checkout creation');
 export const decodeCheckout = (v: unknown) => decode(v, checkout, 'checkout');
 export const decodePayment = (v: unknown) => decode(v, payment, 'payment');
@@ -81,3 +102,8 @@ export const decodeDestinations = (v: unknown) => decode(v, destinations, 'payou
 export const decodeQuote = (v: unknown) => decode(v, quote, 'payout quote');
 export const decodePayout = (v: unknown) => decode(v, payout, 'payout');
 export const decodePayouts = (v: unknown) => decode(v, payouts, 'payout list');
+export const decodeWebhookEndpoint = (v: unknown) => decode(v, webhookEndpoint, 'webhook endpoint');
+export const decodeWebhookEndpoints = (v: unknown) => decode(v, webhookEndpoints, 'webhook endpoint list');
+export const decodeEndpointEvents = (v: unknown) => decode(v, endpointEvents, 'webhook endpoint event list');
+export const decodeWebhookEvents = (v: unknown) => decode(v, webhookEvents, 'webhook event list');
+export const decodeWebhookEvent = (v: unknown) => decode(v, webhookEventDetail, 'webhook event');
