@@ -2,3 +2,4 @@ node_modules/
 out/
 scripts/cues.json
 scripts/skills-cues.json
+scripts/mcp-cues.json
