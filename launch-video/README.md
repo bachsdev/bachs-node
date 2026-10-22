@@ -23,13 +23,13 @@ npm run render        # -> out/bachs-sdk-launch.mp4
 
 ## Sound
 
-`public/audio/mix.wav` is generated, not licensed: a music bed and UI sound effects synthesized
-with numpy, with every keystroke, click and chime placed on the frame where it happens on screen.
-Change timing or copy, then rebuild it:
+`public/audio/mix.wav` is the licensed track "Proceed" by 1000 Handz (CC BY 4.0, see
+`public/audio/licensed/CREDITS.md`), cut to the video in `public/audio/sdk-music.wav`,
+plus quiet, unpitched UI sounds (keys, clicks, soft taps) placed on the frames where
+they happen on screen. Scene timings in `src/timeline.json` are set so the drums come in
+as the intro lands on "for you" and the payment succeeds on the bar where the bass returns.
+After changing timing, rebuild the mix:
 
 ```sh
 npx tsx scripts/cues.ts && python3 scripts/make_audio.py
 ```
-
-To use a licensed track instead, drop it in `public/audio/` and point the `<Audio>` in
-`src/Launch.tsx` at it (a second `<Audio>` can keep the synthesized effects underneath).

@@ -7,45 +7,45 @@
     {
       "id": "intro",
       "from": 0,
-      "dur": 225
+      "dur": 262
     },
     {
       "id": "snapkit",
-      "from": 211,
+      "from": 248,
       "dur": 190
     },
     {
       "id": "install",
-      "from": 387,
+      "from": 424,
       "dur": 130
     },
     {
       "id": "code",
-      "from": 503,
-      "dur": 350
+      "from": 540,
+      "dur": 336
     },
     {
       "id": "checkout",
-      "from": 839,
+      "from": 862,
       "dur": 255
     },
     {
       "id": "dashboard",
-      "from": 1080,
+      "from": 1103,
       "dur": 300
     },
     {
       "id": "languages",
-      "from": 1366,
+      "from": 1389,
       "dur": 170
     },
     {
       "id": "outro",
-      "from": 1522,
+      "from": 1545,
       "dur": 173
     }
   ],
-  "total": 1695,
+  "total": 1718,
   "checkout": {
     "plus": [
       40,
@@ -58,5 +58,13 @@
     "buy": 100,
     "modal": 106,
     "pay": 182
+  },
+  "music": {
+    "file": "audio/mix.wav",
+    "track": "Proceed by 1000 Handz (CC BY 4.0), 96 BPM",
+    "body": "track 2.65s onward for video 0-1425",
+    "ending": "track bar 49 (120.15s) onward for video 1425-1718",
+    "drums_in_frame": 225,
+    "bass_returns_frame": 1050
   }
 }

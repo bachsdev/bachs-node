@@ -132,7 +132,7 @@ export const routeCode: Line[] = [
 // Intro tagline: "for ___" types a word, holds, backspaces, and moves on.
 // Returns every keystroke so the audio can follow along.
 export const introWords = ['TypeScript', 'Python', 'Go', 'you'];
-export const introTyping = (start = 34) => {
+export const introTyping = (start = 71) => {
   const events: { f: number; kind: 'key' | 'back'; text: string }[] = [];
   let t = start;
   introWords.forEach((word, w) => {

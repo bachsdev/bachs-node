@@ -502,14 +502,16 @@ export const Languages: React.FC = () => {
   const { fps } = useVideoConfig();
   const card = glide(frame, fps, 0, 34);
   const tabs = [
-    { name: 'TypeScript', status: 'Available now', live: true },
-    { name: 'Python', status: 'Coming soon', live: false },
-    { name: 'Go', status: 'Coming soon', live: false },
+    { name: 'Node.js', status: 'Available now', live: true, install: 'npm install @bachs/sdk' },
+    { name: 'Python', status: 'Available now', live: true, install: 'pip install bachs' },
+    // Not released: the command stays blurred so no package name is promised.
+    { name: 'Go', status: 'Coming soon', live: false, install: 'go get bachs' },
   ];
   return (
     <AbsoluteFill style={center}>
       <Stage tone="paper" />
-      <Caption text="TypeScript today. Python and Go are next." delay={8} highlight={['Python', 'Go']} top={150} />
+      {/* Words strips '.' before matching, so "Node.js" is highlighted as "Nodejs". */}
+      <Caption text="Node.js and Python today. Go is next." delay={8} highlight={['Nodejs', 'Python']} top={150} />
       <div style={{ display: 'flex', gap: 28, marginTop: 110, opacity: card, transform: `translateY(${(1 - card) * 80}px)` }}>
         {tabs.map((t, i) => {
           const s = soft(frame, fps, 18 + i * 9, 15);
@@ -544,7 +546,7 @@ export const Languages: React.FC = () => {
                   filter: live ? 'none' : 'blur(5px)',
                 }}
               >
-                {live ? 'npm install @bachs/sdk' : t.name === 'Python' ? 'pip install bachs' : 'go get bachs.io/sdk'}
+                {t.install}
               </div>
               {live && (
                 <div
