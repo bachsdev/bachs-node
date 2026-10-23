@@ -1,0 +1,201 @@
+{
+ "chapter": "cold-open",
+ "duration": 36.758,
+ "windows": [
+  "editor",
+  "browser"
+ ],
+ "events": [
+  {
+   "name": "url",
+   "t": 0.612,
+   "url": "http://localhost:3000/"
+  },
+  {
+   "name": "site",
+   "t": 1.83
+  },
+  {
+   "name": "mouse",
+   "t": 1.853,
+   "x": 960,
+   "y": 700
+  },
+  {
+   "name": "click",
+   "t": 2.654,
+   "x": 1156,
+   "y": 768
+  },
+  {
+   "name": "url",
+   "t": 3.548,
+   "url": "https://sandbox-checkout.bachs.io/c/7_Q9uhD57tTHdTg"
+  },
+  {
+   "name": "url",
+   "t": 3.63,
+   "url": "https://sandbox-checkout.bachs.io/c/7_Q9uhD57tTHdTg"
+  },
+  {
+   "name": "checkout",
+   "t": 5.518
+  },
+  {
+   "name": "mouse",
+   "t": 7.032,
+   "x": 1156,
+   "y": 768
+  },
+  {
+   "name": "click",
+   "t": 7.888,
+   "x": 1254,
+   "y": 231
+  },
+  {
+   "name": "mouse",
+   "t": 9.829,
+   "x": 1254,
+   "y": 231
+  },
+  {
+   "name": "click",
+   "t": 10.636,
+   "x": 1254,
+   "y": 321
+  },
+  {
+   "name": "mouse",
+   "t": 12.237,
+   "x": 1254,
+   "y": 321
+  },
+  {
+   "name": "click",
+   "t": 13.099,
+   "x": 1294,
+   "y": 396
+  },
+  {
+   "name": "methods",
+   "t": 15
+  },
+  {
+   "name": "mouse",
+   "t": 15.631,
+   "x": 1294,
+   "y": 396
+  },
+  {
+   "name": "click",
+   "t": 16.638,
+   "x": 1294,
+   "y": 361
+  },
+  {
+   "name": "card-form",
+   "t": 19.261
+  },
+  {
+   "name": "mouse",
+   "t": 19.302,
+   "x": 1294,
+   "y": 361
+  },
+  {
+   "name": "click",
+   "t": 20.352,
+   "x": 1254,
+   "y": 305
+  },
+  {
+   "name": "mouse",
+   "t": 22.759,
+   "x": 1254,
+   "y": 305
+  },
+  {
+   "name": "click",
+   "t": 23.868,
+   "x": 1136,
+   "y": 383
+  },
+  {
+   "name": "mouse",
+   "t": 24.988,
+   "x": 1136,
+   "y": 383
+  },
+  {
+   "name": "click",
+   "t": 26.332,
+   "x": 1372,
+   "y": 383
+  },
+  {
+   "name": "mouse",
+   "t": 27.334,
+   "x": 1372,
+   "y": 383
+  },
+  {
+   "name": "click",
+   "t": 28.383,
+   "x": 1372,
+   "y": 460
+  },
+  {
+   "name": "mouse",
+   "t": 30.128,
+   "x": 1372,
+   "y": 460
+  },
+  {
+   "name": "click",
+   "t": 31.118,
+   "x": 1294,
+   "y": 549
+  },
+  {
+   "name": "pay",
+   "t": 31.222
+  },
+  {
+   "name": "url",
+   "t": 32.512,
+   "url": "https://sandbox-checkout.bachs.io/c/7_Q9uhD57tTHdTg"
+  },
+  {
+   "name": "url",
+   "t": 32.538,
+   "url": "https://sandbox-checkout.bachs.io/c/7_Q9uhD57tTHdTg"
+  },
+  {
+   "name": "paid",
+   "t": 32.946
+  },
+  {
+   "name": "order-paid",
+   "t": 33.257,
+   "line": "Order dc97ccde-2752-47ce-9938-05dc70e17055 paid: 10.00 USD",
+   "x": 325,
+   "y": 954,
+   "w": 557,
+   "h": 29
+  },
+  {
+   "name": "cli-delivered",
+   "t": 33.257,
+   "x": 1131,
+   "y": 780,
+   "w": 643,
+   "h": 29
+  },
+  {
+   "name": "end",
+   "t": 36.758
+  }
+ ],
+ "masks": []
+}

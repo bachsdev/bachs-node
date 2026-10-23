@@ -1,0 +1,210 @@
+{
+ "chapter": "pay",
+ "duration": 44.902,
+ "windows": [
+  "editor",
+  "browser"
+ ],
+ "events": [
+  {
+   "name": "terminal",
+   "t": 1.836,
+   "x": 325,
+   "y": 780,
+   "w": 10
+  },
+  {
+   "name": "run",
+   "t": 5.285,
+   "x": 325,
+   "y": 780,
+   "w": 317
+  },
+  {
+   "name": "server-ready",
+   "t": 6,
+   "x": 325,
+   "y": 896,
+   "w": 336,
+   "h": 29
+  },
+  {
+   "name": "to-browser",
+   "t": 7.5
+  },
+  {
+   "name": "url",
+   "t": 8.112,
+   "url": "http://localhost:3000/"
+  },
+  {
+   "name": "site",
+   "t": 9.332
+  },
+  {
+   "name": "mouse",
+   "t": 9.36,
+   "x": 960,
+   "y": 700
+  },
+  {
+   "name": "click",
+   "t": 10.189,
+   "x": 1156,
+   "y": 768
+  },
+  {
+   "name": "url",
+   "t": 11.191,
+   "url": "https://sandbox-checkout.bachs.io/c/kc9g8tnhlLmi8yM"
+  },
+  {
+   "name": "url",
+   "t": 11.69,
+   "url": "https://sandbox-checkout.bachs.io/c/kc9g8tnhlLmi8yM"
+  },
+  {
+   "name": "checkout",
+   "t": 13.607
+  },
+  {
+   "name": "mouse",
+   "t": 15.121,
+   "x": 1156,
+   "y": 768
+  },
+  {
+   "name": "click",
+   "t": 16.044,
+   "x": 1254,
+   "y": 231
+  },
+  {
+   "name": "mouse",
+   "t": 17.976,
+   "x": 1254,
+   "y": 231
+  },
+  {
+   "name": "click",
+   "t": 18.973,
+   "x": 1254,
+   "y": 321
+  },
+  {
+   "name": "mouse",
+   "t": 20.717,
+   "x": 1254,
+   "y": 321
+  },
+  {
+   "name": "click",
+   "t": 21.495,
+   "x": 1294,
+   "y": 396
+  },
+  {
+   "name": "methods",
+   "t": 23.404
+  },
+  {
+   "name": "mouse",
+   "t": 24.015,
+   "x": 1294,
+   "y": 396
+  },
+  {
+   "name": "click",
+   "t": 25.091,
+   "x": 1294,
+   "y": 361
+  },
+  {
+   "name": "card-form",
+   "t": 27.656
+  },
+  {
+   "name": "mouse",
+   "t": 27.695,
+   "x": 1294,
+   "y": 361
+  },
+  {
+   "name": "click",
+   "t": 28.691,
+   "x": 1254,
+   "y": 305
+  },
+  {
+   "name": "mouse",
+   "t": 31.225,
+   "x": 1254,
+   "y": 305
+  },
+  {
+   "name": "click",
+   "t": 32.612,
+   "x": 1136,
+   "y": 383
+  },
+  {
+   "name": "mouse",
+   "t": 33.742,
+   "x": 1136,
+   "y": 383
+  },
+  {
+   "name": "click",
+   "t": 34.78,
+   "x": 1372,
+   "y": 383
+  },
+  {
+   "name": "mouse",
+   "t": 35.778,
+   "x": 1372,
+   "y": 383
+  },
+  {
+   "name": "click",
+   "t": 36.884,
+   "x": 1372,
+   "y": 460
+  },
+  {
+   "name": "mouse",
+   "t": 38.536,
+   "x": 1372,
+   "y": 460
+  },
+  {
+   "name": "click",
+   "t": 39.62,
+   "x": 1294,
+   "y": 549
+  },
+  {
+   "name": "pay",
+   "t": 39.73
+  },
+  {
+   "name": "url",
+   "t": 40.947,
+   "url": "https://sandbox-checkout.bachs.io/c/kc9g8tnhlLmi8yM"
+  },
+  {
+   "name": "url",
+   "t": 40.999,
+   "url": "https://sandbox-checkout.bachs.io/c/kc9g8tnhlLmi8yM"
+  },
+  {
+   "name": "paid",
+   "t": 41.401
+  },
+  {
+   "name": "end",
+   "t": 44.902
+  }
+ ],
+ "masks": []
+}

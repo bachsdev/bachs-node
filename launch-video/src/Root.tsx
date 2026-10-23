@@ -9,15 +9,18 @@ import { McpVideo } from './mcp/McpVideo';
 import { SAMPLE_TOTAL, TutorialSample } from './tutorial/Sample';
 import { cutLength, Episode01, type Cut } from './tutorial/ep01/Episode01';
 import { nodeChapters, nodeTakes } from './tutorial/ep01/node';
+import { pythonChapters, pythonTakes } from './tutorial/ep01/python';
 import { TOTAL as MCP_TOTAL } from './mcp/grid';
 
 const still = { durationInFrames: 1, fps: 30, width: 1920, height: 1080 };
 const ep01Node: Cut = { lang: 'node', label: 'Node.js · @bachs/sdk', chapters: nodeChapters, takes: nodeTakes };
+const ep01Python: Cut = { lang: 'python', label: 'Python · bachs', chapters: pythonChapters, takes: pythonTakes };
 
 export const Root: React.FC = () => (
   <>
     <Composition id="TutorialSample" component={TutorialSample} durationInFrames={SAMPLE_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="Ep01Node" component={Episode01} defaultProps={{ cut: ep01Node }} durationInFrames={cutLength(ep01Node)} fps={30} width={1920} height={1080} />
+    <Composition id="Ep01Python" component={Episode01} defaultProps={{ cut: ep01Python }} durationInFrames={cutLength(ep01Python)} fps={30} width={1920} height={1080} />
     <Composition id="Mcp" component={McpVideo} durationInFrames={MCP_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="Skills" component={SkillsVideo} durationInFrames={SKILLS_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="SkillsColdOpen" component={FrameColdOpen} {...still} />
