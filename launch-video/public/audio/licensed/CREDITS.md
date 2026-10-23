@@ -23,3 +23,15 @@ the track's fade-out from bar 49 (2:00.1–2:10.0).
 Credit line for the video description:
 
 > Music: "Proceed" by 1000 Handz (freemusicarchive.org), licensed under CC BY 4.0. Edited for length.
+
+---
+
+**"Plenty of Help" by Ketsa**, from the album *Vintage Modernity*, licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Source: https://freemusicarchive.org/music/Ketsa/vintage-modernity/plenty-of-help/
+
+Used in "Bachs in action #1: Buy a credit pack", edited: the opening 28.7 seconds with fades.
+
+Credit line for the post or description:
+
+> Music: "Plenty of Help" by Ketsa (freemusicarchive.org), licensed under CC BY 4.0. Edited for length.

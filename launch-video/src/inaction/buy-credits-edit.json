@@ -1,0 +1,16 @@
+{
+  "_note": "Frame holds in recording seconds: the checkout closes itself about a second after success, and SnapKit's toast is brief, so the edit pauses on each while the camera moves. 'cut' ends the recording while the toast is still showing.",
+  "holds": [
+    {
+      "at": 22.35,
+      "len": 1.4,
+      "image": "inaction/hold-success.png"
+    },
+    {
+      "at": 22.55,
+      "len": 2.0,
+      "image": "inaction/hold-toast.png"
+    }
+  ],
+  "cut": 22.74
+}
