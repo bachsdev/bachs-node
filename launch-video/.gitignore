@@ -4,3 +4,6 @@ scripts/cues.json
 scripts/skills-cues.json
 scripts/mcp-cues.json
 public/tutorial/*.mp4
+tutorials/**/node_modules/
+tutorials/**/package-lock.json
+tutorials/**/__pycache__/

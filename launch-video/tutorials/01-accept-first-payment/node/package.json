@@ -1,0 +1,1 @@
+{"name":"snapkit-node","private":true,"type":"module","dependencies":{"@bachs/sdk":"^2.0.0","express":"^5.1.0"}}
