@@ -1,24 +1,24 @@
 # Releasing @bachs/sdk
 
 Releases are published to npm by `.github/workflows/release.yml` when a version
-tag is pushed. The workflow uses npm trusted publishing, so no npm token is
-stored anywhere, and each version carries a provenance statement linking it to
-the commit and workflow run that built it.
+tag is pushed. The workflow publishes with an npm access token stored as the
+`NPM_TOKEN` secret of the `npm` environment, and each version carries a
+provenance statement linking it to the commit and workflow run that built it.
 
-## One-time setup (an owner of the `bachshq` npm organization)
+## One-time setup
 
-1. On npmjs.com, open the `@bachs/sdk` package, then **Settings**.
-2. Under **Trusted publishing**, add a GitHub Actions publisher:
-   - Organization or user: `bachsdev`
-   - Repository: `bachs-node`
-   - Workflow filename: `release.yml`
-   - Environment: `npm`
-3. Optionally, under **Publishing access**, require two-factor authentication and
-   disallow tokens, so the workflow is the only way to publish.
-4. In this repository's **Settings** > **Environments**, create `npm` and add
-   required reviewers. The publish job waits for their approval, so a pushed tag
-   alone cannot publish. Also add a tag protection ruleset for `v*` under
+1. In this repository's **Settings** > **Environments**, create `npm`, add
+   required reviewers, and add an environment secret named `NPM_TOKEN` holding a
+   granular npm access token with publish permission for `@bachs/sdk`. Only the
+   publish job can read it, and it waits for a reviewer's approval, so a pushed
+   tag alone cannot publish. Also add a tag protection ruleset for `v*` under
    **Settings** > **Rules**, so only maintainers can create release tags.
+2. Once someone can log in to npmjs.com again, prefer trusted publishing: under
+   the package's **Settings** > **Trusted publishing**, add a GitHub Actions
+   publisher for `bachsdev` / `bachs-node` / `release.yml` / environment `npm`,
+   then remove `NODE_AUTH_TOKEN` from the publish step and the secret. No token
+   needs rotating after that, and tokens can be disallowed under **Publishing
+   access**.
 
 ## Each release
 
@@ -34,7 +34,7 @@ the commit and workflow run that built it.
 4. Watch the **Release** workflow. Its `build` job checks that the tag matches
    `package.json`, runs `npm run check` and verifies the packed contents. Its
    `publish` job then waits for an `npm` environment reviewer and publishes the
-   packed file. Only the publish job holds a publish credential. A version with a hyphen, such as `1.1.0-rc.1`, is published under
+   packed file. Only the publish job can read the token. A version with a hyphen, such as `1.1.0-rc.1`, is published under
    the `next` tag.
 5. Confirm with `npm view @bachs/sdk version`.
 

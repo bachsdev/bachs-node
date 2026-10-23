@@ -1,13 +1,15 @@
 name: Release
 
 # Publishes @bachs/sdk to npm when a version tag (for example v1.0.0) is
-# pushed. Authentication uses npm trusted publishing (OIDC), so no npm token
-# is stored in this repository. The package's trusted publisher on npmjs.com
-# must name this repository, this workflow file and the "npm" environment.
+# pushed. Authentication uses the NPM_TOKEN secret of the "npm" environment,
+# a granular npm access token that may publish @bachs/sdk. Trusted publishing
+# (OIDC, no stored token) is the better option once someone can log in to
+# npmjs.com again: register this repository, this workflow file and the "npm"
+# environment there and remove NODE_AUTH_TOKEN below.
 #
-# Two jobs: "build" checks, tests and packs the release but holds no publish
-# credential; "publish" holds the credential, runs nothing from the
-# repository, and waits for the "npm" environment's required reviewers.
+# Two jobs: "build" checks, tests and packs the release but cannot read the
+# token; "publish" holds the token, runs nothing from the repository, and
+# waits for the "npm" environment's required reviewers.
 
 on:
   push:
@@ -82,7 +84,7 @@ jobs:
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
-      # Trusted publishing needs npm 11.5.1 or later; the version is pinned rather than "latest".
+      # The npm version is pinned rather than "latest".
       - name: Install a pinned npm
         run: npm install -g npm@12.2.1
 
@@ -94,6 +96,8 @@ jobs:
       # A version with a hyphen (1.1.0-rc.1) is published under the next tag,
       # so `npm install @bachs/sdk` keeps resolving to the last stable release.
       - name: Publish to npm with provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [[ "$GITHUB_REF_NAME" == *-* ]]; then
             npm publish package.tgz --provenance --access public --tag next
