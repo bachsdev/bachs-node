@@ -1,13 +1,13 @@
 # Changelog
 
-## 1.1.0
+## 2.0.0
 
+The first release under the shared SDK foundations. One breaking change: the HTTP status code on errors is named `statusCode`.
+
+- **Error fields are named after what they hold.** `statusCode` on `BachsApiError` and `BachsResponseError` is the HTTP status code (previously `status`); `errorCode` stays the Bachs error code from the response body. `BachsNetworkError.responseStatus` is now `responseStatusCode`.
 - `environment` is optional: the SDK detects it from the key prefix (`sk_sandbox_` or `sk_live_`) and exposes it as `bachs.environment`. If `environment` is given and contradicts the key, the client refuses to start with `BachsConfigError`. A key with an unrecognised prefix still needs `environment`.
 - Logging through a `logger` option and `logLevel` or `BACHS_LOG`. Warnings go to `console.warn` by default; info and debug are opt-in. The API key, bodies, portal URLs and webhook secrets are never logged.
 - `listAll` on `products`, `payments`, `subscriptions`, `payoutDestinations` and `payouts`: an async iterator over every item that fetches each page as it is reached. `list` is unchanged.
-
-## 1.0.1
-
 - Identifiers of `.` or `..` are rejected with `BachsConfigError` before any request is sent. Previously they were passed through URL encoding unchanged and resolved as path navigation, so `payouts.get('..')` requested `/v1/` and `subscriptions.cancel('.')` sent `DELETE /v1/subscriptions/`, each carrying the API key. Only an application that passed untrusted input as an identifier was affected.
 - `products.get` validates its identifier through the same helper as every other retrieval method.
 - The release workflow builds and publishes in separate jobs: only the publish job holds the npm credential, it runs nothing from the repository, and it waits for the `npm` environment's reviewers. Dependency install scripts no longer run during a release, and the npm version used to publish is pinned.

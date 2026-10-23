@@ -63,7 +63,7 @@ test('47 — all V1 writes send once on temporary HTTP errors and lost responses
   const sdk = client({ maxRetries: 5 });
   const operations = [() => sdk.checkoutSessions.create({ pricing: { currency: 'USD', amount: '12.00' } }), () => sdk.subscriptions.cancel('sub_synthetic'), () => sdk.customerPortal.createSession('cust_synthetic'), () => sdk.banks.resolveAccount({ account_number: '0000000000', bank_code: '001' }), () => sdk.payoutDestinations.create({ currency: 'NGN' }), () => sdk.payoutQuotes.create({ from_currency: 'USD', to_currency: 'NGN', amount: '1.00' }), () => sdk.payouts.create({ destination: 'pd_synthetic', amount: '1.00' }, { idempotencyKey: 'synthetic-operation' })];
   for (const operation of operations) {
-    for (status of [429, 503]) { mode = 'http'; calls = 0; await assert.rejects(operation(), error => error instanceof BachsApiError && error.status === status && error.outcomeUnknown === (status >= 500)); assert.equal(calls, 1); }
+    for (status of [429, 503]) { mode = 'http'; calls = 0; await assert.rejects(operation(), error => error instanceof BachsApiError && error.statusCode === status && error.outcomeUnknown === (status >= 500)); assert.equal(calls, 1); }
     mode = 'network'; calls = 0; await assert.rejects(operation(), error => error instanceof BachsNetworkError && error.outcomeUnknown); assert.equal(calls, 1);
   }
 });

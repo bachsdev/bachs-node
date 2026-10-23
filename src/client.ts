@@ -105,7 +105,7 @@ export class Transport {
     const signal = options.signal;
     const write = method !== 'GET';
     let sent = false;
-    let responseStatus: number | undefined;
+    let responseStatusCode: number | undefined;
     let abortSource: 'caller' | 'deadline' | undefined;
     const controller = new AbortController();
     const callerAbort = () => {
@@ -118,9 +118,9 @@ export class Transport {
     }, timeoutMs);
     const failure = (cause: unknown): BachsNetworkError => {
       const unknown = write && sent;
-      if (abortSource === 'deadline') return new BachsTimeoutError('The operation exceeded its total deadline.', cause, unknown, responseStatus);
-      if (abortSource === 'caller') return new BachsAbortError('The operation was canceled by the caller.', cause, unknown, responseStatus);
-      return new BachsNetworkError('No usable response was received from Bachs.', cause, unknown, responseStatus);
+      if (abortSource === 'deadline') return new BachsTimeoutError('The operation exceeded its total deadline.', cause, unknown, responseStatusCode);
+      if (abortSource === 'caller') return new BachsAbortError('The operation was canceled by the caller.', cause, unknown, responseStatusCode);
+      return new BachsNetworkError('No usable response was received from Bachs.', cause, unknown, responseStatusCode);
     };
 
     try {
@@ -149,7 +149,7 @@ export class Transport {
       }
 
       for (let attempt = 0; ; attempt++) {
-        responseStatus = undefined;
+        responseStatusCode = undefined;
         if (performance.now() >= deadline && !controller.signal.aborted) {
           abortSource = 'deadline'; controller.abort(new Error('Operation deadline exceeded.'));
         }
@@ -158,7 +158,7 @@ export class Transport {
           sent = true;
           const attemptStarted = performance.now();
           const response = await fetch(url, { method, headers, ...(body === undefined ? {} : { body }), signal: controller.signal, redirect: 'manual' });
-          responseStatus = response.status;
+          responseStatusCode = response.status;
           this.#log.debug(`${method} ${url.pathname} -> ${response.status} in ${Math.round(performance.now() - attemptStarted)} ms (attempt ${attempt + 1}${response.headers.get('x-request-id') ? ', request ' + response.headers.get('x-request-id') : ''})`);
           const text = await response.text();
           const requestId = response.headers.get('x-request-id') ?? undefined;
