@@ -12,7 +12,7 @@
 // and never reach a frame (see the guard in lib.mjs); verify_masks.py and
 // verify_ocr.py prove it for every take.
 import { execSync } from 'node:child_process';
-import { chmodSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, cpSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { caret, guardSecret, openStudio, rand, realSleep, sleep, Take, terminalLine, terminalRows, typeLines, typeText, waitForTerminal } from './lib.mjs';
 
 const [lang, chapter, recArg] = process.argv.slice(2);
@@ -50,6 +50,8 @@ const LANGS = {
   node: {
     // The code uses ES module imports, so the project says so before npm runs.
     seed: { 'package.json': JSON.stringify({ name: 'snapkit-node', private: true, type: 'module' }, null, 2) + '\n' },
+    // The store page ships ready-made, like a sample app's static files.
+    seedDirs: ['public'],
     install: 'npm install @bachs/sdk express',
     installed: ['node_modules/@bachs/sdk/package.json', 'node_modules/express/package.json'],
     productFile: 'create-product.js',
@@ -328,6 +330,7 @@ const chapters = {
   // 2 · Install the SDK and add your key
   async install() {
     for (const [f, body] of Object.entries(C.seed)) writeFileSync(`${P}/${f}`, body);
+    for (const d of C.seedDirs ?? []) cpSync(`${CODE}/${d}`, `${P}/${d}`, { recursive: true });
     S = await openStudio(B);
     // The manifest is on screen while npm adds the dependencies to it.
     await openWorkbench({ files: Object.keys(C.seed).slice(0, 1) });
