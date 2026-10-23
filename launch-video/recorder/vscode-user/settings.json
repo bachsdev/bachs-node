@@ -76,5 +76,9 @@
   "workbench.editor.decorations.colors": false,
   "explorer.decorations.badges": false,
   "explorer.decorations.colors": false,
-  "workbench.reduceMotion": "on"
+  "workbench.reduceMotion": "on",
+  "terminal.integrated.gpuAcceleration": "off",
+  "workbench.colorCustomizations": {
+    "editorBracketHighlight.unexpectedBracket.foreground": "#3b3b3b"
+  }
 }

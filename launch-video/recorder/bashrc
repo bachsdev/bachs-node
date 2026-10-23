@@ -1,3 +1,9 @@
+export LANG=C.UTF-8 LC_ALL=C.UTF-8  # readline must count the prompt glyph as one column
 PS1='\[\e[38;2;91;95;232m\]❯\[\e[0m\] '
 export npm_config_fund=false npm_config_audit=false npm_config_update_notifier=false
-cd ~/snapkit-checkout 2>/dev/null || true
+export VIRTUAL_ENV_DISABLE_PROMPT=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+cd "$RECORD_DIR/snapkit-checkout" 2>/dev/null || true
+# State carried over from earlier takes (keys, PRODUCT_ID), so each chapter
+# picks up where the last one ended. Written by record.mjs, never committed.
+[ -f "$RECORD_DIR/session.env" ] && . "$RECORD_DIR/session.env"
+[ -f .venv/bin/activate ] && . .venv/bin/activate

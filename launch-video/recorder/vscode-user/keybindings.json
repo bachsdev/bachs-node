@@ -1,1 +1,8 @@
-[{ "key": "ctrl+alt+t", "command": "workbench.action.terminal.new" }]
+[
+  {"key": "ctrl+alt+t", "command": "workbench.action.terminal.new"},
+  {"key": "ctrl+alt+s", "command": "workbench.action.terminal.split"},
+  {"key": "ctrl+alt+k", "command": "workbench.action.terminal.clear"},
+  {"key": "ctrl+alt+left", "command": "workbench.action.terminal.focusPreviousPane"},
+  {"key": "ctrl+alt+right", "command": "workbench.action.terminal.focusNextPane"},
+  {"key": "ctrl+alt+j", "command": "workbench.action.closePanel"}
+]
