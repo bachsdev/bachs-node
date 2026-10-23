@@ -3,3 +3,4 @@ out/
 scripts/cues.json
 scripts/skills-cues.json
 scripts/mcp-cues.json
+public/tutorial/*.mp4
