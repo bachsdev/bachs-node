@@ -24,7 +24,7 @@ the Bachs API, and reject unsigned webhooks.
 
 ## 0 · Cold open (0:00–0:15) · shared
 
-**Screen:** the finished app. Click **Buy credits ($10)** → the Bachs hosted checkout
+**Screen:** the finished app, the SnapKit store page. Click **Buy credits for $10** → the Bachs hosted checkout
 (sandbox banner visible) → pay with a test card → camera moves to the terminal, which
 prints `Order 3f2c… paid: 10.00 USD`.
 
@@ -82,7 +82,8 @@ the terminal, which prints a `prod_…` ID; then `export PRODUCT_ID=prod_…`.
 checkout route. Camera follows the line being typed.
 
 **Voice:**
-> Now the server. The home page is just a Buy button that posts to `/checkout`.
+> Now the server. The store page is ready-made in the `public` folder, so Express just serves it.
+> Its Buy button posts to `/checkout`, and that's the route we write.
 > In the checkout route we do three things.
 > One: make an order ID. In a real app this is the order you save in your database.
 > Two: ask Bachs for a checkout session. The cart is our product, and the reference is

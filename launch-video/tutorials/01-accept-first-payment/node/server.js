@@ -5,9 +5,7 @@ import { Bachs, webhooks } from '@bachs/sdk';
 const bachs = new Bachs({ apiKey: process.env.BACHS_API_KEY });
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('<form method="post" action="/checkout"><button>Buy credits ($10)</button></form>');
-});
+app.use(express.static('public'));
 
 app.post('/checkout', async (req, res) => {
   const orderId = randomUUID();
