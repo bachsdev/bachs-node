@@ -85,7 +85,12 @@ test('49 — ambiguous request modes fail before send; unsupported successful re
   const sdk = client();
   for (const input of [{ destination: 'pd_synthetic' }, { destination: 'pd_synthetic', amount: '1.00', quote_id: 'pqt_synthetic' }, { destination: 'pd_synthetic', amount: 1 }, { destination: 'pd_synthetic', quote_id: '' }]) assert.throws(() => sdk.payouts.create(input), BachsConfigError);
   for (const input of [{}, { product_cart: [], pricing: { currency: 'USD' } }, { pricing: null }]) assert.throws(() => sdk.checkoutSessions.create(input), BachsConfigError);
-  for (const resource of [sdk.checkoutSessions, sdk.payments, sdk.subscriptions, sdk.payoutDestinations, sdk.payouts]) assert.throws(() => resource.get(''), BachsConfigError);
+  for (const resource of [sdk.products, sdk.checkoutSessions, sdk.payments, sdk.subscriptions, sdk.payoutDestinations, sdk.payouts]) {
+    for (const id of ['', '   ', '.', '..']) assert.throws(() => resource.get(id), BachsConfigError, `${id === '' ? 'empty' : JSON.stringify(id)} ID must be rejected before any request`);
+  }
+  // Dot IDs would otherwise resolve as path navigation and reach a different endpoint with the API key.
+  assert.throws(() => sdk.customerPortal.createSession('..'), BachsConfigError);
+  assert.throws(() => sdk.subscriptions.cancel('.'), BachsConfigError);
   assert.equal(calls, 0);
   await assert.rejects(sdk.payouts.get('pay_synthetic'), BachsResponseError); assert.equal(calls, 1);
   await assert.rejects(sdk.payouts.create({ destination: 'pd_synthetic', amount: '1.00' }), error => error instanceof BachsResponseError && error.outcomeUnknown); assert.equal(calls, 2);

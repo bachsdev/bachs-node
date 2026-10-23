@@ -6,6 +6,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const metadataFile = process.argv[3] ?? resolve(root, '.package-check/pack-result.json');
 const contentRoot = resolve(process.argv[4] ?? root);
 const metadata = JSON.parse(readFileSync(metadataFile, 'utf8'))[0];
+const expectedVersion = process.env.BACHS_EXPECTED_VERSION;
 const keyFile = process.argv[2];
 const key = keyFile ? readFileSync(keyFile, 'utf8').replace(/^\uFEFF/, '').trim() : undefined;
 if (keyFile) assert.ok(key, 'Credential scan requires a non-empty key file');
@@ -18,7 +19,9 @@ for (const file of metadata.files) {
 for (const required of ['LICENSE', 'README.md', 'package.json', 'dist/esm/index.js', 'dist/esm/index.d.ts', 'dist/cjs/index.js', 'dist/cjs/index.d.ts', 'dist/cjs/package.json']) assert.ok(metadata.files.some(file => file.path === required), required);
 const pkg = JSON.parse(readFileSync(resolve(contentRoot, 'package.json'), 'utf8'));
 assert.equal(pkg.name, '@bachs/sdk');
-assert.equal(pkg.version, '1.0.0');
+assert.match(pkg.version, /^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/, 'package.json version must be a semantic version');
+if (expectedVersion) assert.equal(pkg.version, expectedVersion, 'package.json version must match the release tag');
+assert.equal(metadata.version, pkg.version, 'packed version must match package.json');
 assert.equal(pkg.license, 'MIT');
 assert.notEqual(pkg.private, true);
 console.log(JSON.stringify({ package: metadata.filename, files: metadata.files.length, whitelist_verified: true, credential_scan: key ? 'passed' : 'not-run' }));

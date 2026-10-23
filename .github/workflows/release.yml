@@ -3,7 +3,11 @@ name: Release
 # Publishes @bachs/sdk to npm when a version tag (for example v1.0.0) is
 # pushed. Authentication uses npm trusted publishing (OIDC), so no npm token
 # is stored in this repository. The package's trusted publisher on npmjs.com
-# must name this repository and this workflow file.
+# must name this repository, this workflow file and the "npm" environment.
+#
+# Two jobs: "build" checks, tests and packs the release but holds no publish
+# credential; "publish" holds the credential, runs nothing from the
+# repository, and waits for the "npm" environment's required reviewers.
 
 on:
   push:
@@ -12,10 +16,9 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -28,15 +31,7 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
           package-manager-cache: false
-
-      # Trusted publishing needs npm 11.5.1 or later.
-      - name: Update npm
-        run: npm install -g npm@latest
-
-      - name: Install locked dependencies
-        run: npm ci
 
       - name: Check the tag matches package.json
         run: |
@@ -46,21 +41,62 @@ jobs:
             exit 1
           fi
 
+      # --ignore-scripts: dependency install scripts never run in the release job.
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+
       - name: Check types, builds and tests
         run: npm run check
 
-      - name: Verify package contents
+      - name: Pack and verify package contents
+        env:
+          BACHS_EXPECTED_VERSION: ${{ github.ref_name }}
         run: |
           mkdir -p .package-check
           npm pack --json --pack-destination .package-check > .package-check/pack-result.json
-          node scripts/verify-package.mjs "" .package-check/pack-result.json .
+          BACHS_EXPECTED_VERSION="${BACHS_EXPECTED_VERSION#v}" node scripts/verify-package.mjs "" .package-check/pack-result.json .
+          cp .package-check/*.tgz package.tgz
+
+      - name: Keep the packed file for publishing
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: package
+          path: package.tgz
+          if-no-files-found: error
+
+  # Only this job can request an npm token, and it runs nothing from the repository.
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: npm
+      url: https://www.npmjs.com/package/@bachs/sdk
+    permissions:
+      id-token: write
+    steps:
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      # Trusted publishing needs npm 11.5.1 or later; the version is pinned rather than "latest".
+      - name: Install a pinned npm
+        run: npm install -g npm@12.2.1
+
+      - name: Download the packed file
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: package
 
       # A version with a hyphen (1.1.0-rc.1) is published under the next tag,
       # so `npm install @bachs/sdk` keeps resolving to the last stable release.
       - name: Publish to npm with provenance
         run: |
           if [[ "$GITHUB_REF_NAME" == *-* ]]; then
-            npm publish --provenance --access public --tag next
+            npm publish package.tgz --provenance --access public --tag next
           else
-            npm publish --provenance --access public
+            npm publish package.tgz --provenance --access public
           fi

@@ -12,9 +12,13 @@ the commit and workflow run that built it.
    - Organization or user: `bachsdev`
    - Repository: `bachs-node`
    - Workflow filename: `release.yml`
-   - Environment: leave empty
+   - Environment: `npm`
 3. Optionally, under **Publishing access**, require two-factor authentication and
    disallow tokens, so the workflow is the only way to publish.
+4. In this repository's **Settings** > **Environments**, create `npm` and add
+   required reviewers. The publish job waits for their approval, so a pushed tag
+   alone cannot publish. Also add a tag protection ruleset for `v*` under
+   **Settings** > **Rules**, so only maintainers can create release tags.
 
 ## Each release
 
@@ -27,9 +31,10 @@ the commit and workflow run that built it.
    git push origin v1.0.0
    ```
 
-4. Watch the **Release** workflow. It checks that the tag matches
-   `package.json`, runs `npm run check`, verifies the package contents and
-   publishes. A version with a hyphen, such as `1.1.0-rc.1`, is published under
+4. Watch the **Release** workflow. Its `build` job checks that the tag matches
+   `package.json`, runs `npm run check` and verifies the packed contents. Its
+   `publish` job then waits for an `npm` environment reviewer and publishes the
+   packed file. Only the publish job holds a publish credential. A version with a hyphen, such as `1.1.0-rc.1`, is published under
    the `next` tag.
 5. Confirm with `npm view @bachs/sdk version`.
 
