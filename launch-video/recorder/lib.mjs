@@ -33,31 +33,36 @@ const SECRET_GUARD = () => {
     while (w.nextNode()) out.push(w.currentNode);
     return out;
   };
+  // Join a terminal's rows so a line wrapped onto the next row reads as one
+  // line: a row whose last glyph reaches the right edge runs on unbroken.
+  function joinRows(rowsEl) {
+    const nodes = [];
+    let text = '';
+    const edge = rowsEl.getBoundingClientRect().right;
+    for (const row of rowsEl.children) {
+      let lastRight = 0;
+      let cell = 10;
+      for (const n of textNodes(row)) {
+        nodes.push({ n, start: text.length });
+        text += n.data;
+        const visible = n.data.replace(/[\s\u00a0]+$/, '').length;
+        if (visible) {
+          const r = document.createRange();
+          r.setStart(n, visible - 1);
+          r.setEnd(n, visible);
+          const b = r.getBoundingClientRect();
+          if (b.width) [lastRight, cell] = [b.right, b.width];
+        }
+      }
+      if (lastRight < edge - 1.5 * cell) text += '\n';
+    }
+    return { text, nodes };
+  }
+  window.__terminalText = () => [...document.querySelectorAll('.xterm-rows')].map((el) => joinRows(el).text.replace(/\u00a0/g, ' '));
   const scan = () => {
     const rects = [];
     for (const rowsEl of document.querySelectorAll('.xterm-rows')) {
-      // Join the rows' text so a token wrapped onto the next row is still one
-      // token: a row whose last glyph reaches the right edge runs on unbroken.
-      const nodes = [];
-      let text = '';
-      const edge = rowsEl.getBoundingClientRect().right;
-      for (const row of rowsEl.children) {
-        let lastRight = 0;
-        let cell = 10;
-        for (const n of textNodes(row)) {
-          nodes.push({ n, start: text.length });
-          text += n.data;
-          const visible = n.data.replace(/[\s\u00a0]+$/, '').length;
-          if (visible) {
-            const r = document.createRange();
-            r.setStart(n, visible - 1);
-            r.setEnd(n, visible);
-            const b = r.getBoundingClientRect();
-            if (b.width) [lastRight, cell] = [b.right, b.width];
-          }
-        }
-        if (lastRight < edge - 1.5 * cell) text += '\n';
-      }
+      const { text, nodes } = joinRows(rowsEl);
       // Secret spans: anything after a known prefix, plus any run of 5+
       // characters that is part of a secret the recorder has handed us, so a
       // fragment is covered even if a redraw separates it from its prefix.
@@ -278,8 +283,8 @@ export async function terminalRows(page, which = 'active') {
 export async function waitForTerminal(page, re, { timeout = 120000 } = {}) {
   const t0 = Date.now();
   while (Date.now() - t0 < timeout) {
-    const rows = (await terminalRows(page, 'all')).flat().join('\n');
-    const m = rows.match(re);
+    const text = (await page.evaluate(() => window.__terminalText?.() ?? [])).join('\n');
+    const m = text.match(re);
     if (m) return m;
     await realSleep(150);
   }

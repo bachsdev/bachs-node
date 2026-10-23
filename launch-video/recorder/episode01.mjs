@@ -179,6 +179,22 @@ async function exportValue(name, value, mark) {
   await sleep(400);
 }
 
+// Each chapter starts from the files the chapter before it left, so any one
+// can be re-recorded: these are exactly the states typed on camera.
+function setServer(state) {
+  const s = C.server();
+  writeFileSync(`${P}/${C.serverFile}`, state === 'final' ? s.final : s.pass1.join('\n'));
+}
+
+// The CLI prints the session's signing secret; it may wrap in a narrow pane.
+async function readSecret() {
+  const [, secret] = await waitForTerminal(ed(), /signing secret is (whsec_[A-Za-z0-9_]+) \(/);
+  if (secret.length < 30) throw new Error('signing secret looks truncated');
+  await guardSecret(ed(), secret);
+  saveEnv('BACHS_WEBHOOK_SECRET', secret);
+  return secret;
+}
+
 async function editorText(file) {
   await realSleep(1200); // files.autoSave is 300ms after the last keystroke
   return readFileSync(`${P}/${file}`, 'utf8');
@@ -391,6 +407,7 @@ const chapters = {
   // 5 · Make a test payment
   async pay() {
     saveEnv('BACHS_WEBHOOK_SECRET', undefined); // set on camera in chapter 6
+    setServer('pass1');
     S = await openStudio(B, { browser: true });
     await openWorkbench({ files: [C.serverFile] });
     await br().goto('about:blank');
@@ -416,6 +433,7 @@ const chapters = {
   async webhooks() {
     const s = C.server();
     saveEnv('BACHS_WEBHOOK_SECRET', undefined); // set on camera below
+    setServer('pass1');
     S = await openStudio(B, { browser: true });
     await openWorkbench({ files: [C.serverFile], panel: true });
     // Off camera: the server from chapter 5 is still running.
@@ -464,9 +482,7 @@ const chapters = {
     await sleep(800);
     take.mark('cli-terminal', await promptPos());
     await run('bachs listen --forward-to localhost:3000/webhooks', 'listen');
-    const [, secret] = await waitForTerminal(ed(), /signing secret is (whsec_[A-Za-z0-9_]+)/);
-    await guardSecret(ed(), secret);
-    saveEnv('BACHS_WEBHOOK_SECRET', secret);
+    const secret = await readSecret();
     await sleep(600);
     take.mark('listen-ready', await terminalLine(ed(), /signing secret is/));
     await sleep(2200);
@@ -496,6 +512,7 @@ const chapters = {
 
   // 7 · Recap: the finished files, part by part
   async recap() {
+    setServer('final');
     S = await openStudio(B);
     await openWorkbench({ files: [C.productFile, C.serverFile] });
     take = new Take(B, 'recap', S);
@@ -518,6 +535,7 @@ const chapters = {
 
   // 0 · Cold open: the finished app, paid for real
   async 'cold-open'() {
+    setServer('final');
     S = await openStudio(B, { browser: true });
     await openWorkbench({ files: [C.serverFile], panel: true });
     // Off camera: the server on the left, the CLI forwarding on the right.
@@ -526,9 +544,7 @@ const chapters = {
     await waitForTerminal(ed(), /❯[^\n]*\n[\s\S]*❯/);
     await ed().keyboard.type('bachs listen --forward-to localhost:3000/webhooks', { delay: 5 });
     await press('Enter');
-    const [, secret] = await waitForTerminal(ed(), /signing secret is (whsec_[A-Za-z0-9_]+)/);
-    await guardSecret(ed(), secret);
-    saveEnv('BACHS_WEBHOOK_SECRET', secret);
+    const secret = await readSecret();
     await press('Control+Alt+K');
     await press('Control+Alt+ArrowLeft');
     await realSleep(500);
@@ -558,11 +574,17 @@ const chapters = {
 if (!chapters[chapter]) throw new Error(`unknown chapter ${chapter}; one of ${Object.keys(chapters).join(', ')}`);
 console.log(`${lang} · ${chapter}`);
 stopLeftovers();
+const saveTerminal = async () => {
+  const text = (await ed().evaluate(() => window.__terminalText?.() ?? [])).join('\n-----\n');
+  writeFileSync(`${take.dir}/terminal.txt`, text.replace(/(sk_sandbox_|whsec_)[A-Za-z0-9_]+/g, '$1••••').replace(/\n{3,}/g, '\n\n'));
+};
 try {
   await chapters[chapter]();
   await take.stop();
-  const rows = (await terminalRows(ed(), 'all')).flat().filter(Boolean);
-  writeFileSync(`${take.dir}/terminal.txt`, rows.join('\n').replace(/(sk_sandbox_|whsec_)[A-Za-z0-9_]+/g, '$1••••') + '\n');
+  await saveTerminal();
+} catch (e) {
+  if (take) await saveTerminal().catch(() => {});
+  throw e;
 } finally {
   // Stop anything the take started (servers, the CLI) with the browser.
   await S?.ctx.close();
