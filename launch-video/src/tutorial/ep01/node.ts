@@ -18,7 +18,9 @@ export const nodeChapters: Chapter[] = [
   {
     id: 'cold-open',
     beats: [
-      { take: 'cold-open', win: 'browser', from: { ev: 'site', off: -0.6 }, to: { ev: 'url', nth: 1, off: 0.4 }, say: 'This is a real payment, start to finish, in the Bachs sandbox.' },
+      // The store holds while the line plays; the click and redirect follow.
+      { take: 'cold-open', win: 'browser', from: { ev: 'site', off: -0.6 }, to: { ev: 'click', off: -0.05 }, say: 'This is a real payment, start to finish, in the Bachs sandbox.' },
+      { take: 'cold-open', win: 'browser', from: { ev: 'click', off: -0.05 }, to: { ev: 'url', nth: 1, off: 0.4 } },
       { take: 'cold-open', win: 'browser', from: 'checkout', to: 'card-form', speed: 4, say: 'A customer clicks buy, pays on the Bachs checkout page,' },
       { take: 'cold-open', win: 'browser', from: 'card-form', to: { ev: 'paid', off: 0.8 }, speed: 4 },
       { take: 'cold-open', win: 'editor', from: { ev: 'order-paid', off: -0.8 }, to: 'end', say: "and our server knows it's been paid." },
@@ -62,7 +64,7 @@ export const nodeChapters: Chapter[] = [
     id: 'checkout',
     beats: [
       { card: { kind: 'chapter', n: '04', title: 'The checkout route' } },
-      { take: 'checkout', win: 'editor', from: 0, to: line(8), step: 'Write the checkout route', say: 'Now the server.' },
+      { take: 'checkout', win: 'editor', from: 0, to: line(8), speed: 1.6, step: 'Write the checkout route', say: 'Now the server.' },
       { take: 'checkout', win: 'editor', from: line(8), to: line(10), say: 'The store page is ready-made in the public folder, so Express just serves it. Its Buy button posts to /checkout, and that\'s the route we write.' },
       { take: 'checkout', win: 'editor', from: line(10), to: line(11), say: 'In the checkout route we do three things.' },
       { take: 'checkout', win: 'editor', from: line(11), to: line(12), say: 'One: make an order ID. In a real app this is the order you save in your database.' },

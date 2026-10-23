@@ -3,8 +3,8 @@ import { AbsoluteFill, Freeze, Img, interpolate, OffthreadVideo, Sequence, sprin
 import { Words } from '../../components';
 import { clamp, ease } from '../../motion';
 import { bachs, fontFaceCss, fonts } from '../../theme';
-import { browserMoves, editorMoves, recapMoves, viewAt, type Move } from './camera';
-import { FPS, place, srcTime, type Card, type Chapter, type Placed, type TakeData } from './timeline';
+import { blockView, browserMoves, editorMoves, recapMoves, viewAt, type Move, type View } from './camera';
+import { FPS, place, srcTime, type Card, type Chapter, type Placed, type PlacedTake, type TakeData } from './timeline';
 
 // "Build it with Bachs" episode 01, in the style of ../Sample.tsx: real 4K
 // screen recordings framed as windows on the brand background, eased camera
@@ -20,11 +20,24 @@ const TOP = 62; // leaves room for subtitles below the window
 
 // ------------------------------------------------------------------ recording
 
-const Recording: React.FC<{ cut: Cut; b: Placed & { take: string; win: 'editor' | 'browser' }; moves: Move[]; w: number; h: number }> = ({ cut, b, moves, w, h }) => {
+// A recap beat frames its highlighted block, easing in from the block before.
+const highlightView = (take: TakeData, hl: PlacedTake['hl']): View | null => {
+  if (!hl) return null;
+  const ev = take.events.find((e) => e.name === hl.at) as { lines?: Record<string, [number, number]>; left?: number } | undefined;
+  return ev?.lines ? blockView(ev.lines, ev.left ?? 400, hl.from, hl.to) : null;
+};
+
+const Recording: React.FC<{ cut: Cut; b: PlacedTake; prev?: Placed; moves: Move[]; w: number; h: number }> = ({ cut, b, prev, moves, w, h }) => {
   const local = useCurrentFrame();
   const take = cut.takes[b.take];
   const t = srcTime(b, local);
-  const { z, x, y } = viewAt(moves, t);
+  let { z, x, y } = viewAt(moves, t);
+  const hv = highlightView(take, b.hl);
+  if (hv) {
+    const pv = (prev && 'take' in prev && prev.take === b.take && highlightView(take, prev.hl)) || { z, x, y };
+    const k = ease(local, [0, 18], [0, 1]);
+    [z, x, y] = [pv.z + (hv.z - pv.z) * k, pv.x + (hv.x - pv.x) * k, pv.y + (hv.y - pv.y) * k];
+  }
   const s = (w / 1920) * z;
   const tx = Math.min(0, Math.max(w - 1920 * s, w / 2 - x * s));
   const ty = Math.min(0, Math.max(h - 1080 * s, h / 2 - y * s));
@@ -131,7 +144,7 @@ const urlAt = (take: TakeData, t: number) => {
   return url.host + (url.pathname.length > 1 ? (url.pathname.startsWith('/c/') ? '/c/…' : url.pathname) : '');
 };
 
-const Window: React.FC<{ cut: Cut; b: Placed & { take: string; win: 'editor' | 'browser' }; enter: boolean }> = ({ cut, b, enter }) => {
+const Window: React.FC<{ cut: Cut; b: PlacedTake; prev?: Placed; enter: boolean }> = ({ cut, b, prev, enter }) => {
   const local = useCurrentFrame();
   const take = cut.takes[b.take];
   const isBrowser = b.win === 'browser';
@@ -163,7 +176,7 @@ const Window: React.FC<{ cut: Cut; b: Placed & { take: string; win: 'editor' | '
           </div>
         )}
         <div style={{ position: 'relative', width: size.w, height: contentH, overflow: 'hidden' }}>
-          <Recording cut={cut} b={b} moves={moves} w={size.w} h={contentH} />
+          <Recording cut={cut} b={b} prev={prev} moves={moves} w={size.w} h={contentH} />
         </div>
       </div>
     </AbsoluteFill>
@@ -288,7 +301,7 @@ export const Episode01: React.FC<{ cut: Cut }> = ({ cut }) => {
         const enter = isTake && !(prev && 'take' in prev && prev.win === b.win);
         return (
           <Sequence key={i} from={b.start} durationInFrames={b.frames} layout="none">
-            {isTake ? <Window cut={cut} b={b as Placed & { take: string; win: 'editor' | 'browser' }} enter={enter} /> : <CardView card={(b as { card: Card }).card} cut={cut} frames={b.frames} />}
+            {isTake ? <Window cut={cut} b={b as PlacedTake} prev={prev} enter={enter} /> : <CardView card={(b as { card: Card }).card} cut={cut} frames={b.frames} />}
             {isTake && b.step && (
               <StepCaption
                 n={b.stepNo}

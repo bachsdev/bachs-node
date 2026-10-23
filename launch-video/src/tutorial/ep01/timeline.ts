@@ -28,14 +28,13 @@ export type Card =
   | { kind: 'statement'; text: string }
   | { kind: 'end' };
 
+export type TakeSlice = { take: string; win: 'editor' | 'browser'; from: Ref; to: Ref; speed?: number; hl?: Highlight };
+
 export type Beat = {
   say?: string;
   step?: string; // numbered step caption; carries on until a beat sets another (or '')
   min?: number;
-} & (
-  | { take: string; win: 'editor' | 'browser'; from: Ref; to: Ref; speed?: number; hl?: Highlight }
-  | { card: Card }
-);
+} & (TakeSlice | { card: Card });
 
 export type Chapter = { id: string; beats: Beat[] };
 
@@ -52,6 +51,7 @@ export const resolve = (take: TakeData, ref: Ref): number => {
 export const readTime = (text = '') => (text ? text.split(/\s+/).length / 2.6 + 0.7 : 0);
 
 export type Placed = Beat & { start: number; frames: number; segFrames: number; src0: number; src1: number; stepNo: string };
+export type PlacedTake = Placed & TakeSlice;
 
 export const place = (chapters: Chapter[], takes: Record<string, TakeData>) => {
   const out: Placed[] = [];
