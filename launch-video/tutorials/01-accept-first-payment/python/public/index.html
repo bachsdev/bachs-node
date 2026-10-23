@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SnapKit Credit Pack</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22' fill='none'%3E%3Cpath d='M2 7V2h5M15 2h5v5M20 15v5h-5M7 20H2v-5' stroke='%23141412' stroke-width='2.2'/%3E%3Ccircle cx='11' cy='11' r='3' fill='%23141412'/%3E%3C/svg%3E">
+  <style>
+    @font-face { font-family: 'Geist'; src: url('fonts/Geist-Variable.woff2') format('woff2'); font-weight: 100 900; font-display: block; }
+    @font-face { font-family: 'Geist Mono'; src: url('fonts/GeistMono-Variable.woff2') format('woff2'); font-weight: 100 900; font-display: block; }
+    @font-face { font-family: 'Geist Pixel'; src: url('fonts/GeistPixel-Square.woff2') format('woff2'); font-display: block; }
+
+    :root {
+      --paper: #f2f1ea;
+      --ink: #141412;
+      --muted: #5d5c56;
+      --line: rgba(20, 20, 18, 0.1);
+      --card: #ffffff;
+      --accent: #e2482f;
+      --ok: #8fd19e;
+      --sans: 'Geist', system-ui, sans-serif;
+      --mono: 'Geist Mono', ui-monospace, monospace;
+      --pixel: 'Geist Pixel', 'Geist Mono', monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .demo-bar {
+      background: var(--ink);
+      color: #d9d8d2;
+      font: 400 14px/1 var(--mono);
+      text-align: center;
+      padding: 12px 16px;
+    }
+    .demo-bar b { color: #fff; font-weight: 500; margin-right: 10px; }
+    .demo-bar .short { display: none; }
+
+    header, main { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+    header { display: flex; align-items: center; gap: 12px; padding: 28px 0; }
+    .wordmark { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 24px 0 80px;
+    }
+
+    /* The product shot: a credit pack drawn in SnapKit's own language. Three
+       rows (labels, the screenshot stack, the count) so nothing can overlap. */
+    .pack {
+      aspect-ratio: 1 / 1;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--ink);
+      border-radius: 20px;
+      padding: 36px 0 36px 40px;
+      color: #e9e8e3;
+      overflow: hidden;
+      box-shadow: 0 40px 80px -30px rgba(20, 20, 18, 0.45);
+    }
+    .pack-top { display: flex; justify-content: space-between; padding-right: 36px; font: 400 14px/1 var(--mono); letter-spacing: 0.16em; color: #9b9a94; white-space: nowrap; }
+    .shots { position: relative; margin: 36px 0 48px 30%; }
+    .shot {
+      position: absolute;
+      inset: 0 -12% 0 0;
+      background: var(--card);
+      border-radius: 10px;
+      padding: 20px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+    .shot:nth-child(1) { transform: translate(-14%, 6%) rotate(-7deg); opacity: 0.45; }
+    .shot:nth-child(2) { transform: translate(-7%, 3%) rotate(-3.5deg); opacity: 0.75; }
+    .bar { height: 8px; border-radius: 4px; background: #e6e5e0; margin-top: 10px; }
+    .bar.ink { height: 13px; background: var(--ink); margin-top: 16px; }
+    .chrome { display: flex; gap: 8px; align-items: center; }
+    .chrome i { width: 18px; height: 18px; border-radius: 5px; background: #ef6a4e; }
+    .chrome span { width: 34px; height: 6px; border-radius: 3px; background: #e6e5e0; }
+    .chrome em { margin-left: auto; width: 54px; height: 18px; border-radius: 5px; background: var(--ink); }
+    .cta-row { display: flex; gap: 8px; margin-top: 18px; }
+    .cta-row i { width: 70px; height: 22px; border-radius: 5px; background: var(--accent); }
+    .cta-row span { width: 70px; height: 22px; border-radius: 5px; background: #efeee9; }
+    .pack-count { font: 400 96px/0.9 var(--pixel); color: #f6f5f0; letter-spacing: -0.02em; }
+    .pack-unit { margin-top: 14px; font: 400 18px/1 var(--mono); color: #9b9a94; }
+
+    .eyebrow { display: flex; align-items: center; gap: 12px; font: 400 14px/1 var(--mono); letter-spacing: 0.18em; }
+    .eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink); }
+    .pill { font: 400 12px/1 var(--mono); letter-spacing: 0.14em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; }
+    h1 { font: 400 58px/1.05 var(--pixel); letter-spacing: -0.01em; margin: 24px 0 0; text-wrap: balance; }
+    .lede { font-size: 20px; line-height: 1.6; color: var(--muted); margin: 20px 0 0; max-width: 31em; text-wrap: pretty; }
+
+    .price { display: flex; align-items: baseline; gap: 12px; margin-top: 32px; }
+    .price strong { font: 400 56px/1 var(--pixel); }
+    .price span { font: 400 16px/1 var(--mono); color: var(--muted); }
+
+    ul { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 12px; font-size: 17px; }
+    li { display: flex; gap: 12px; align-items: baseline; }
+    li::before { content: '✓'; color: var(--muted); }
+
+    form { margin-top: 36px; }
+    button {
+      width: 100%;
+      max-width: 420px;
+      height: 56px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--ink);
+      color: #fff;
+      font: 600 18px/1 var(--sans);
+      cursor: pointer;
+      transition: background-color 120ms ease, transform 120ms ease;
+    }
+    button:hover { background: #2a2a27; }
+    button:active { transform: scale(0.98); }
+    button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    button[aria-busy='true'] { background: #2a2a27; cursor: progress; }
+    .fine { display: flex; align-items: center; gap: 8px; margin-top: 16px; font: 400 14px/1.4 var(--mono); color: var(--muted); }
+    .fine::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #3fa35b; }
+
+    @media (max-width: 860px) {
+      main { grid-template-columns: 1fr; gap: 40px; padding-top: 8px; }
+      .pack { max-width: 460px; padding: 28px 0 28px 28px; }
+      .pack-top { padding-right: 28px; font-size: 12px; letter-spacing: 0.12em; }
+      .shots { margin: 24px 0 36px 26%; }
+      .shot { padding: 14px; }
+      .pack-count { font-size: 72px; }
+      h1 { font-size: 44px; }
+      .demo-bar .long { display: none; }
+      .demo-bar .short { display: inline; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      button { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar"><b>sandbox</b><span class="long">SnapKit is a demo store. Payments run in the Bachs sandbox, so no real money moves.</span><span class="short">Demo store, no real money moves.</span></div>
+
+  <header>
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M2 7V2h5M15 2h5v5M20 15v5h-5M7 20H2v-5" stroke="currentColor" stroke-width="2.2" />
+      <circle cx="11" cy="11" r="3" fill="currentColor" />
+    </svg>
+    <span class="wordmark">SnapKit</span>
+  </header>
+
+  <main>
+    <div class="pack" aria-hidden="true">
+      <div class="pack-top"><span>SNAPKIT / CREDITS</span><span>ONE-TIME</span></div>
+      <div class="shots">
+        <div class="shot"></div>
+        <div class="shot"></div>
+        <div class="shot">
+          <div class="chrome"><i></i><span></span><span></span><em></em></div>
+          <div class="bar ink" style="width: 78%"></div>
+          <div class="bar ink" style="width: 52%; margin-top: 8px"></div>
+          <div class="bar" style="width: 92%; margin-top: 16px"></div>
+          <div class="bar" style="width: 70%"></div>
+          <div class="cta-row"><i></i><span></span></div>
+        </div>
+      </div>
+      <div><div class="pack-count">1,000</div><div class="pack-unit">screenshots</div></div>
+    </div>
+
+    <section>
+      <div class="eyebrow">CREDIT PACK</div>
+      <h1>SnapKit Credit Pack</h1>
+      <p class="lede">1,000 screenshots of any URL, rendered by real Chrome. Credits never expire and stack on top of any plan.</p>
+
+      <div class="price"><strong>$10</strong><span>USD, paid once</span></div>
+
+      <ul>
+        <li>Full-page or viewport captures</li>
+        <li>Retina 2x, dark mode, ads blocked</li>
+        <li>PNG, JPEG, WebP or PDF</li>
+      </ul>
+
+      <form method="post" action="/checkout">
+        <button type="submit">Buy credits for $10</button>
+      </form>
+      <div class="fine">Secure checkout by Bachs</div>
+    </section>
+  </main>
+
+  <script>
+    // One click, one checkout: keep the button's size and show it is working.
+    document.querySelector('form').addEventListener('submit', (e) => {
+      const button = e.target.querySelector('button');
+      if (button.getAttribute('aria-busy') === 'true') return e.preventDefault();
+      button.setAttribute('aria-busy', 'true');
+      button.textContent = 'Opening checkout…';
+    });
+  </script>
+</body>
+</html>

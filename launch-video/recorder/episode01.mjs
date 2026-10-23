@@ -52,6 +52,7 @@ const LANGS = {
     seed: { 'package.json': JSON.stringify({ name: 'snapkit-node', private: true, type: 'module' }, null, 2) + '\n' },
     // The store page ships ready-made, like a sample app's static files.
     seedDirs: ['public'],
+    installFile: 'package.json',
     install: 'npm install @bachs/sdk express',
     installed: ['node_modules/@bachs/sdk/package.json', 'node_modules/express/package.json'],
     productFile: 'create-product.js',
@@ -72,6 +73,12 @@ const LANGS = {
   },
   python: {
     seed: {},
+    seedDirs: ['public'],
+    // A virtualenv exists before the take (the terminal's bashrc activates it),
+    // so the install on camera goes into the project, not the system Python.
+    prepare: () => execSync('python3 -m venv .venv', { cwd: P }),
+    // Python has no manifest to fill, so the editor shows the store page.
+    installFile: 'public/index.html',
     install: 'pip install bachs flask',
     installed: ['.venv/lib/python3.13/site-packages/bachs/__init__.py', '.venv/lib/python3.13/site-packages/flask/__init__.py'],
     productFile: 'create_product.py',
@@ -331,9 +338,10 @@ const chapters = {
   async install() {
     for (const [f, body] of Object.entries(C.seed)) writeFileSync(`${P}/${f}`, body);
     for (const d of C.seedDirs ?? []) cpSync(`${CODE}/${d}`, `${P}/${d}`, { recursive: true });
+    C.prepare?.();
     S = await openStudio(B);
     // The manifest is on screen while npm adds the dependencies to it.
-    await openWorkbench({ files: Object.keys(C.seed).slice(0, 1) });
+    await openWorkbench({ files: [C.installFile] });
     take = new Take(B, 'install', S);
     await take.start();
     await sleep(1200);

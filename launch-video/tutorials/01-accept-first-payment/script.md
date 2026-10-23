@@ -5,8 +5,9 @@ marked **[Node]** or **[Python]** are read only for that cut. Each cut runs abou
 **5½–6 minutes** at a relaxed reading pace (~150 words a minute).
 
 The code on screen is in `node/` and `python/` next to this file. It was checked
-against the published packages (`@bachs/sdk` 2.0.0, `bachs` 1.0.1): both run, reach
-the Bachs API, and reject unsigned webhooks.
+against the published packages (`@bachs/sdk` 2.0.0, `bachs` 2.0.0): both serve the
+store page, take a real sandbox card payment, verify the `checkout.completed` webhook
+from `bachs listen`, and reject unsigned webhooks.
 
 ---
 
@@ -67,9 +68,8 @@ the terminal, which prints a `prod_…` ID; then `export PRODUCT_ID=prod_…`.
 
 **Voice:**
 > Every checkout sells a product, so let's create one: a SnapKit credit pack for ten dollars.
-> **[Node]** We create a client with our key. The SDK works out from the key that this is
-> the sandbox, so there's nothing else to configure.
-> **[Python]** We create a client with our key, and tell it we're in the sandbox.
+> We create a client with our key. The SDK works out from the key that this is the sandbox,
+> so there's nothing else to configure.
 > Look at the price: the amount is the string `"10.00"`, not a number. Bachs always uses
 > decimal strings for money, so nothing ever gets rounded on the way.
 > And this idempotency key means that if the script runs twice by accident, you still get
@@ -82,7 +82,9 @@ the terminal, which prints a `prod_…` ID; then `export PRODUCT_ID=prod_…`.
 checkout route. Camera follows the line being typed.
 
 **Voice:**
-> Now the server. The store page is ready-made in the `public` folder, so Express just serves it.
+> Now the server. The store page is ready-made in the `public` folder,
+> **[Node]** so Express just serves it.
+> **[Python]** so Flask just serves it.
 > Its Buy button posts to `/checkout`, and that's the route we write.
 > In the checkout route we do three things.
 > One: make an order ID. In a real app this is the order you save in your database.
