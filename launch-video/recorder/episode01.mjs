@@ -506,7 +506,9 @@ const chapters = {
     await sleep(900);
     await exportValue('BACHS_WEBHOOK_SECRET', secret, 'secret');
     await run(C.runServer, 'restart');
-    await waitForTerminal(ed(), new RegExp(`${C.serverReady.source}[\\s\\S]*${C.serverReady.source}`));
+    // Ready again after the secret was set. (Only the visible rows can be read, and
+    // Flask's startup banner can scroll the first start out of a narrow pane.)
+    await waitForTerminal(ed(), new RegExp(`BACHS_WEBHOOK_SECRET=[\\s\\S]*${C.serverReady.source}`));
     await sleep(600);
     take.mark('server-ready', await terminalLine(ed(), C.serverReady));
     await sleep(1500);
