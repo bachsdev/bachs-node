@@ -14,7 +14,11 @@ const pricedFree: PriceInput = { currency: 'USD', price_type: 'free', amount: '1
 const customAmount: PriceInput = { currency: 'USD', price_type: 'custom', amount: '12.00' };
 // @ts-expect-error A fixed currency option also requires its decimal-string amount.
 const missingOption: PriceInput = { currency: 'USD', amount: '12.00', currency_options: [{ currency: 'NGN' }] };
-const bachs = new Bachs({ apiKey: 'synthetic-only', environment: 'sandbox' });
+const bachs = new Bachs({ apiKey: 'sk_sandbox_synthetic' });
+// environment is optional once the key prefix says which one; a wrong value is still a type error.
+new Bachs({ apiKey: 'sk_live_synthetic', environment: 'production' });
+// @ts-expect-error Only sandbox or production exist.
+new Bachs({ apiKey: 'sk_live_synthetic', environment: 'staging' });
 const input: CreateProductRequest = { name: 'Pro Plan', price: fixed };
 void bachs.products.create(input, { idempotencyKey: 'catalog-pro-plan' });
 // @ts-expect-error Write options cannot enable automatic retries.

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+- `environment` is optional: the SDK detects it from the key prefix (`sk_sandbox_` or `sk_live_`) and exposes it as `bachs.environment`. If `environment` is given and contradicts the key, the client refuses to start with `BachsConfigError`. A key with an unrecognised prefix still needs `environment`.
+- Logging through a `logger` option and `logLevel` or `BACHS_LOG`. Warnings go to `console.warn` by default; info and debug are opt-in. The API key, bodies, portal URLs and webhook secrets are never logged.
+- `listAll` on `products`, `payments`, `subscriptions`, `payoutDestinations` and `payouts`: an async iterator over every item that fetches each page as it is reached. `list` is unchanged.
+
 ## 1.0.1
 
 - Identifiers of `.` or `..` are rejected with `BachsConfigError` before any request is sent. Previously they were passed through URL encoding unchanged and resolved as path navigation, so `payouts.get('..')` requested `/v1/` and `subscriptions.cancel('.')` sent `DELETE /v1/subscriptions/`, each carrying the API key. Only an application that passed untrusted input as an identifier was affected.

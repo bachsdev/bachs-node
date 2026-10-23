@@ -2,8 +2,9 @@ import { Transport } from '../client.js';
 import { BachsConfigError } from '../errors.js';
 import { decodePayout, decodePayouts, record } from '../v1-responses.js';
 import type { ReadRequestOptions, WriteRequestOptions } from '../types.js';
-import type { CreatePayoutRequest, PayoutListParams } from '../v1-types.js';
+import type { CreatePayoutRequest, PayoutListParams, PayoutResponse } from '../v1-types.js';
 import { idPath } from './ids.js';
+import { offsetPages } from './pagination.js';
 export class Payouts {
   constructor(private readonly transport: Transport) {}
   create(input: CreatePayoutRequest, options: WriteRequestOptions = {}) {
@@ -14,4 +15,8 @@ export class Payouts {
   }
   get(payoutId: string, options: ReadRequestOptions = {}) { return this.transport.request('GET', '/v1/payouts/' + idPath(payoutId, 'payoutId'), { options }, decodePayout); }
   list(filters: PayoutListParams = {}, options: ReadRequestOptions = {}) { return this.transport.request('GET', '/v1/payouts', { query: { ...filters }, options }, decodePayouts); }
+  /** Every payout, one at a time, fetching each page as it is reached. */
+  listAll(filters: Omit<PayoutListParams, 'offset'> = {}, options: ReadRequestOptions = {}): AsyncGenerator<PayoutResponse, void, undefined> {
+    return offsetPages((f, o) => this.list(f, o), 'items', filters, options);
+  }
 }

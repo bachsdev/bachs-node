@@ -9,7 +9,7 @@ const event = { id: 'evt_synthetic', type: 'payout.paid', created_at: '2026-10-0
 const raw = JSON.stringify(event);
 const signature = (body, timestamp = String(seconds), key = secret) => createHmac('sha256', key).update(timestamp + '.').update(body).digest('hex');
 const legacy = (body, timestamp = String(seconds)) => ({ 'X-Bachs-Timestamp': timestamp, 'X-Bachs-Signature': signature(body, timestamp) });
-const client = (options = {}) => new Bachs({ apiKey: 'synthetic-key', environment: 'sandbox', ...options });
+const client = (options = {}) => new Bachs({ apiKey: 'sk_sandbox_synthetic', ...options });
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status });
 const turn = () => new Promise(resolve => setImmediate(resolve));
 const observe = promise => promise.then(value => ({ value }), error => ({ error }));
@@ -101,5 +101,5 @@ test('50 — both entry points expose the same errors/helpers and only agreed V1
   assert.ok(new cjs.BachsWebhookError('Synthetic') instanceof esm.BachsError);
   const sdk = client(); assert.equal(sdk.webhooks, webhooks); assert.equal(Object.isFrozen(webhooks), true);
   for (const resource of ['products', 'checkoutSessions', 'payments', 'subscriptions', 'customerPortal', 'balances', 'banks', 'payoutDestinations', 'payoutQuotes', 'payouts']) assert.ok(sdk[resource]);
-  assert.equal(sdk.connect, undefined); assert.equal(sdk.payments.create, undefined); assert.equal(sdk.subscriptions.create, undefined); assert.ok(!JSON.stringify(sdk).includes('synthetic-key'));
+  assert.equal(sdk.connect, undefined); assert.equal(sdk.payments.create, undefined); assert.equal(sdk.subscriptions.create, undefined); assert.ok(!JSON.stringify(sdk).includes('sk_sandbox_synthetic'));
 });

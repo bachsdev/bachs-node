@@ -1,4 +1,5 @@
 import { BachsAbortError, BachsApiError, BachsConfigError, BachsError, BachsNetworkError, BachsResponseError, BachsTimeoutError } from './errors.js';
+import { Log } from './logging.js';
 import type { BachsOptions, ReadRequestOptions, WriteRequestOptions } from './types.js';
 
 type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
@@ -10,6 +11,14 @@ interface Operation {
 }
 
 const retryStatuses = new Set([429, 500, 502, 503, 504]);
+const keyPrefixes: Record<string, 'sandbox' | 'production'> = { sk_sandbox_: 'sandbox', sk_live_: 'production' };
+const hosts = { sandbox: 'https://sandbox-api.bachs.io', production: 'https://api.bachs.io' };
+
+/** The environment a key belongs to, from its prefix, or undefined for a prefix the SDK does not know. */
+export function keyEnvironment(apiKey: string): 'sandbox' | 'production' | undefined {
+  const prefix = Object.keys(keyPrefixes).find(p => apiKey.startsWith(p));
+  return prefix === undefined ? undefined : keyPrefixes[prefix];
+}
 
 function positiveInteger(value: number, field: string): number {
   if (!Number.isSafeInteger(value) || value <= 0 || value > 2147483647) throw new BachsConfigError(field + ' must be an integer between 1 and 2147483647 milliseconds.');
@@ -45,6 +54,8 @@ export class Transport {
   readonly #baseURL: URL;
   readonly #timeoutMs: number;
   readonly #maxRetries: number;
+  readonly #log: Log;
+  readonly environment: 'sandbox' | 'production';
 
   constructor(options: BachsOptions) {
     if (!options || typeof options.apiKey !== 'string' || options.apiKey.trim() === '') {
@@ -53,12 +64,25 @@ export class Transport {
     if (options.apiKey !== options.apiKey.trim() || /[\r\n]/.test(options.apiKey)) {
       throw new BachsConfigError('The API key cannot contain surrounding whitespace or line breaks.');
     }
-    if (options.environment !== 'sandbox' && options.environment !== 'production') {
-      throw new BachsConfigError('Choose environment sandbox or production explicitly.');
+    const log = new Log(options.logger, options.logLevel);
+    const detected = keyEnvironment(options.apiKey);
+    const given = options.environment;
+    if (given !== undefined && given !== 'sandbox' && given !== 'production') {
+      throw new BachsConfigError('environment must be sandbox or production.');
     }
+    if (detected === undefined && given === undefined) {
+      throw new BachsConfigError('The API key prefix is not recognised (expected sk_sandbox_ or sk_live_); pass environment explicitly.');
+    }
+    if (detected !== undefined && given !== undefined && detected !== given) {
+      // A sandbox key in production code (or the reverse) is never intended; stop before any request is sent.
+      throw new BachsConfigError(`environment is "${given}" but the API key is a ${detected} key (${detected === 'sandbox' ? 'sk_sandbox_' : 'sk_live_'}). Use a ${given} key or set environment to "${detected}".`);
+    }
+    const environment = detected ?? given!;
+    if (detected === undefined) log.warn(`the API key prefix is not recognised; using environment "${environment}" as given.`);
+    else log.info(`using ${environment} (${detected === 'sandbox' ? 'sk_sandbox_' : 'sk_live_'} key).`);
     let base: URL;
     try {
-      base = new URL(options.baseURL ?? (options.environment === 'sandbox' ? 'https://sandbox-api.bachs.io' : 'https://api.bachs.io'));
+      base = new URL(options.baseURL ?? hosts[environment]);
     } catch (cause) { throw new BachsConfigError('baseURL must be an absolute URL.', cause); }
     const loopback = ['localhost', '127.0.0.1', '[::1]'].includes(base.hostname);
     if ((base.protocol !== 'https:' && !(base.protocol === 'http:' && loopback)) || base.username || base.password || base.search || base.hash) {
@@ -66,6 +90,8 @@ export class Transport {
     }
     this.#apiKey = options.apiKey;
     this.#baseURL = base;
+    this.#log = log;
+    this.environment = environment;
     this.#timeoutMs = positiveInteger(options.timeoutMs ?? 30_000, 'timeoutMs');
     this.#maxRetries = retries(options.maxRetries ?? 2);
   }
@@ -130,8 +156,10 @@ export class Transport {
         if (controller.signal.aborted) throw failure(controller.signal.reason);
         try {
           sent = true;
+          const attemptStarted = performance.now();
           const response = await fetch(url, { method, headers, ...(body === undefined ? {} : { body }), signal: controller.signal, redirect: 'manual' });
           responseStatus = response.status;
+          this.#log.debug(`${method} ${url.pathname} -> ${response.status} in ${Math.round(performance.now() - attemptStarted)} ms (attempt ${attempt + 1}${response.headers.get('x-request-id') ? ', request ' + response.headers.get('x-request-id') : ''})`);
           const text = await response.text();
           const requestId = response.headers.get('x-request-id') ?? undefined;
           let value: unknown;
@@ -148,6 +176,7 @@ export class Transport {
                 continue;
               }
             }
+            if (method === 'GET' && attempt >= maxRetries && retryStatuses.has(response.status)) this.#log.warn(`${method} ${url.pathname} failed with ${response.status} after ${attempt + 1} attempts; retry budget used up.`);
             throw error;
           }
           if (parseCause !== undefined) throw new BachsResponseError(response.status, text, parseCause, write && sent, requestId);

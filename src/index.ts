@@ -24,8 +24,11 @@ export class Bachs {
   readonly payoutQuotes: PayoutQuotes;
   readonly payouts: Payouts;
   readonly webhooks = webhooks;
+  /** The environment in use, detected from the API key or given explicitly. */
+  readonly environment: 'sandbox' | 'production';
   constructor(options: BachsOptions) {
     const transport = new Transport(options);
+    this.environment = transport.environment;
     this.products = new Products(transport);
     this.checkoutSessions = new CheckoutSessions(transport);
     this.payments = new Payments(transport);
@@ -40,5 +43,5 @@ export class Bachs {
 }
 export { BachsError, BachsApiError, BachsNetworkError, BachsTimeoutError, BachsAbortError, BachsResponseError, BachsConfigError, BachsWebhookError } from './errors.js';
 export { webhooks } from './webhooks.js';
-export type { BachsOptions, RequestOptions, ReadRequestOptions, WriteRequestOptions, ProductCurrency, JsonValue, FixedCurrencyOptionInput, FreeCurrencyOptionInput, CustomCurrencyOptionInput, FixedPriceInput, FreePriceInput, CustomPriceInput, PriceInput, SubscriptionCadence, CreateProductRequest, ProductListParams, CurrencyOptionResponse, PriceResponse, ProductCurrencyPrice, ProductResponse, PaginationResponse, ProductListResponse } from './types.js';
+export type { BachsOptions, BachsLogger, BachsLogLevel, RequestOptions, ReadRequestOptions, WriteRequestOptions, ProductCurrency, JsonValue, FixedCurrencyOptionInput, FreeCurrencyOptionInput, CustomCurrencyOptionInput, FixedPriceInput, FreePriceInput, CustomPriceInput, PriceInput, SubscriptionCadence, CreateProductRequest, ProductListParams, CurrencyOptionResponse, PriceResponse, ProductCurrencyPrice, ProductResponse, PaginationResponse, ProductListResponse } from './types.js';
 export type * from './v1-types.js';

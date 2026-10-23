@@ -1,6 +1,10 @@
 import { Bachs, webhooks } from '../../src/index.js';
 import type { CreateCheckoutSessionRequest, CreatePayoutRequest } from '../../src/index.js';
-const bachs = new Bachs({ apiKey: 'synthetic', environment: 'sandbox' });
+const bachs = new Bachs({ apiKey: 'sk_sandbox_synthetic' });
+async function pages() { for await (const payout of bachs.payouts.listAll({ limit: 10 })) void payout.status; }
+void pages();
+// @ts-expect-error listAll starts from the first page.
+void bachs.payouts.listAll({ offset: 10 });
 const cart: CreateCheckoutSessionRequest = { product_cart: [{ product_id: 'prod_synthetic' }], customer: { email: 'synthetic@example.com', name: 'Synthetic' } };
 const raw: CreateCheckoutSessionRequest = { pricing: { currency: 'USD', amount: '12.00' } };
 const same: CreatePayoutRequest = { destination: 'pd_synthetic', amount: '1.00' };

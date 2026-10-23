@@ -149,11 +149,29 @@ export interface WriteRequestOptions extends RequestOptions {
   idempotencyKey?: string;
 }
 
+/** Receives SDK log lines. Any object with these methods works, such as console or a pino/winston logger. */
+export interface BachsLogger {
+  debug(message: string): void;
+  info(message: string): void;
+  warn(message: string): void;
+  error(message: string): void;
+}
+
+export type BachsLogLevel = 'debug' | 'info' | 'warn' | 'off';
+
 export interface BachsOptions {
   apiKey: string | undefined;
-  environment: 'sandbox' | 'production';
+  /**
+   * Detected from the key prefix (sk_sandbox_ or sk_live_) when omitted. If given and the key belongs to the
+   * other environment, the client refuses to start.
+   */
+  environment?: 'sandbox' | 'production';
   /** Overrides the host, useful for a proxy or a local test server. */
   baseURL?: string;
+  /** Where log lines go. Without one, warnings go to console.warn and nothing else is printed. */
+  logger?: BachsLogger;
+  /** Lowest level to log. Defaults to the BACHS_LOG environment variable, else "warn". */
+  logLevel?: BachsLogLevel;
   /** Total operation budget, including retries, waits and reading the response. */
   timeoutMs?: number;
   /** Additional attempts for reads only. */

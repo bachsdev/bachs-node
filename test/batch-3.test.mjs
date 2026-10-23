@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { Bachs, BachsAbortError, BachsApiError, BachsConfigError, BachsNetworkError, BachsResponseError, BachsTimeoutError } from '../dist/esm/index.js';
 
-const KEY = 'synthetic-key-only-for-local-tests';
+const KEY = 'sk_sandbox_synthetic_key_only_for_local_tests';
 const product = (extra = {}) => ({ id: 'prod_example', name: 'Pro Plan', price: { currency: 'USD', price_type: 'fixed', amount: '12.00', currency_options: [] }, metadata: null, media: [], future_field: { preserved: true }, ...extra });
 const client = (extra = {}) => new Bachs({ apiKey: KEY, environment: 'sandbox', ...extra });
 const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', ...headers } });
@@ -30,9 +30,11 @@ test('21 — credentials, explicit environment and redirect safety', async t => 
   const calls = [];
   t.mock.method(globalThis, 'fetch', async (url, init) => { calls.push({ url: String(url), init }); return json(product()); });
   for (const options of [{ apiKey: undefined }, { apiKey: '' }, { apiKey: 'key\r\nInjected: value' }, { timeoutMs: 0 }, { timeoutMs: 2147483648 }, { maxRetries: -1 }, { baseURL: 'http://example.com' }, { baseURL: 'https://user:password@example.com' }]) assert.throws(() => client(options), BachsConfigError);
-  assert.throws(() => new Bachs({ apiKey: KEY }), BachsConfigError); assert.equal(calls.length, 0);
+  assert.throws(() => new Bachs({ apiKey: 'synthetic-key-without-a-known-prefix' }), BachsConfigError, 'An unrecognised key prefix needs an explicit environment.');
+  assert.throws(() => client({ environment: 'production' }), BachsConfigError, 'A sandbox key with environment production must refuse to start.');
+  assert.throws(() => client({ environment: 'staging' }), BachsConfigError); assert.equal(calls.length, 0);
   const sandbox = client(); await sandbox.products.get('prod_example');
-  await client({ environment: 'production' }).products.get('prod_example');
+  await new Bachs({ apiKey: 'sk_live_synthetic' }).products.get('prod_example');
   assert.equal(calls[0].url, 'https://sandbox-api.bachs.io/v1/products/prod_example');
   assert.equal(calls[1].url, 'https://api.bachs.io/v1/products/prod_example');
   assert.equal(calls[0].init.headers.get('authorization'), 'Bearer ' + KEY);

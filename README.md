@@ -11,10 +11,7 @@ npm install @bachs/sdk@1.0.0
 ```ts
 import { Bachs } from '@bachs/sdk';
 
-const bachs = new Bachs({
-  apiKey: process.env.BACHS_API_KEY,
-  environment: 'sandbox'
-});
+const bachs = new Bachs({ apiKey: process.env.BACHS_API_KEY });
 
 const product = await bachs.products.create({
   name: 'Pro Plan',
@@ -33,7 +30,7 @@ const checkout = await bachs.checkoutSessions.create({
 const session = await bachs.checkoutSessions.get(checkout.checkout_id);
 ```
 
-Configure the SDK on your backend; keep the secret key out of frontend code. Constructing a client sends no request. Environment selection is required; `baseURL` can override the endpoint for a proxy/local test server. The SDK does not provide cross-account Connect headers or browser credential management.
+Configure the SDK on your backend; keep the secret key out of frontend code. Constructing a client sends no request. The environment comes from the key prefix: `sk_sandbox_` keys use the sandbox and `sk_live_` keys use production, and `bachs.environment` says which. Passing `environment` is optional; if it contradicts the key, the client refuses to start with `BachsConfigError` rather than send a sandbox key to production or the reverse. A key with an unrecognised prefix needs `environment` set explicitly. `baseURL` can override the endpoint for a proxy/local test server. The SDK does not provide cross-account Connect headers or browser credential management.
 
 ## Implemented resources
 
@@ -51,7 +48,15 @@ Configure the SDK on your backend; keep the secret key out of frontend code. Con
 | `payouts` | `create`, `get`, `list` | Own-balance payout request, status and history |
 | `webhooks` | `constructEvent` | Verify raw signed bytes and return the event envelope |
 
-Creation uses `(input, options?)`, retrieval uses `(id, options?)`, and listing uses `(filters?, options?)`. `subscriptions.cancel` uses `(id, input?, options?)`; `customerPortal.createSession` uses `(customerId, options?)`. `balances.get` has only options. No automatic pagination. Payment list items retain `id`; a retrieved payment retains `payment_id`. Payout and destination lists retain their own distinct envelopes.
+Creation uses `(input, options?)`, retrieval uses `(id, options?)`, and listing uses `(filters?, options?)`. `subscriptions.cancel` uses `(id, input?, options?)`; `customerPortal.createSession` uses `(customerId, options?)`. `balances.get` has only options.
+
+`list` returns one page. `listAll(filters?, options?)` on `products`, `payments`, `subscriptions`, `payoutDestinations` and `payouts` is an async iterator over every item, fetching each page only when it is reached and following cursor or offset paging as each resource needs:
+
+```ts
+for await (const payout of bachs.payouts.listAll({ status_filter: 'completed' })) {
+  console.log(payout.id, payout.amount);
+}
+``` Payment list items retain `id`; a retrieved payment retains `payment_id`. Payout and destination lists retain their own distinct envelopes.
 
 Money remains decimal strings and fields remain in Bachs snake_case. Fixed product `price_type` can be omitted; fixed `amount` is required. Free/custom inputs support their verified omitted/null money fields. Checkout requires a cart or raw pricing, not both. Deprecated `return_url`, Connect split/account fields and beta payment-method saving are not exposed in the checkout input type.
 
@@ -115,9 +120,13 @@ The helper does not store processed IDs, guarantee exactly-once effects or run b
 - Writes are sent once, including writes with `idempotencyKey`. No generated keys or durable SDK key storage. A deliberate later repeat must retain the key and request; backend retention is not guaranteed by the SDK.
 - `signal` supports cancellation. Stopping local work after a send cannot undo provider processing.
 
+## Logging
+
+The SDK logs through the `logger` option (any object with `debug`, `info`, `warn` and `error` methods, such as `console` or a pino logger). Without one, warnings go to `console.warn` and nothing else is printed. `logLevel` or the `BACHS_LOG` environment variable (`debug`, `info`, `warn`, `off`) sets the lowest level; the default is `warn`. Warnings cover an unrecognised key prefix and a retry budget used up; info logs the environment once per client; debug logs each request's method, path, status, duration, attempt number and request ID. The API key, request and response bodies, portal URLs and webhook secrets are never logged at any level.
+
 `BachsApiError` retains status, raw body, string errorCode, optional field errors/request ID/retry hint. `BachsNetworkError` retains its cause and any already observed response status; timeout and caller cancellation have distinct subclasses. `BachsResponseError` means successful HTTP with unusable JSON/shape. `BachsConfigError` rejects local configuration/request misuse. `BachsWebhookError` rejects invalid webhook authentication/envelopes.
 
-Write 5xx, post-send network/cancellation/timeout failures and unusable successful write responses expose `outcomeUnknown: true`. Do not interpret an error as proof no operation exists; reconcile before creating a new operation key. Provider bodies and portal URLs may contain sensitive data. SDK has no logging hooks that automatically print them.
+Write 5xx, post-send network/cancellation/timeout failures and unusable successful write responses expose `outcomeUnknown: true`. Do not interpret an error as proof no operation exists; reconcile before creating a new operation key. Provider bodies and portal URLs may contain sensitive data; the SDK never logs them.
 
 Response guards validate the fields promised by supported types, return the actual object and retain additional fields as unknown. Cadence requiredness and universal response completeness remain contract questions. Nested provider fields not fully typed remain unknown rather than receiving unchecked assertions.
 

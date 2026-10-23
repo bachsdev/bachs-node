@@ -14,10 +14,10 @@ function harness(t, responses) {
   t.mock.method(globalThis, 'fetch', async (url, init) => {
     const next = responses.shift(); assert.ok(next !== undefined, 'Unexpected extra HTTP call');
     calls.push({ url: new URL(url), method: init.method, headers: Object.fromEntries(init.headers), body: init.body === undefined ? undefined : JSON.parse(init.body) });
-    assert.equal(init.headers.get('authorization'), 'Bearer synthetic-key');
+    assert.equal(init.headers.get('authorization'), 'Bearer sk_sandbox_synthetic');
     return new Response(JSON.stringify(next), { status: 200, headers: { 'content-type': 'application/json' } });
   });
-  return { calls, sdk: new Bachs({ apiKey: 'synthetic-key', environment: 'sandbox', maxRetries: 0 }) };
+  return { calls, sdk: new Bachs({ apiKey: 'sk_sandbox_synthetic', maxRetries: 0 }) };
 }
 
 test('31 — recurring product checkout preserves catalog/customer inputs and operation key', async t => {
