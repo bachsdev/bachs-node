@@ -58,7 +58,7 @@ export const editorMoves = (take: TakeData): Move[] => {
     } else if (e.name === 'order-paid' && num(e, 'x') !== undefined) {
       // The server's line first, then both panes: the CLI's delivery beside it.
       moves.push({ at: e.t - 0.6, dur: 0.6, ...termView(e) });
-      moves.push({ at: e.t + 1.8, dur: 1.0, ...PANES });
+      moves.push({ at: e.t + 3.0, dur: 1.0, ...PANES });
     } else if (TERMINAL_EVENTS.has(e.name) && num(e, 'x') !== undefined) {
       // Hold on output a moment before following the prompt to another pane.
       const prev = moves.at(-1);

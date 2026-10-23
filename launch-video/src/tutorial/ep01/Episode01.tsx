@@ -138,7 +138,8 @@ const Pointer: React.FC<{ take: TakeData; t: number }> = ({ take, t }) => {
 };
 
 const urlAt = (take: TakeData, t: number) => {
-  const u = [...take.events].reverse().find((e) => e.name === 'url' && e.t <= t + 0.05) as { url?: string } | undefined;
+  // A navigation is reported a moment after the page paints, so switch early.
+  const u = [...take.events].reverse().find((e) => e.name === 'url' && e.t <= t + 0.2) as { url?: string } | undefined;
   if (!u?.url) return 'localhost:3000';
   const url = new URL(u.url);
   return url.host + (url.pathname.length > 1 ? (url.pathname.startsWith('/c/') ? '/c/…' : url.pathname) : '');
@@ -253,14 +254,17 @@ const CardView: React.FC<{ card: Card; cut: Cut; frames: number }> = ({ card, cu
 
 // ------------------------------------------------------------------ overlays
 
-const StepCaption: React.FC<{ n: string; text: string; frames: number; first: boolean; last: boolean }> = ({ n, text, frames, first, last }) => {
+// Top-right of the window: code is left-aligned, terminal shots show unused
+// editor there, and the browser's address bar stops short of it, so the
+// caption never covers what the shot is about.
+const StepCaption: React.FC<{ n: string; text: string; frames: number; first: boolean; last: boolean; win: 'editor' | 'browser' }> = ({ n, text, frames, first, last, win }) => {
   const f = useCurrentFrame();
   const inT = first ? spring({ frame: f, fps: FPS, config: { damping: 18 } }) : 1;
   const out = last ? ease(f, [frames - 8, frames], [0, 1]) : 0;
   return (
     <div
       style={{
-        position: 'absolute', left: 160 + 24, top: TOP + EDITOR.h - 86, display: 'flex', alignItems: 'center', gap: 14,
+        position: 'absolute', right: (1920 - (win === 'browser' ? BROWSER.w : EDITOR.w)) / 2 + 18, top: TOP + (win === 'browser' ? BAR + 14 : 14), display: 'flex', alignItems: 'center', gap: 14,
         padding: '12px 22px 12px 14px', borderRadius: 14, background: 'rgba(17,17,17,0.88)', backdropFilter: 'blur(8px)',
         color: '#fff', fontFamily: fonts.sans, fontSize: 24, opacity: Math.min(1, inT * 1.5) * (1 - out), transform: `translateY(${(1 - inT) * 20}px)`,
       }}
@@ -307,8 +311,9 @@ export const Episode01: React.FC<{ cut: Cut }> = ({ cut }) => {
                 n={b.stepNo}
                 text={b.step}
                 frames={b.frames}
-                first={!(prev && 'take' in prev && prev.step === b.step)}
-                last={!(next && 'take' in next && next.step === b.step)}
+                win={(b as PlacedTake).win}
+                first={!(prev && 'take' in prev && prev.step === b.step && prev.win === (b as PlacedTake).win)}
+                last={!(next && 'take' in next && next.step === b.step && next.win === (b as PlacedTake).win)}
               />
             )}
             {b.say && <Subtitle text={b.say} frames={b.frames} />}
