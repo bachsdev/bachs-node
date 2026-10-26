@@ -93,7 +93,8 @@ checkout route. Camera follows the line being typed.
 > The idempotency key is tied to that same order, so a retry can never create a second
 > checkout.
 > Three: send the customer to the `checkout_url` Bachs gives back. Bachs hosts the whole
-> payment page: cards, bank transfer, and local currencies, so you don't build any of it.
+> payment page: every payment method your account has switched on, in your customer's own
+> currency. You don't build any of it.
 
 ## 5 · Make a test payment (3:15–3:55) · per language for the run command, shared after
 

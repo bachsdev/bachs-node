@@ -72,7 +72,7 @@ export const pythonChapters: Chapter[] = [
       { take: 'checkout', win: 'editor', from: line(19), to: line(22), say: "Two: ask Bachs for a checkout session. The cart is our product, and the reference is our order ID, so every payment can be matched back to the order it's for." },
       { take: 'checkout', win: 'editor', from: line(22), to: line(24), say: 'The idempotency key is tied to that same order, so a retry can never create a second checkout.' },
       { take: 'checkout', win: 'editor', from: line(24), to: 'type-end', say: 'Three: send the customer to the checkout_url Bachs gives back.' },
-      { take: 'checkout', win: 'editor', from: 'type-end', to: 'end', say: "Bachs hosts the whole payment page: cards, bank transfer, and local currencies, so you don't build any of it." },
+      { take: 'checkout', win: 'editor', from: 'type-end', to: 'end', say: "Bachs hosts the whole payment page: every payment method your account has switched on, in your customer's own currency. You don't build any of it." },
     ],
   },
   {

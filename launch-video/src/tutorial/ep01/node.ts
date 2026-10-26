@@ -71,7 +71,7 @@ export const nodeChapters: Chapter[] = [
       { take: 'checkout', win: 'editor', from: line(12), to: line(14), say: "Two: ask Bachs for a checkout session. The cart is our product, and the reference is our order ID, so every payment can be matched back to the order it's for." },
       { take: 'checkout', win: 'editor', from: line(14), to: line(16), say: 'The idempotency key is tied to that same order, so a retry can never create a second checkout.' },
       { take: 'checkout', win: 'editor', from: line(16), to: line(19), say: 'Three: send the customer to the checkout_url Bachs gives back.' },
-      { take: 'checkout', win: 'editor', from: line(19), to: 'end', say: "Bachs hosts the whole payment page: cards, bank transfer, and local currencies, so you don't build any of it." },
+      { take: 'checkout', win: 'editor', from: line(19), to: 'end', say: "Bachs hosts the whole payment page: every payment method your account has switched on, in your customer's own currency. You don't build any of it." },
     ],
   },
   {
