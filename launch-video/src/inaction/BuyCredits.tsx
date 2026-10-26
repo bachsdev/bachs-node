@@ -86,7 +86,7 @@ const view = (t: number) => {
 };
 
 // Pointer path: each logged move was eased in the recording, so ease between samples.
-const pointerAt = (t: number) => {
+export const pointerAt = (t: number) => {
   const p = data.pointer;
   if (t <= p[0].t) return p[0];
   for (let i = 0; i < p.length - 1; i++) {
@@ -98,7 +98,7 @@ const pointerAt = (t: number) => {
   }
   return p[p.length - 1];
 };
-const clicks = data.pointer.filter((p) => 'click' in p && p.click);
+export const clicks = data.pointer.filter((p) => 'click' in p && p.click);
 
 const Pointer: React.FC<{ p: number }> = ({ p: play }) => {
   const { s, tx, ty } = view(play);

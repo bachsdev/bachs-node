@@ -1,0 +1,180 @@
+{
+  "_note": "Do it with Bachs: a Whop-style 26 s cut. Frames at 30 fps on the 120 BPM grid of Mixkit 'Let's Move' (Michael Ramir C.): a beat is 15 frames, a bar 60. Video 0 s is track 10.03 s (a bar line); the drop lands on frame 180. At 22.0 s the music splices to track 94.03 s so the song's own final hit (track 96.03 s) lands on the logo at frame 720.",
+  "fps": 30,
+  "total": 800,
+  "music": {
+    "id": 836,
+    "trackStart": 10.03,
+    "spliceAt": 22.0,
+    "spliceTo": 94.03
+  },
+  "opener": [
+    {
+      "from": 0,
+      "to": 30,
+      "text": "This"
+    },
+    {
+      "from": 30,
+      "to": 60,
+      "wordmark": true
+    },
+    {
+      "from": 60,
+      "to": 90,
+      "text": "We built"
+    },
+    {
+      "from": 90,
+      "to": 138,
+      "text": "We built payments for internet businesses",
+      "accent": ["internet", "businesses"],
+      "stagger": 6
+    }
+  ],
+  "ribbon": {
+    "from": 135,
+    "to": 180
+  },
+  "slots": [
+    {
+      "id": "sdk",
+      "from": 180,
+      "clipAt": 210,
+      "to": 240,
+      "headline": ["Install", "the SDK"],
+      "size": 170,
+      "clip": {
+        "layout": [1920, 1080],
+        "segs": [
+          { "len": 30, "video": "doit/sdk-typing.mp4", "start": 0.1, "rate": 5.0 }
+        ],
+        "cam": [
+          [0, 2.15, 560, 175],
+          [30, 2.3, 600, 190]
+        ]
+      }
+    },
+    {
+      "id": "checkout",
+      "from": 240,
+      "clipAt": 270,
+      "to": 300,
+      "headline": ["Open", "checkout"],
+      "size": 180,
+      "clip": {
+        "layout": [1600, 900],
+        "pointer": true,
+        "segs": [
+          { "len": 30, "video": "inaction/buy-credits.mp4", "start": 7.2, "rate": 2.5 }
+        ],
+        "cam": [
+          [0, 1.35, 810, 450],
+          [22, 1.0, 800, 450]
+        ]
+      }
+    },
+    {
+      "id": "currencies",
+      "from": 300,
+      "clipAt": 330,
+      "to": 360,
+      "headline": ["Pay in", "135+ currencies"],
+      "size": 150,
+      "clip": {
+        "layout": [1600, 900],
+        "pointer": true,
+        "segs": [
+          { "len": 30, "video": "inaction/buy-credits.mp4", "start": 9.4, "rate": 0.7 }
+        ],
+        "cam": [
+          [0, 2.3, 700, 365],
+          [8, 2.3, 700, 365],
+          [24, 2.5, 1090, 292],
+          [30, 2.55, 1090, 292]
+        ]
+      }
+    },
+    {
+      "id": "payments",
+      "from": 360,
+      "clipAt": 390,
+      "to": 480,
+      "headline": ["Take", "payments"],
+      "size": 180,
+      "clip": {
+        "layout": [1600, 900],
+        "pointer": true,
+        "segs": [
+          { "len": 52, "video": "inaction/buy-credits.mp4", "start": 13.3, "rate": 3 },
+          { "len": 16, "video": "inaction/buy-credits.mp4", "start": 20.65, "rate": 2.2 },
+          { "len": 22, "image": "inaction/hold-success.png" }
+        ],
+        "cam": [
+          [0, 1.9, 1080, 330],
+          [50, 1.9, 1080, 520],
+          [58, 1.5, 1080, 570],
+          [68, 1.75, 800, 300],
+          [90, 1.85, 800, 300]
+        ]
+      }
+    },
+    {
+      "id": "withdraw",
+      "from": 480,
+      "clipAt": 510,
+      "to": 540,
+      "headline": ["Withdraw", "funds"],
+      "size": 180,
+      "clip": {
+        "layout": [1120, 672],
+        "segs": [
+          { "len": 30, "image": "shots/withdrawal-modal.png" }
+        ],
+        "cam": [
+          [0, 1.0, 560, 380],
+          [30, 1.12, 560, 420]
+        ]
+      }
+    },
+    {
+      "id": "claude",
+      "from": 540,
+      "clipAt": 570,
+      "to": 660,
+      "headline": ["Ask", "your account"],
+      "size": 170,
+      "clip": {
+        "layout": [1796, 1596],
+        "card": [990, 880],
+        "segs": [
+          { "len": 90, "video": "doit/claude.mp4", "start": 0.3, "rate": 1.63 }
+        ],
+        "cam": [
+          [0, 1.0, 898, 798],
+          [90, 1.06, 898, 720]
+        ]
+      }
+    }
+  ],
+  "endLine": {
+    "from": 660,
+    "to": 720,
+    "headline": ["Build it with", "Bachs"],
+    "size": 160
+  },
+  "logo": {
+    "from": 720,
+    "url": "docs.bachs.io"
+  },
+  "sfx": {
+    "tick": {
+      "id": 2541,
+      "gain": -24
+    },
+    "click": {
+      "id": 1117,
+      "gain": -13
+    }
+  }
+}

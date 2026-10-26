@@ -35,3 +35,14 @@ Used in "Bachs in action #1: Buy a credit pack", edited: the opening 28.7 second
 Credit line for the post or description:
 
 > Music: "Plenty of Help" by Ketsa (freemusicarchive.org), licensed under CC BY 4.0. Edited for length.
+
+## Mixkit (not stored in the repo)
+
+"Do it with Bachs" uses Mixkit items. Their licences allow them in social media videos
+and online marketing but do not allow sharing the raw files, so `scripts/doit_audio.py`
+downloads them into `public/audio/mixkit/` (ignored by git). No credit line is required.
+Read on 2026-10-26: https://mixkit.co/license/ (Stock Music Free License; Sound Effects Free License).
+Mixkit's music licence does not cover TV, radio, CDs, DVDs or video games.
+
+- Music: "Let's Move" by Michael Ramir C. (Mixkit 836), edited for length at bar lines.
+- Sound effects: "Single key press in a laptop" (Mixkit 2541), "Classic click" (Mixkit 1117).

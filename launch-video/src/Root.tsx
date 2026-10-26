@@ -11,6 +11,7 @@ import { cutLength, Episode01, type Cut } from './tutorial/ep01/Episode01';
 import { nodeChapters, nodeTakes } from './tutorial/ep01/node';
 import { pythonChapters, pythonTakes } from './tutorial/ep01/python';
 import { BUY_CREDITS_TOTAL, BuyCredits } from './inaction/BuyCredits';
+import { DOIT_TOTAL, DoIt } from './doit/DoIt';
 import { TOTAL as MCP_TOTAL } from './mcp/grid';
 
 const still = { durationInFrames: 1, fps: 30, width: 1920, height: 1080 };
@@ -19,6 +20,7 @@ const ep01Python: Cut = { lang: 'python', label: 'Python · bachs', chapters: py
 
 export const Root: React.FC = () => (
   <>
+    <Composition id="DoIt" component={DoIt} durationInFrames={DOIT_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="BuyCredits" component={BuyCredits} durationInFrames={BUY_CREDITS_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="TutorialSample" component={TutorialSample} durationInFrames={SAMPLE_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="Ep01Node" component={Episode01} defaultProps={{ cut: ep01Node }} durationInFrames={cutLength(ep01Node)} fps={30} width={1920} height={1080} />

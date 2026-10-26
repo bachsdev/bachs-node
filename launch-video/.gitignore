@@ -7,3 +7,5 @@ public/tutorial/*.mp4
 tutorials/**/node_modules/
 tutorials/**/package-lock.json
 tutorials/**/__pycache__/
+public/audio/mixkit/
+public/audio/doit-mix.wav
