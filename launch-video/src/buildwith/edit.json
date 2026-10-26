@@ -1,0 +1,52 @@
+{
+  "_note": "Build it with Bachs: SDKs, skills and MCP at an unhurried pace. 30 fps on the 120 BPM grid of Mixkit 'Let's Move' (a bar is 60 frames). Video 0 s is track 10.03 s; the drop lands on frame 180 with the first section. Sections start on bar lines and hand over with a short blur crossfade; inside a section the card resizes smoothly between clips. At 46.0 s the music splices to track 94.03 s so the song's final hit lands on the logo at frame 1440.",
+  "fps": 30,
+  "total": 1520,
+  "music": { "id": 836, "trackStart": 10.03, "spliceAt": 46.0, "spliceTo": 94.03 },
+  "intro": { "title": ["Build it with", "Bachs"], "chips": [[90, "SDKs"], [105, "skills"], [120, "MCP"]], "out": 164 },
+  "ticks": [90, 105, 120],
+  "sections": [
+    {
+      "id": "sdk", "from": 180, "len": 360, "clipAt": 216, "headline": ["Build with", "our SDKs"],
+      "clip": {
+        "segs": [
+          { "len": 190, "video": "buildwith/sdk-code.mp4", "start": 0.7, "rate": 1.4, "layout": [1500, 790], "card": [1400, 737], "cam": [[0, 1, 750, 395], [190, 1.04, 750, 430]] },
+          { "len": 134, "video": "buildwith/sdk-langs.mp4", "start": 0.3, "rate": 1.0, "layout": [1390, 390], "card": [1390, 390], "cam": [[0, 1, 695, 195]] }
+        ]
+      }
+    },
+    {
+      "id": "pay", "from": 540, "len": 240, "clipAt": 576, "headline": ["Take", "your first payment"],
+      "clip": {
+        "segs": [
+          { "len": 150, "video": "inaction/buy-credits.mp4", "start": 12.5, "rate": 1.9, "pointer": true, "layout": [1600, 900], "card": [1400, 788], "cam": [[0, 1.7, 1080, 330], [110, 1.7, 1080, 520], [150, 1.45, 1080, 570]] },
+          { "len": 54, "image": "inaction/hold-success.png", "layout": [1600, 900], "card": [1400, 788], "cam": [[0, 1.3, 800, 330], [54, 1.45, 800, 310]] }
+        ]
+      }
+    },
+    {
+      "id": "skills", "from": 780, "len": 360, "clipAt": 816, "headline": ["Teach your agent", "Bachs"],
+      "clip": {
+        "segs": [
+          { "len": 160, "video": "buildwith/skills-term.mp4", "start": 0.5, "rate": 1.35, "layout": [1328, 574], "card": [1328, 574], "cam": [[0, 1, 664, 287], [160, 1.03, 664, 300]] },
+          { "len": 164, "video": "buildwith/skills-rules.mp4", "start": 1.2, "rate": 1.2, "layout": [1800, 670], "card": [1600, 596], "cam": [[0, 1, 900, 335], [164, 1.03, 900, 335]] }
+        ]
+      }
+    },
+    {
+      "id": "mcp", "from": 1140, "len": 240, "clipAt": 1176, "headline": ["Ask", "your account"],
+      "clip": {
+        "segs": [
+          { "len": 204, "video": "doit/claude.mp4", "start": 0.2, "rate": 0.76, "layout": [1796, 1596], "card": [760, 675], "cam": [[0, 1, 898, 798], [204, 1.04, 898, 760]] }
+        ]
+      },
+      "chips": { "label": "Works with", "at": 1290, "names": ["Claude", "ChatGPT", "Cursor", "Grok"] }
+    }
+  ],
+  "endLine": { "from": 1380, "to": 1440, "headline": ["Start", "building"] },
+  "logo": { "from": 1440, "url": "docs.bachs.io" },
+  "sfx": {
+    "tick": { "id": 2541, "gain": -24 },
+    "click": { "id": 1117, "gain": -13 }
+  }
+}

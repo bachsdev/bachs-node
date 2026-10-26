@@ -20,7 +20,7 @@ const c = {
   muted: '#8b8c99',
 };
 
-const smooth = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+export const smooth = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
 // ---------- opener ----------
 
@@ -120,10 +120,10 @@ const Headline: React.FC<{ from: number; words: string[]; size: number }> = ({ f
 
 // ---------- clips: the real product, framed and moved ----------
 
-type Seg = { len: number; video?: string; image?: string; start?: number; rate?: number };
+export type Seg = { len: number; video?: string; image?: string; start?: number; rate?: number };
 type Clip = { layout: number[]; card?: number[]; pointer?: boolean; segs: Seg[]; cam: number[][] };
 
-const camAt = (cam: number[][], f: number) => {
+export const camAt = (cam: number[][], f: number) => {
   if (f <= cam[0][0]) return cam[0];
   for (let i = 0; i < cam.length - 1; i++) {
     const [f0, ...a] = cam[i];
@@ -137,7 +137,7 @@ const camAt = (cam: number[][], f: number) => {
 };
 
 // Which segment a clip frame is in, and the source time there (null on a still image).
-const segAt = (segs: Seg[], f: number) => {
+export const segAt = (segs: Seg[], f: number) => {
   let start = 0;
   for (const s of segs) {
     if (f < start + s.len) return { seg: s, start, t: s.video ? (s.start ?? 0) + ((f - start) / FPS) * (s.rate ?? 1) : null };
@@ -146,7 +146,7 @@ const segAt = (segs: Seg[], f: number) => {
   return { seg: segs[segs.length - 1], start: start - segs[segs.length - 1].len, t: null };
 };
 
-const ClipPointer: React.FC<{ t: number; rate: number; s: number; tx: number; ty: number }> = ({ t, rate, s, tx, ty }) => {
+export const ClipPointer: React.FC<{ t: number; rate: number; s: number; tx: number; ty: number }> = ({ t, rate, s, tx, ty }) => {
   const p = pointerAt(t);
   const press = clicks.reduce((m, k) => Math.max(m, interpolate(t, [k.t - 0.02 * rate, k.t + 0.06 * rate, k.t + 0.22 * rate], [0, 1, 0], clamp)), 0);
   return (
