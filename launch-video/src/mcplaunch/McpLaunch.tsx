@@ -12,7 +12,7 @@ import edit from './edit.json';
 export const MCP_LAUNCH_TOTAL = edit.total;
 const S = edit.scenes;
 
-const c = {
+export const c = {
   bg: '#09090b',
   fg: '#f4f4f6',
   accent: '#7a87ff',
@@ -146,18 +146,18 @@ const Button: React.FC<{ children: React.ReactNode; primary?: boolean; pressed?:
 
 const press = (f: number, at: number) => interpolate(f, [at - 2, at + 3, at + 12], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
 
-const Badge: React.FC<{ children: React.ReactNode; tone?: 'sandbox' | 'ok' | 'bad' | 'plain' }> = ({ children, tone = 'plain' }) => {
+export const Badge: React.FC<{ children: React.ReactNode; tone?: 'sandbox' | 'ok' | 'bad' | 'plain' }> = ({ children, tone = 'plain' }) => {
   const col = { sandbox: [c.sandbox, c.sandboxBg], ok: [c.ok, c.okBg], bad: [c.bad, c.badBg], plain: [c.sub, c.soft] }[tone];
   return <span style={{ display: 'inline-flex', alignItems: 'center', height: 28, padding: '0 11px', borderRadius: 999, fontFamily: fonts.sans, fontWeight: 500, fontSize: 16, color: col[0], background: col[1] }}>{children}</span>;
 };
 
-const Check: React.FC<{ color?: string; size?: number }> = ({ color = c.ok, size = 22 }) => (
+export const Check: React.FC<{ color?: string; size?: number }> = ({ color = c.ok, size = 22 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24">
     <path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke={color} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-const Wordmark: React.FC<{ height: number; sub?: boolean }> = ({ height }) => (
+export const Wordmark: React.FC<{ height: number; sub?: boolean }> = ({ height }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: height * 0.42 }}>
     <Img src={staticFile('brand/logo-white.png')} style={{ height }} />
     <div style={{ width: 2, height: height * 1.05, background: 'rgba(255,255,255,0.22)' }} />
@@ -217,7 +217,7 @@ const TitleCard: React.FC = () => {
 
 // ---------- 3. connect ----------
 
-const ConnectedApps: React.FC<{ at: number }> = ({ at }) => {
+export const ConnectedApps: React.FC<{ at: number }> = ({ at }) => {
   const f = useCurrentFrame();
   const click = at + 44;
   const copied = f >= click + 2;
@@ -246,7 +246,7 @@ const ConnectedApps: React.FC<{ at: number }> = ({ at }) => {
   );
 };
 
-const AddConnector: React.FC<{ at: number }> = ({ at }) => {
+export const AddConnector: React.FC<{ at: number }> = ({ at }) => {
   const f = useCurrentFrame();
   const pasted = f >= at + 18;
   const click = at + 58;
@@ -275,7 +275,7 @@ const AddConnector: React.FC<{ at: number }> = ({ at }) => {
   );
 };
 
-const AllowPage: React.FC<{ at: number }> = ({ at }) => {
+export const AllowPage: React.FC<{ at: number }> = ({ at }) => {
   const f = useCurrentFrame();
   const click = at + 50;
   const done = k(f, click + 6, click + 20, OUT);
@@ -344,7 +344,7 @@ const Connect: React.FC = () => {
 
 // ---------- 4. ask ----------
 
-const AREAS = ['Find anything', 'Payments', 'Customers and billing', 'Money and payouts', 'Disputes and risk', 'Account and compliance', 'Platforms', 'Developers', 'Bachs docs'];
+export const AREAS = ['Find anything', 'Payments', 'Customers and billing', 'Money and payouts', 'Disputes and risk', 'Account and compliance', 'Platforms', 'Developers', 'Bachs docs'];
 
 const Row: React.FC<{ cells: React.ReactNode[]; head?: boolean }> = ({ cells, head }) => (
   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr 1.2fr', padding: '11px 18px', borderTop: head ? 'none' : `1px solid ${c.line}`, fontSize: head ? 19 : 25, color: head ? c.sub : c.ink, fontWeight: head ? 500 : 400 }}>
@@ -358,8 +358,8 @@ const Detail: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 12, padding: '12px 18px', borderRadius: 14, background: c.soft, fontSize: 23, color: c.ink }}>{children}</div>
 );
 
-type Q = { ask: string; tool: string; area: number; h: number; answer: React.ReactNode };
-const QS: Q[] = [
+export type Q = { ask: string; tool: string; area: number; h: number; answer: React.ReactNode };
+export const QS: Q[] = [
   {
     ask: 'How much money do I have, and what settles tomorrow?',
     tool: 'balances',

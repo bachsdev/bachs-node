@@ -5,6 +5,7 @@ words and a mouse click on every real click in the SnapKit clips.
     python3 scripts/doit_audio.py            # src/doit/edit.json -> public/audio/doit-mix.wav
     python3 scripts/doit_audio.py buildwith  # src/buildwith/edit.json -> public/audio/buildwith-mix.wav
     python3 scripts/doit_audio.py mcplaunch  # src/mcplaunch/edit.json -> public/audio/mcplaunch-mix.wav
+    python3 scripts/doit_audio.py mcphype    # src/mcphype/edit.json -> public/audio/mcphype-mix.wav
 
 The Mixkit files are downloaded into public/audio/mixkit/, which is not committed:
 Mixkit's licences allow using them in a video but not sharing the raw files.
@@ -106,7 +107,7 @@ def key_frames(text, start, end):
 
 
 typing = edit.get("typing")
-ticks = edit.get("ticks") or (key_frames(typing["text"], typing["from"], typing["to"]) if typing else [o["from"] for o in edit["opener"]])
+ticks = edit["ticks"] if "ticks" in edit else (key_frames(typing["text"], typing["from"], typing["to"]) if typing else [o["from"] for o in edit["opener"]])
 for f in ticks:
     place(tick, f / FPS, sfx["tick"]["gain"])
 

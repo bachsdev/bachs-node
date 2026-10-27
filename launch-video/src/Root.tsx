@@ -14,6 +14,7 @@ import { BUY_CREDITS_TOTAL, BuyCredits } from './inaction/BuyCredits';
 import { DOIT_TOTAL, DoIt } from './doit/DoIt';
 import { BUILDWITH_TOTAL, BuildWith } from './buildwith/BuildWith';
 import { MCP_LAUNCH_TOTAL, McpLaunch } from './mcplaunch/McpLaunch';
+import { MCP_HYPE_TOTAL, McpHype } from './mcphype/McpHype';
 import { TOTAL as MCP_TOTAL } from './mcp/grid';
 
 const still = { durationInFrames: 1, fps: 30, width: 1920, height: 1080 };
@@ -22,6 +23,7 @@ const ep01Python: Cut = { lang: 'python', label: 'Python · bachs', chapters: py
 
 export const Root: React.FC = () => (
   <>
+    <Composition id="McpHype" component={McpHype} durationInFrames={MCP_HYPE_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="McpLaunch" component={McpLaunch} durationInFrames={MCP_LAUNCH_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="BuildWith" component={BuildWith} durationInFrames={BUILDWITH_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="DoIt" component={DoIt} durationInFrames={DOIT_TOTAL} fps={30} width={1920} height={1080} />

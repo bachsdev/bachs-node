@@ -1,0 +1,13 @@
+{
+  "_note": "Bachs MCP launch, high-energy cut. 30 fps on the 145 BPM grid of Mixkit 'Infected Mushroom Vibes' (Alejandro Magaña): a beat is 0.413793 s (12.414 frames), a bar 4 beats. Video 0 s is track 26.386 s, four bars before the drop, so the breakdown's riser carries the hook and the drop (track 33.007 s) lands on beat 16. At beat 88 (36.414 s) the music splices to track 82.662 s, two bars before the song's final hit (track 85.972 s), which lands on the logo at beat 96.",
+  "fps": 30,
+  "beatFrames": 12.41379,
+  "total": 1270,
+  "music": { "id": 136, "trackStart": 26.386, "spliceAt": 36.4138, "spliceTo": 82.662 },
+  "ticks": [],
+  "clicks": [308, 335, 360],
+  "sfx": {
+    "tick": { "id": 2541, "gain": -28 },
+    "click": { "id": 1117, "gain": -14 }
+  }
+}
