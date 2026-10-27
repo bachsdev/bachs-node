@@ -1,0 +1,666 @@
+{
+ "_note": "Bachs MCP, 'Into sentences'. 30 fps. Music is Mixkit 760 'Relaxation 07' (Lily J), unedited from 17.5 s, so its lift at 53.5 s lands on the end card at 36 s. Light mode: key taps while a question types, a paper shuffle when the answer cells lift, one chime as the sentence settles.",
+ "fps": 30,
+ "total": 1260,
+ "endAt": 1080,
+ "music": {
+  "id": 760,
+  "start": 17.5,
+  "fade": 1.5,
+  "lufs": -20
+ },
+ "sfx": {
+  "key": {
+   "id": 1125,
+   "peak": -30
+  },
+  "shuffle": {
+   "id": 2383,
+   "peak": -27
+  },
+  "chime": {
+   "id": 2867,
+   "peak": -24
+  }
+ },
+ "beats": [
+  {
+   "q": "What lands in my account on Friday?",
+   "at": 90,
+   "end": 330,
+   "typeFrom": 110,
+   "typeTo": 156,
+   "light": 164,
+   "lift": 174,
+   "settle": 218
+  },
+  {
+   "q": "Which payments failed this week, and why?",
+   "at": 330,
+   "end": 600,
+   "typeFrom": 350,
+   "typeTo": 403,
+   "light": 411,
+   "lift": 421,
+   "settle": 465
+  },
+  {
+   "q": "Do I have disputes I need to respond to?",
+   "at": 600,
+   "end": 840,
+   "typeFrom": 620,
+   "typeTo": 672,
+   "light": 680,
+   "lift": 690,
+   "settle": 734
+  },
+  {
+   "q": "Why can't I get paid out?",
+   "at": 840,
+   "end": 1080,
+   "typeFrom": 860,
+   "typeTo": 892,
+   "light": 900,
+   "lift": 910,
+   "settle": 954
+  }
+ ],
+ "events": [
+  {
+   "sfx": "key",
+   "at": 111.16
+  },
+  {
+   "sfx": "key",
+   "at": 112.33
+  },
+  {
+   "sfx": "key",
+   "at": 113.49
+  },
+  {
+   "sfx": "key",
+   "at": 114.66
+  },
+  {
+   "sfx": "key",
+   "at": 116.64
+  },
+  {
+   "sfx": "key",
+   "at": 117.8
+  },
+  {
+   "sfx": "key",
+   "at": 118.97
+  },
+  {
+   "sfx": "key",
+   "at": 120.13
+  },
+  {
+   "sfx": "key",
+   "at": 121.3
+  },
+  {
+   "sfx": "key",
+   "at": 122.46
+  },
+  {
+   "sfx": "key",
+   "at": 124.44
+  },
+  {
+   "sfx": "key",
+   "at": 125.61
+  },
+  {
+   "sfx": "key",
+   "at": 126.77
+  },
+  {
+   "sfx": "key",
+   "at": 128.75
+  },
+  {
+   "sfx": "key",
+   "at": 129.91
+  },
+  {
+   "sfx": "key",
+   "at": 131.08
+  },
+  {
+   "sfx": "key",
+   "at": 133.06
+  },
+  {
+   "sfx": "key",
+   "at": 134.22
+  },
+  {
+   "sfx": "key",
+   "at": 135.39
+  },
+  {
+   "sfx": "key",
+   "at": 136.55
+  },
+  {
+   "sfx": "key",
+   "at": 137.72
+  },
+  {
+   "sfx": "key",
+   "at": 138.88
+  },
+  {
+   "sfx": "key",
+   "at": 140.05
+  },
+  {
+   "sfx": "key",
+   "at": 141.21
+  },
+  {
+   "sfx": "key",
+   "at": 143.19
+  },
+  {
+   "sfx": "key",
+   "at": 144.35
+  },
+  {
+   "sfx": "key",
+   "at": 145.52
+  },
+  {
+   "sfx": "key",
+   "at": 147.5
+  },
+  {
+   "sfx": "key",
+   "at": 148.66
+  },
+  {
+   "sfx": "key",
+   "at": 149.83
+  },
+  {
+   "sfx": "key",
+   "at": 150.99
+  },
+  {
+   "sfx": "key",
+   "at": 152.16
+  },
+  {
+   "sfx": "key",
+   "at": 153.32
+  },
+  {
+   "sfx": "key",
+   "at": 154.49
+  },
+  {
+   "sfx": "key",
+   "at": 156.0
+  },
+  {
+   "sfx": "shuffle",
+   "at": 174
+  },
+  {
+   "sfx": "chime",
+   "at": 216
+  },
+  {
+   "sfx": "key",
+   "at": 351.16
+  },
+  {
+   "sfx": "key",
+   "at": 352.31
+  },
+  {
+   "sfx": "key",
+   "at": 353.47
+  },
+  {
+   "sfx": "key",
+   "at": 354.63
+  },
+  {
+   "sfx": "key",
+   "at": 355.79
+  },
+  {
+   "sfx": "key",
+   "at": 357.75
+  },
+  {
+   "sfx": "key",
+   "at": 358.91
+  },
+  {
+   "sfx": "key",
+   "at": 360.07
+  },
+  {
+   "sfx": "key",
+   "at": 361.22
+  },
+  {
+   "sfx": "key",
+   "at": 362.38
+  },
+  {
+   "sfx": "key",
+   "at": 363.54
+  },
+  {
+   "sfx": "key",
+   "at": 364.7
+  },
+  {
+   "sfx": "key",
+   "at": 365.85
+  },
+  {
+   "sfx": "key",
+   "at": 367.01
+  },
+  {
+   "sfx": "key",
+   "at": 368.98
+  },
+  {
+   "sfx": "key",
+   "at": 370.14
+  },
+  {
+   "sfx": "key",
+   "at": 371.29
+  },
+  {
+   "sfx": "key",
+   "at": 372.45
+  },
+  {
+   "sfx": "key",
+   "at": 373.61
+  },
+  {
+   "sfx": "key",
+   "at": 374.76
+  },
+  {
+   "sfx": "key",
+   "at": 375.92
+  },
+  {
+   "sfx": "key",
+   "at": 377.89
+  },
+  {
+   "sfx": "key",
+   "at": 379.05
+  },
+  {
+   "sfx": "key",
+   "at": 380.2
+  },
+  {
+   "sfx": "key",
+   "at": 381.36
+  },
+  {
+   "sfx": "key",
+   "at": 382.52
+  },
+  {
+   "sfx": "key",
+   "at": 384.48
+  },
+  {
+   "sfx": "key",
+   "at": 385.64
+  },
+  {
+   "sfx": "key",
+   "at": 386.8
+  },
+  {
+   "sfx": "key",
+   "at": 387.96
+  },
+  {
+   "sfx": "key",
+   "at": 389.11
+  },
+  {
+   "sfx": "key",
+   "at": 390.62
+  },
+  {
+   "sfx": "key",
+   "at": 392.59
+  },
+  {
+   "sfx": "key",
+   "at": 393.74
+  },
+  {
+   "sfx": "key",
+   "at": 394.9
+  },
+  {
+   "sfx": "key",
+   "at": 396.06
+  },
+  {
+   "sfx": "key",
+   "at": 398.02
+  },
+  {
+   "sfx": "key",
+   "at": 399.18
+  },
+  {
+   "sfx": "key",
+   "at": 400.34
+  },
+  {
+   "sfx": "key",
+   "at": 401.5
+  },
+  {
+   "sfx": "key",
+   "at": 403.0
+  },
+  {
+   "sfx": "shuffle",
+   "at": 421
+  },
+  {
+   "sfx": "chime",
+   "at": 463
+  },
+  {
+   "sfx": "key",
+   "at": 621.13
+  },
+  {
+   "sfx": "key",
+   "at": 622.27
+  },
+  {
+   "sfx": "key",
+   "at": 624.19
+  },
+  {
+   "sfx": "key",
+   "at": 625.32
+  },
+  {
+   "sfx": "key",
+   "at": 627.25
+  },
+  {
+   "sfx": "key",
+   "at": 628.38
+  },
+  {
+   "sfx": "key",
+   "at": 629.52
+  },
+  {
+   "sfx": "key",
+   "at": 630.65
+  },
+  {
+   "sfx": "key",
+   "at": 631.78
+  },
+  {
+   "sfx": "key",
+   "at": 633.71
+  },
+  {
+   "sfx": "key",
+   "at": 634.84
+  },
+  {
+   "sfx": "key",
+   "at": 635.97
+  },
+  {
+   "sfx": "key",
+   "at": 637.11
+  },
+  {
+   "sfx": "key",
+   "at": 638.24
+  },
+  {
+   "sfx": "key",
+   "at": 639.37
+  },
+  {
+   "sfx": "key",
+   "at": 640.51
+  },
+  {
+   "sfx": "key",
+   "at": 641.64
+  },
+  {
+   "sfx": "key",
+   "at": 642.77
+  },
+  {
+   "sfx": "key",
+   "at": 644.7
+  },
+  {
+   "sfx": "key",
+   "at": 645.83
+  },
+  {
+   "sfx": "key",
+   "at": 647.76
+  },
+  {
+   "sfx": "key",
+   "at": 648.89
+  },
+  {
+   "sfx": "key",
+   "at": 650.02
+  },
+  {
+   "sfx": "key",
+   "at": 651.15
+  },
+  {
+   "sfx": "key",
+   "at": 652.29
+  },
+  {
+   "sfx": "key",
+   "at": 654.21
+  },
+  {
+   "sfx": "key",
+   "at": 655.35
+  },
+  {
+   "sfx": "key",
+   "at": 656.48
+  },
+  {
+   "sfx": "key",
+   "at": 658.41
+  },
+  {
+   "sfx": "key",
+   "at": 659.54
+  },
+  {
+   "sfx": "key",
+   "at": 660.67
+  },
+  {
+   "sfx": "key",
+   "at": 661.8
+  },
+  {
+   "sfx": "key",
+   "at": 662.94
+  },
+  {
+   "sfx": "key",
+   "at": 664.07
+  },
+  {
+   "sfx": "key",
+   "at": 665.2
+  },
+  {
+   "sfx": "key",
+   "at": 666.34
+  },
+  {
+   "sfx": "key",
+   "at": 668.26
+  },
+  {
+   "sfx": "key",
+   "at": 669.39
+  },
+  {
+   "sfx": "key",
+   "at": 670.53
+  },
+  {
+   "sfx": "key",
+   "at": 672.0
+  },
+  {
+   "sfx": "shuffle",
+   "at": 690
+  },
+  {
+   "sfx": "chime",
+   "at": 732
+  },
+  {
+   "sfx": "key",
+   "at": 861.1
+  },
+  {
+   "sfx": "key",
+   "at": 862.2
+  },
+  {
+   "sfx": "key",
+   "at": 863.3
+  },
+  {
+   "sfx": "key",
+   "at": 865.17
+  },
+  {
+   "sfx": "key",
+   "at": 866.27
+  },
+  {
+   "sfx": "key",
+   "at": 867.37
+  },
+  {
+   "sfx": "key",
+   "at": 868.47
+  },
+  {
+   "sfx": "key",
+   "at": 869.9
+  },
+  {
+   "sfx": "key",
+   "at": 871.0
+  },
+  {
+   "sfx": "key",
+   "at": 872.87
+  },
+  {
+   "sfx": "key",
+   "at": 873.97
+  },
+  {
+   "sfx": "key",
+   "at": 875.84
+  },
+  {
+   "sfx": "key",
+   "at": 876.93
+  },
+  {
+   "sfx": "key",
+   "at": 878.03
+  },
+  {
+   "sfx": "key",
+   "at": 879.13
+  },
+  {
+   "sfx": "key",
+   "at": 881.0
+  },
+  {
+   "sfx": "key",
+   "at": 882.1
+  },
+  {
+   "sfx": "key",
+   "at": 883.2
+  },
+  {
+   "sfx": "key",
+   "at": 884.3
+  },
+  {
+   "sfx": "key",
+   "at": 885.4
+  },
+  {
+   "sfx": "key",
+   "at": 887.27
+  },
+  {
+   "sfx": "key",
+   "at": 888.37
+  },
+  {
+   "sfx": "key",
+   "at": 889.47
+  },
+  {
+   "sfx": "key",
+   "at": 890.57
+  },
+  {
+   "sfx": "key",
+   "at": 892.0
+  },
+  {
+   "sfx": "shuffle",
+   "at": 910
+  },
+  {
+   "sfx": "chime",
+   "at": 952
+  }
+ ]
+}
