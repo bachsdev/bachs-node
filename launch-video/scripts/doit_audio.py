@@ -7,6 +7,7 @@ words and a mouse click on every real click in the SnapKit clips.
     python3 scripts/doit_audio.py mcplaunch  # src/mcplaunch/edit.json -> public/audio/mcplaunch-mix.wav
     python3 scripts/doit_audio.py mcphype    # src/mcphype/edit.json -> public/audio/mcphype-mix.wav
     python3 scripts/doit_audio.py mcppixel   # src/mcppixel/edit.json -> public/audio/mcppixel-mix.wav
+    python3 scripts/doit_audio.py mcpstory   # src/mcpstory/edit.json -> public/audio/mcpstory-mix.wav
 
 The Mixkit files are downloaded into public/audio/mixkit/, which is not committed:
 Mixkit's licences allow using them in a video but not sharing the raw files.
@@ -57,7 +58,7 @@ k = np.linspace(0, 1, 2 * x)[:, None]
 music = np.concatenate([a[:-x], a[-x:] * np.cos(k[:x] * np.pi / 2) + b[:x] * np.sin(k[:x] * np.pi / 2), b[x:]])
 n = int(total * SR)
 music = np.pad(music, ((0, max(0, n - len(music))), (0, 0)))[:n]
-fade = int(0.45 * SR)
+fade = int(m.get("fade", 0.45) * SR)
 music[-fade:] *= np.linspace(1, 0, fade)[:, None] ** 2
 
 # Bring the bed to -14 LUFS (linear gain, measured with ffmpeg's EBU R128 meter).
@@ -108,6 +109,8 @@ def key_frames(text, start, end):
 
 
 typing = edit.get("typing")
+if "typings" in edit:
+    edit["ticks"] = [f for t in edit["typings"] for f in key_frames(t["text"], t["from"], t["to"])]
 ticks = edit["ticks"] if "ticks" in edit else (key_frames(typing["text"], typing["from"], typing["to"]) if typing else [o["from"] for o in edit["opener"]])
 for f in ticks:
     place(tick, f / FPS, sfx["tick"]["gain"])
@@ -128,7 +131,11 @@ for sl in edit.get("slots", []) + edit.get("sections", []):
 for f in edit.get("clicks", []):
     place(click, f / FPS - 0.005, sfx["click"]["gain"])
 
-# Keep true peak under -1 dBTP.
+# Keep true peak under -1 dBTP. Check the samples first: a file measurement of a
+# signal already over full scale only sees it after the write has clipped it.
+peak = np.abs(mix).max()
+if peak > 10 ** (-1.5 / 20):
+    mix *= 10 ** (-1.5 / 20) / peak
 i, tp = lufs(mix)
 if tp > -1.0:
     mix *= 10 ** ((-1.0 - tp) / 20)

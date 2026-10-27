@@ -15,17 +15,17 @@ const B = edit.beatFrames;
 const b = (n: number) => Math.round(n * B);
 export const MCP_PIXEL_TOTAL = edit.total;
 
-const OUT = Easing.bezier(0.05, 0.7, 0.1, 1);
-const IO = Easing.bezier(0.4, 0, 0.2, 1);
-const k = (f: number, a: number, z: number, easing = OUT) => interpolate(f, [a, z], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing });
+export const OUT = Easing.bezier(0.05, 0.7, 0.1, 1);
+export const IO = Easing.bezier(0.4, 0, 0.2, 1);
+export const k = (f: number, a: number, z: number, easing = OUT) => interpolate(f, [a, z], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing });
 
-type Ground = 'paper' | 'cobalt' | 'navy';
-const GROUND: Record<Ground, string> = { paper: px.paper, cobalt: px.cobalt, navy: px.navy };
+export type Ground = 'paper' | 'cobalt' | 'navy';
+export const GROUND: Record<Ground, string> = { paper: px.paper, cobalt: px.cobalt, navy: px.navy };
 const isDark = (g: Ground) => g !== 'paper';
 
 // ---------- shared pieces ----------
 
-const Backdrop: React.FC<{ g: Ground }> = ({ g }) => {
+export const Backdrop: React.FC<{ g: Ground }> = ({ g }) => {
   const f = useCurrentFrame();
   if (g === 'navy') {
     return (
@@ -45,7 +45,7 @@ const Backdrop: React.FC<{ g: Ground }> = ({ g }) => {
   return <AbsoluteFill style={{ background: px.cobalt }} />;
 };
 
-const Header: React.FC<{ g: Ground; label: string }> = ({ g, label }) => (
+export const Header: React.FC<{ g: Ground; label: string }> = ({ g, label }) => (
   <>
     <Img src={staticFile(isDark(g) ? 'brand/logo-white.png' : 'brand/logo-black.png')} style={{ position: 'absolute', left: 120, top: 84, height: 32 }} />
     <div style={{ position: 'absolute', right: 120, top: 80, fontFamily: fonts.sans, fontSize: 32, color: isDark(g) ? 'rgba(255,255,255,0.72)' : px.muted }}>{label}</div>
@@ -68,13 +68,13 @@ const Ask: React.FC<{ text: string; at: number; g: Ground; size?: number; top?: 
   );
 };
 
-const Rise: React.FC<{ at: number; children: React.ReactNode; style?: React.CSSProperties; dist?: number }> = ({ at, children, style, dist = 28 }) => {
+export const Rise: React.FC<{ at: number; children: React.ReactNode; style?: React.CSSProperties; dist?: number }> = ({ at, children, style, dist = 28 }) => {
   const f = useCurrentFrame();
   const t = k(f, at, at + 10);
   return <div style={{ opacity: t, transform: `translateY(${(1 - t) * dist}px)`, ...style }}>{children}</div>;
 };
 
-const Pixel: React.FC<{ children: React.ReactNode; size: number; color: string; glow?: boolean; style?: React.CSSProperties }> = ({ children, size, color, glow, style }) => (
+export const Pixel: React.FC<{ children: React.ReactNode; size: number; color: string; glow?: boolean; style?: React.CSSProperties }> = ({ children, size, color, glow, style }) => (
   <div style={{ fontFamily: fonts.pixel, fontSize: size, lineHeight: 1, letterSpacing: '-0.01em', color, textShadow: glow ? '0 0 28px rgba(120,160,255,0.65)' : undefined, whiteSpace: 'nowrap', ...style }}>{children}</div>
 );
 
@@ -82,7 +82,7 @@ const Card: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }>
   <div style={{ borderRadius: 26, background: px.navy, boxShadow: '0 0 0 14px rgba(54,114,234,0.14), 0 30px 80px rgba(54,114,234,0.25)', padding: '40px 52px', fontFamily: fonts.mono, fontSize: 30, lineHeight: 1.55, color: px.white, ...style }}>{children}</div>
 );
 
-const Foot: React.FC<{ g: Ground; children: React.ReactNode }> = ({ g, children }) => (
+export const Foot: React.FC<{ g: Ground; children: React.ReactNode }> = ({ g, children }) => (
   <div style={{ position: 'absolute', left: 120, right: 120, top: 990, fontFamily: fonts.sans, fontSize: 28, color: isDark(g) ? 'rgba(255,255,255,0.7)' : px.muted, display: 'flex', justifyContent: 'space-between' }}>{children}</div>
 );
 
@@ -95,7 +95,7 @@ const ADA = '{ "id": "chrg_7c41e0a9d2", "reference": "order_4821", "status": "su
 const record = (i: number) =>
   `{ "id": "chrg_${Math.floor(random(`i${i}`) * 0xfffffffff).toString(16).padStart(9, '0')}", "reference": "order_${1000 + Math.floor(random(`r${i}`) * 9000)}", "status": "${random(`s${i}`) > 0.2 ? 'succeeded' : 'pending'}", "amount": "${(Math.round(random(`a${i}`) * 80) * 500 + 2500).toFixed(2)}", "customer_name": "${NAMES[Math.floor(random(`n${i}`) * NAMES.length)]}", "currency": "NGN", "transaction_date": "2026-10-${String(1 + Math.floor(random(`d${i}`) * 26)).padStart(2, '0')}" }`;
 
-const Wall: React.FC<{ speed: number; lit?: number; hitRow?: number }> = ({ speed, lit = 0, hitRow }) => {
+export const Wall: React.FC<{ speed: number; lit?: number; hitRow?: number }> = ({ speed, lit = 0, hitRow }) => {
   const LINE = 34;
   const rows = 40;
   return (
@@ -603,7 +603,7 @@ const SCENES: Scene[] = [
 
 // The hand-off: squares flip in a diagonal wave in the next scene's ground, cover the cut, and flip away.
 const CELL = 80;
-const PixelWipe: React.FC<{ at: number; color: string }> = ({ at, color }) => {
+export const PixelWipe: React.FC<{ at: number; color: string }> = ({ at, color }) => {
   const f = useCurrentFrame();
   if (f < at - 12 || f > at + 12) return null;
   const cols = Math.ceil(1920 / CELL);

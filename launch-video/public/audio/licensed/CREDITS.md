@@ -48,6 +48,7 @@ Mixkit's music licence does not cover TV, radio, CDs, DVDs or video games.
 - Sound effects: "Single key press in a laptop" (Mixkit 2541), "Classic click" (Mixkit 1117).
 - Music: "Electro Dreams" by Alejandro Magaña (Mixkit 190), for the Bachs MCP announcement, edited at bar lines.
 - Music: "Infected Mushroom Vibes" by Alejandro Magaña (Mixkit 136), for the high-energy Bachs MCP launch cut, edited at bar lines.
+- Music: "Sonor #2" by Eugenio Mininni (Mixkit 570), for the Bachs MCP session video, spliced on a bar line from the build into the breakdown.
 
 ## 3D models
 

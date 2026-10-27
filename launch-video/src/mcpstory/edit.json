@@ -1,0 +1,185 @@
+{
+ "_note": "Bachs MCP, one session: four plain questions, each answered, with the answer drawn after the first three; then the line and the logo. 30 fps on Mixkit 'Sonor #2' (Eugenio Mininni), a bar is 58.12 frames. Video 0 s is track 1.649 s; the build runs unedited to track 38.46 s (video frame 1104), splices on that bar line to the breakdown at 112.04 s, whose harmony matches, and the new section at track 116.07 s lands on the logo.",
+ "fps": 30,
+ "barFrames": 58.122598647655984,
+ "total": 1385,
+ "music": {
+  "id": 570,
+  "trackStart": 1.649,
+  "spliceAt": 36.811,
+  "spliceTo": 112.04,
+  "fade": 1.2
+ },
+ "scenes": [
+  {
+   "at": 0,
+   "g": "navy",
+   "kind": "session",
+   "ex": 0
+  },
+  {
+   "at": 232,
+   "g": "cobalt",
+   "kind": "money"
+  },
+  {
+   "at": 349,
+   "g": "navy",
+   "kind": "session",
+   "ex": 1
+  },
+  {
+   "at": 523,
+   "g": "paper",
+   "kind": "payout"
+  },
+  {
+   "at": 639,
+   "g": "navy",
+   "kind": "session",
+   "ex": 2
+  },
+  {
+   "at": 814,
+   "g": "cobalt",
+   "kind": "disputes"
+  },
+  {
+   "at": 930,
+   "g": "navy",
+   "kind": "session",
+   "ex": 3,
+   "wrap": true
+  },
+  {
+   "at": 1104,
+   "g": "paper",
+   "kind": "words"
+  },
+  {
+   "at": 1225,
+   "g": "cobalt",
+   "kind": "logo"
+  }
+ ],
+ "exchanges": [
+  {
+   "at": 0,
+   "q": "How much money do I have, and what settles tomorrow?",
+   "tools": [
+    {
+     "name": "balances",
+     "arg": "NGN · USD",
+     "res": "₦1,284,500 available",
+     "at": 92,
+     "done": 106
+    },
+    {
+     "name": "settlements",
+     "arg": "tomorrow",
+     "res": "₦312,000",
+     "at": 108,
+     "done": 122
+    }
+   ],
+   "a": "You have ₦1,284,500 available, and ₦312,000 more settles tomorrow.",
+   "typeFrom": 14,
+   "typeTo": 82,
+   "answerFrom": 132,
+   "answerTo": 165
+  },
+  {
+   "at": 349,
+   "q": "Why did my last payout fail?",
+   "tools": [
+    {
+     "name": "payouts",
+     "arg": "latest",
+     "res": "PO-20263 failed",
+     "at": 409,
+     "done": 423
+    }
+   ],
+   "a": "The name on your GTBank account doesn't match your business name.",
+   "typeFrom": 363,
+   "typeTo": 399,
+   "answerFrom": 433,
+   "answerTo": 465
+  },
+  {
+   "at": 639,
+   "q": "Do I have disputes I need to respond to?",
+   "tools": [
+    {
+     "name": "disputes",
+     "arg": "needs response",
+     "res": "1 due Oct 30",
+     "at": 715,
+     "done": 729
+    }
+   ],
+   "a": "Yes, one: Tunde Bello's $120.00 dispute, due Oct 30.",
+   "typeFrom": 653,
+   "typeTo": 705,
+   "answerFrom": 739,
+   "answerTo": 765
+  },
+  {
+   "at": 930,
+   "q": "Are my webhooks failing?",
+   "tools": [
+    {
+     "name": "webhook events",
+     "arg": "last 24 hours",
+     "res": "3 of 43 failed",
+     "at": 985,
+     "done": 999
+    }
+   ],
+   "a": "3 of 43 failed since 09:12. Your endpoint returned 500 for checkout.completed.",
+   "typeFrom": 944,
+   "typeTo": 975,
+   "answerFrom": 1009,
+   "answerTo": 1048
+  }
+ ],
+ "typings": [
+  {
+   "text": "How much money do I have, and what settles tomorrow?",
+   "from": 14,
+   "to": 82
+  },
+  {
+   "text": "Why did my last payout fail?",
+   "from": 363,
+   "to": 399
+  },
+  {
+   "text": "Do I have disputes I need to respond to?",
+   "from": 653,
+   "to": 705
+  },
+  {
+   "text": "Are my webhooks failing?",
+   "from": 944,
+   "to": 975
+  }
+ ],
+ "clicks": [
+  106,
+  122,
+  423,
+  729,
+  999
+ ],
+ "sfx": {
+  "tick": {
+   "id": 2535,
+   "gain": -30
+  },
+  "click": {
+   "id": 1117,
+   "gain": -24
+  }
+ }
+}
