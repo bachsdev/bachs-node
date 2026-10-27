@@ -16,6 +16,7 @@ import { BUILDWITH_TOTAL, BuildWith } from './buildwith/BuildWith';
 import { MCP_LAUNCH_TOTAL, McpLaunch } from './mcplaunch/McpLaunch';
 import { MCP_HYPE_TOTAL, McpHype } from './mcphype/McpHype';
 import { FrameLedger, FrameRiso, FrameSignal } from './mcpstyle/Frames';
+import { FrameBrandAnswer, FrameBrandCover } from './mcpstyle/BrandFrames';
 import { TOTAL as MCP_TOTAL } from './mcp/grid';
 
 const still = { durationInFrames: 1, fps: 30, width: 1920, height: 1080 };
@@ -24,6 +25,8 @@ const ep01Python: Cut = { lang: 'python', label: 'Python · bachs', chapters: py
 
 export const Root: React.FC = () => (
   <>
+    <Composition id="StyleBrandAnswer" component={FrameBrandAnswer} durationInFrames={1} fps={30} width={1920} height={1080} />
+    <Composition id="StyleBrandCover" component={FrameBrandCover} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="StyleLedger" component={FrameLedger} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="StyleSignal" component={FrameSignal} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="StyleRiso" component={FrameRiso} durationInFrames={1} fps={30} width={1920} height={1080} />
