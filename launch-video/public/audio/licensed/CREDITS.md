@@ -45,7 +45,7 @@ Read on 2026-10-26: https://mixkit.co/license/ (Stock Music Free License; Sound 
 Mixkit's music licence does not cover TV, radio, CDs, DVDs or video games.
 
 - Music: "Let's Move" by Michael Ramir C. (Mixkit 836), edited for length at bar lines.
-- Sound effects: "Single key press in a laptop" (Mixkit 2541), "Classic click" (Mixkit 1117).
+- Sound effects: "Single key press in a laptop" (Mixkit 2541), "Phone keyboard bit" (Mixkit 2535), "Classic click" (Mixkit 1117).
 - Music: "Electro Dreams" by Alejandro Magaña (Mixkit 190), for the Bachs MCP announcement, edited at bar lines.
 - Music: "Infected Mushroom Vibes" by Alejandro Magaña (Mixkit 136), for the high-energy Bachs MCP launch cut, edited at bar lines.
 - Music: "Sonor #2" by Eugenio Mininni (Mixkit 570), for the Bachs MCP session video, spliced on a bar line from the build into the breakdown.
