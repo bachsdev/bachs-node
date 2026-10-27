@@ -1,0 +1,520 @@
+{
+ "_note": "Bachs Global Payouts. 30 fps. Music is Mixkit 148 'Forest Mist Whispers' (Alejandro Magaña), unedited from 24 s, so its lift at 53 s lands on the end card at 29 s. Light mode: soft ticks while figures roll, a press on each button, a small step per tracker stage, one landing tone when a payout completes.",
+ "fps": 30,
+ "total": 1020,
+ "endAt": 870,
+ "music": {
+  "id": 148,
+  "start": 24.0,
+  "fade": 1.5,
+  "lufs": -20
+ },
+ "sfx": {
+  "tick": {
+   "id": 2577,
+   "peak": -34
+  },
+  "press": {
+   "id": 1120,
+   "peak": -22
+  },
+  "step": {
+   "id": 2573,
+   "peak": -30
+  },
+  "land": {
+   "id": 1107,
+   "peak": -25
+  }
+ },
+ "payouts": [
+  {
+   "dest": 0,
+   "src": "USD",
+   "amount": 1200.0,
+   "rate": "$1 = £0.74",
+   "fee": 12.0,
+   "receive": "£888.00",
+   "recv_num": 888.0,
+   "recv_sym": "£",
+   "caption": "Pay out to a UK bank in GBP, from your USD balance.",
+   "status": "On its way to your bank.",
+   "at": 90,
+   "slide": [
+    90,
+    110
+   ],
+   "roll": [
+    112,
+    138
+   ],
+   "rows": [
+    136,
+    144,
+    152,
+    162
+   ],
+   "recvRoll": [
+    152,
+    174
+   ],
+   "confirm": 190,
+   "steps": [
+    200,
+    225,
+    250,
+    275
+   ],
+   "toList": [
+    288,
+    312
+   ],
+   "balRoll": [
+    288,
+    318
+   ]
+  },
+  {
+   "dest": 1,
+   "src": "USD",
+   "amount": 300.0,
+   "rate": "$1 = KSh 129.20",
+   "fee": 3.0,
+   "receive": "KSh 38,760.00",
+   "recv_num": 38760.0,
+   "recv_sym": "KSh ",
+   "caption": "Or to M-Pesa in Kenya.",
+   "status": "On its way to your wallet.",
+   "at": 330,
+   "slide": [
+    330,
+    342
+   ],
+   "roll": [
+    343,
+    359
+   ],
+   "rows": [
+    358,
+    362,
+    367,
+    373
+   ],
+   "recvRoll": [
+    367,
+    380
+   ],
+   "confirm": 390,
+   "steps": [
+    396,
+    411,
+    426,
+    441
+   ],
+   "toList": [
+    449,
+    463
+   ],
+   "balRoll": [
+    449,
+    467
+   ]
+  },
+  {
+   "dest": 2,
+   "src": "USD",
+   "amount": 2000.0,
+   "rate": "$1 = 1.00 USDC",
+   "fee": 20.0,
+   "receive": "2,000.00 USDC",
+   "recv_num": 2000.0,
+   "recv_sym": "",
+   "caption": "Or to a USDC wallet on Base.",
+   "status": "On its way to your wallet.",
+   "at": 470,
+   "slide": [
+    470,
+    482
+   ],
+   "roll": [
+    483,
+    499
+   ],
+   "rows": [
+    498,
+    502,
+    507,
+    513
+   ],
+   "recvRoll": [
+    507,
+    520
+   ],
+   "confirm": 530,
+   "steps": [
+    536,
+    551,
+    566,
+    581
+   ],
+   "toList": [
+    589,
+    603
+   ],
+   "balRoll": [
+    589,
+    607
+   ]
+  },
+  {
+   "dest": 3,
+   "src": "NGN",
+   "amount": 750000.0,
+   "rate": null,
+   "fee": 50.0,
+   "receive": "₦750,000.00",
+   "recv_num": 750000.0,
+   "recv_sym": "₦",
+   "caption": "Or to your Nigerian bank, straight from your NGN balance.",
+   "status": "On its way to your bank.",
+   "at": 610,
+   "slide": [
+    610,
+    622
+   ],
+   "roll": [
+    623,
+    639
+   ],
+   "rows": [
+    638,
+    642,
+    647,
+    653
+   ],
+   "recvRoll": [
+    647,
+    660
+   ],
+   "confirm": 670,
+   "steps": [
+    676,
+    691,
+    706,
+    721
+   ],
+   "toList": [
+    729,
+    743
+   ],
+   "balRoll": [
+    729,
+    747
+   ]
+  }
+ ],
+ "auto": {
+  "at": 750,
+  "weekly": 790,
+  "turnOn": 826,
+  "caption": "Or set it once, and settled payments pay out on schedule."
+ },
+ "events": [
+  {
+   "sfx": "press",
+   "at": 64
+  },
+  {
+   "sfx": "tick",
+   "at": 112
+  },
+  {
+   "sfx": "tick",
+   "at": 115
+  },
+  {
+   "sfx": "tick",
+   "at": 118
+  },
+  {
+   "sfx": "tick",
+   "at": 121
+  },
+  {
+   "sfx": "tick",
+   "at": 124
+  },
+  {
+   "sfx": "tick",
+   "at": 127
+  },
+  {
+   "sfx": "tick",
+   "at": 130
+  },
+  {
+   "sfx": "tick",
+   "at": 133
+  },
+  {
+   "sfx": "tick",
+   "at": 136
+  },
+  {
+   "sfx": "tick",
+   "at": 152
+  },
+  {
+   "sfx": "tick",
+   "at": 155
+  },
+  {
+   "sfx": "tick",
+   "at": 158
+  },
+  {
+   "sfx": "tick",
+   "at": 161
+  },
+  {
+   "sfx": "tick",
+   "at": 164
+  },
+  {
+   "sfx": "tick",
+   "at": 167
+  },
+  {
+   "sfx": "tick",
+   "at": 170
+  },
+  {
+   "sfx": "tick",
+   "at": 173
+  },
+  {
+   "sfx": "press",
+   "at": 190
+  },
+  {
+   "sfx": "step",
+   "at": 200
+  },
+  {
+   "sfx": "step",
+   "at": 225
+  },
+  {
+   "sfx": "step",
+   "at": 250
+  },
+  {
+   "sfx": "land",
+   "at": 275
+  },
+  {
+   "sfx": "tick",
+   "at": 343
+  },
+  {
+   "sfx": "tick",
+   "at": 346
+  },
+  {
+   "sfx": "tick",
+   "at": 349
+  },
+  {
+   "sfx": "tick",
+   "at": 352
+  },
+  {
+   "sfx": "tick",
+   "at": 355
+  },
+  {
+   "sfx": "tick",
+   "at": 358
+  },
+  {
+   "sfx": "tick",
+   "at": 367
+  },
+  {
+   "sfx": "tick",
+   "at": 370
+  },
+  {
+   "sfx": "tick",
+   "at": 373
+  },
+  {
+   "sfx": "tick",
+   "at": 376
+  },
+  {
+   "sfx": "tick",
+   "at": 379
+  },
+  {
+   "sfx": "press",
+   "at": 390
+  },
+  {
+   "sfx": "step",
+   "at": 396
+  },
+  {
+   "sfx": "step",
+   "at": 411
+  },
+  {
+   "sfx": "step",
+   "at": 426
+  },
+  {
+   "sfx": "land",
+   "at": 441
+  },
+  {
+   "sfx": "tick",
+   "at": 483
+  },
+  {
+   "sfx": "tick",
+   "at": 486
+  },
+  {
+   "sfx": "tick",
+   "at": 489
+  },
+  {
+   "sfx": "tick",
+   "at": 492
+  },
+  {
+   "sfx": "tick",
+   "at": 495
+  },
+  {
+   "sfx": "tick",
+   "at": 498
+  },
+  {
+   "sfx": "tick",
+   "at": 507
+  },
+  {
+   "sfx": "tick",
+   "at": 510
+  },
+  {
+   "sfx": "tick",
+   "at": 513
+  },
+  {
+   "sfx": "tick",
+   "at": 516
+  },
+  {
+   "sfx": "tick",
+   "at": 519
+  },
+  {
+   "sfx": "press",
+   "at": 530
+  },
+  {
+   "sfx": "step",
+   "at": 536
+  },
+  {
+   "sfx": "step",
+   "at": 551
+  },
+  {
+   "sfx": "step",
+   "at": 566
+  },
+  {
+   "sfx": "land",
+   "at": 581
+  },
+  {
+   "sfx": "tick",
+   "at": 623
+  },
+  {
+   "sfx": "tick",
+   "at": 626
+  },
+  {
+   "sfx": "tick",
+   "at": 629
+  },
+  {
+   "sfx": "tick",
+   "at": 632
+  },
+  {
+   "sfx": "tick",
+   "at": 635
+  },
+  {
+   "sfx": "tick",
+   "at": 638
+  },
+  {
+   "sfx": "tick",
+   "at": 647
+  },
+  {
+   "sfx": "tick",
+   "at": 650
+  },
+  {
+   "sfx": "tick",
+   "at": 653
+  },
+  {
+   "sfx": "tick",
+   "at": 656
+  },
+  {
+   "sfx": "tick",
+   "at": 659
+  },
+  {
+   "sfx": "press",
+   "at": 670
+  },
+  {
+   "sfx": "step",
+   "at": 676
+  },
+  {
+   "sfx": "step",
+   "at": 691
+  },
+  {
+   "sfx": "step",
+   "at": 706
+  },
+  {
+   "sfx": "land",
+   "at": 721
+  },
+  {
+   "sfx": "press",
+   "at": 790
+  },
+  {
+   "sfx": "press",
+   "at": 826
+  },
+  {
+   "sfx": "land",
+   "at": 832
+  }
+ ]
+}

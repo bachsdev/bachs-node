@@ -49,8 +49,10 @@ Mixkit's music licence does not cover TV, radio, CDs, DVDs or video games.
 - Music: "Electro Dreams" by Alejandro Magaña (Mixkit 190), for the Bachs MCP announcement, edited at bar lines.
 - Music: "Infected Mushroom Vibes" by Alejandro Magaña (Mixkit 136), for the high-energy Bachs MCP launch cut, edited at bar lines.
 - Music: "Sonor #2" by Eugenio Mininni (Mixkit 570), for the Bachs MCP session video, spliced on a bar line from the build into the breakdown.
-- Music: "Relaxation 07" by Lily J (Mixkit 760), for the Bachs MCP "Into sentences" video, unedited from 17.5 s.
-- Music: "Feedback Dreams" by Eugenio Mininni (Mixkit 588), for the Bachs CLI webhooks video, unedited from 2.25 s.
+- Music: "Relaxation 07" by Lily J (Mixkit 760), for the Bachs MCP "Into sentences" video, unedited from 24.85 s.
+- Music: "Feedback Dreams" by Eugenio Mininni (Mixkit 588), for the Bachs CLI webhooks video, unedited from 9.58 s.
+- Music: "Forest Mist Whispers" by Alejandro Magaña (Mixkit 148), for the Bachs Global Payouts video, unedited from 24 s.
+- Sound effects for Global Payouts: "Interface device click" (2577), "Modern click box check" (1120), "Interface option select" (2573), "Page forward single chime" (1107).
 - Sound effects for those two: "Typewriter soft click" (1125), "Paper scroll in an office" (2383), "Confirmation tone" (2867), "Hard laptop keyboard typing" (2538, cut into single presses), "Cool interface click tone" (2568), "Negative tone interface tap" (2569), "Light button" (2580).
 
 ## 3D models
