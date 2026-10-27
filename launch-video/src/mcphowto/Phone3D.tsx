@@ -1,28 +1,37 @@
 import { ThreeCanvas, useOffthreadVideoTexture } from '@remotion/three';
 import { useThree } from '@react-three/fiber';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
-import { continueRender, delayRender, interpolate, Sequence, staticFile, useCurrentFrame } from 'remotion';
+import { cancelRender, continueRender, delayRender, interpolate, Sequence, staticFile, useCurrentFrame } from 'remotion';
 import * as THREE from 'three';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
-// A generic modern phone, modelled in three.js: a rounded metal body with a
-// bevelled edge, black glass, a punch-hole camera and side buttons. Nothing in it
-// copies a particular manufacturer's design. The screen is a texture, so a
-// screen recording plays on it while the phone moves; taps are drawn on the
-// glass at the point that was touched.
+// The phone is Polyman's "Apple iPhone 15 Pro Max Black" (Sketchfab, CC BY 4.0;
+// credit in public/audio/licensed/CREDITS.md). The model's screen mesh gets the
+// screen recording as its texture, so the recording plays on the glass while
+// the phone moves; taps are drawn on the glass at the point that was touched.
 
-// Screen proportions of a recent phone screen recording (1179 x 2556).
-export const SCREEN_ASPECT = 1179 / 2556;
-const SH = 2.0; // screen height in scene units
-const SW = SH * SCREEN_ASPECT;
-const BEZEL = 0.05;
-const BW = SW + BEZEL * 2;
-const BH = SH + BEZEL * 2;
-const DEPTH = 0.085;
-const BEVEL = 0.014;
-const FRONT = DEPTH / 2 + BEVEL;
+const MODEL = 'mcphowto/model/phone.glb';
+const SCREEN_MESH = 'xXDHkMplTIDAXLN';
+const ISLAND_MESH = 'DjdhycfQYjKMDyn';
+const ISLAND_PARTS = ['DjdhycfQYjKMDyn', 'usFLmqcyrnltBUr', 'EbQGKrWAqhBHiMv'];
+// Some of the model's parts break through its glass in headless WebGL, so the
+// screen, the island and the taps are redrawn just in front and drawn last,
+// over the model: nothing on the phone ever covers the glass.
+const LIFT = 0.002;
+const OVER = { depthTest: false, depthWrite: false } as const;
 
-const rounded = (w: number, h: number, r: number) => {
+// Screen recordings from the phone are 1179 x 2556 (often encoded 1178 wide).
+export const REC_W = 1179;
+export const REC_H = 2556;
+const PHONE_H = 2.0; // the model is scaled so the body is this tall in scene units
+
+export type Tap = { f: number; x: number; y: number }; // x, y in recording pixels
+export type Pose = { x: number; y: number; scale: number; rotX: number; rotY: number; rotZ: number };
+type ScreenRect = { cx: number; cy: number; w: number; h: number; z: number };
+
+const roundedRect = (w: number, h: number, r: number) => {
   const s = new THREE.Shape();
   const x = -w / 2;
   const y = -h / 2;
@@ -38,13 +47,14 @@ const rounded = (w: number, h: number, r: number) => {
   return s;
 };
 
-// ShapeGeometry UVs are in shape units; map them to 0..1 across the shape so a texture fills it.
-const fitUV = (g: THREE.BufferGeometry, w: number, h: number) => {
+// A flat rounded screen with UVs running 0..1 across it.
+const screenGeometry = (w: number, h: number) => {
+  const g = new THREE.ShapeGeometry(roundedRect(w, h, w * 0.125), 48);
   const pos = g.attributes.position;
   const uv = new Float32Array(pos.count * 2);
   for (let i = 0; i < pos.count; i++) {
-    uv[i * 2] = (pos.getX(i) + w / 2) / w;
-    uv[i * 2 + 1] = (pos.getY(i) + h / 2) / h;
+    uv[i * 2] = pos.getX(i) / w + 0.5;
+    uv[i * 2 + 1] = pos.getY(i) / h + 0.5;
   }
   g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
   return g;
@@ -70,111 +80,148 @@ const Studio: React.FC = () => {
   );
 };
 
-export type Tap = { f: number; x: number; y: number }; // x, y in screen pixels of the recording (1179 x 2556)
+// One load per render tab, shared by every frame.
+let gltfPromise: Promise<GLTF> | null = null;
+const loadPhone = () => {
+  if (!gltfPromise) {
+    const draco = new DRACOLoader().setDecoderPath(staticFile('draco/'));
+    gltfPromise = new GLTFLoader().setDRACOLoader(draco).loadAsync(staticFile(MODEL));
+  }
+  return gltfPromise;
+};
 
-const TapRing: React.FC<{ tap: Tap }> = ({ tap }) => {
+// Centre the model, scale it to PHONE_H and measure the screen in model space.
+const usePhone = () => {
+  const [handle] = useState(() => delayRender('phone model'));
+  const [phone, setPhone] = useState<{ root: THREE.Object3D; screen: THREE.Mesh; island: THREE.Mesh; rect: ScreenRect } | null>(null);
+  useLayoutEffect(() => {
+    loadPhone()
+      .then((gltf) => {
+        // the model is built with its back towards +z; turn it to face the camera
+        const root = gltf.scene.clone(true);
+        root.rotation.y = Math.PI;
+        const holder = new THREE.Group();
+        holder.add(root);
+        holder.updateMatrixWorld(true);
+        const box = new THREE.Box3().setFromObject(holder);
+        const size = box.getSize(new THREE.Vector3());
+        const centre = box.getCenter(new THREE.Vector3());
+        const k = PHONE_H / size.y;
+        root.position.sub(centre);
+        holder.scale.setScalar(k);
+        holder.updateMatrixWorld(true);
+        // the model's screen and island are measured, hidden and redrawn (see LIFT)
+        const modelScreen = root.getObjectByName(SCREEN_MESH) as THREE.Mesh;
+        const sb = new THREE.Box3().setFromObject(modelScreen);
+        const sc = sb.getCenter(new THREE.Vector3());
+        const ss = sb.getSize(new THREE.Vector3());
+        const ib = new THREE.Box3().setFromObject(root.getObjectByName(ISLAND_MESH)!);
+        const ic = ib.getCenter(new THREE.Vector3());
+        const is = ib.getSize(new THREE.Vector3());
+        modelScreen.visible = false;
+        for (const name of ISLAND_PARTS) root.getObjectByName(name)!.visible = false;
+        const z = sb.max.z + LIFT;
+        const screen = new THREE.Mesh(screenGeometry(ss.x, ss.y), new THREE.MeshBasicMaterial({ color: '#000', ...OVER }));
+        screen.position.set(sc.x, sc.y, z);
+        screen.renderOrder = 10;
+        const island = new THREE.Mesh(new THREE.ShapeGeometry(roundedRect(is.x, is.y, is.y / 2), 24), new THREE.MeshBasicMaterial({ color: '#000', ...OVER }));
+        island.position.set(ic.x, ic.y, z + LIFT);
+        island.renderOrder = 11;
+        const lens = new THREE.Mesh(new THREE.CircleGeometry(is.y * 0.24, 32), new THREE.MeshStandardMaterial({ color: '#16181f', metalness: 0.6, roughness: 0.25, ...OVER }));
+        lens.renderOrder = 12;
+        lens.position.set(ic.x + is.x / 2 - is.y / 2, ic.y, z + LIFT * 2);
+        island.add(lens);
+        lens.position.sub(island.position);
+        setPhone({ root: holder, screen, island, rect: { cx: sc.x, cy: sc.y, w: ss.x, h: ss.y, z } });
+        continueRender(handle);
+      })
+      .catch((e) => cancelRender(e));
+  }, [handle]);
+  return phone;
+};
+
+const TapRing: React.FC<{ tap: Tap; rect: ScreenRect }> = ({ tap, rect }) => {
   const frame = useCurrentFrame();
   const t = interpolate(frame, [tap.f - 4, tap.f, tap.f + 14], [0, 1, 2], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   if (t <= 0 || t >= 2) return null;
   const press = t <= 1 ? t : 1;
   const ring = t > 1 ? t - 1 : 0;
-  const px = (tap.x / 1179 - 0.5) * SW;
-  const py = (0.5 - tap.y / 2556) * SH;
+  const px = rect.cx + (tap.x / REC_W - 0.5) * rect.w;
+  const py = rect.cy + (0.5 - tap.y / REC_H) * rect.h;
   return (
-    <group position={[px, py, FRONT + 0.004]}>
-      <mesh>
+    <group position={[px, py, rect.z + LIFT * 4]}>
+      <mesh renderOrder={13}>
         <circleGeometry args={[0.06 * (0.8 + 0.2 * press), 40]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.55 * press * (1 - ring)} toneMapped={false} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.55 * press * (1 - ring)} toneMapped={false} {...OVER} />
       </mesh>
       {ring > 0 && (
-        <mesh>
+        <mesh renderOrder={13}>
           <ringGeometry args={[0.06 + ring * 0.1, 0.07 + ring * 0.1, 48]} />
-          <meshBasicMaterial color="#ffffff" transparent opacity={0.7 * (1 - ring)} toneMapped={false} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.7 * (1 - ring)} toneMapped={false} {...OVER} />
         </mesh>
       )}
     </group>
   );
 };
 
-const VideoScreen: React.FC<{ src: string; geom: THREE.BufferGeometry }> = ({ src, geom }) => {
-  const texture = useOffthreadVideoTexture({ src, playbackRate: 1, transparent: false, toneMapped: false } as never);
-  if (texture) texture.colorSpace = THREE.SRGBColorSpace;
-  return (
-    <mesh geometry={geom} position={[0, 0, FRONT + 0.002]}>
-      {texture ? <meshBasicMaterial map={texture} toneMapped={false} /> : <meshBasicMaterial color="#000" />}
-    </mesh>
-  );
+// Puts a texture on the screen plane (UVs run bottom-up, so the texture keeps the usual flip).
+const useScreenTexture = (screen: THREE.Mesh, texture: THREE.Texture | null) => {
+  useLayoutEffect(() => {
+    if (!texture) return;
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.flipY = true;
+    texture.needsUpdate = true;
+    screen.material = new THREE.MeshBasicMaterial({ map: texture, toneMapped: false, ...OVER });
+  }, [screen, texture]);
 };
 
-const ImageScreen: React.FC<{ src: string; geom: THREE.BufferGeometry }> = ({ src, geom }) => {
+const VideoScreen: React.FC<{ src: string; screen: THREE.Mesh }> = ({ src, screen }) => {
+  const texture = useOffthreadVideoTexture({ src, playbackRate: 1, transparent: false, toneMapped: false } as never) as THREE.Texture | null;
+  useScreenTexture(screen, texture);
+  return null;
+};
+
+const ImageScreen: React.FC<{ src: string; screen: THREE.Mesh }> = ({ src, screen }) => {
   const [handle] = useState(() => delayRender('screen image'));
   const [tex, setTex] = useState<THREE.Texture | null>(null);
   useLayoutEffect(() => {
     new THREE.TextureLoader().load(src, (t) => {
-      t.colorSpace = THREE.SRGBColorSpace;
       setTex(t);
       continueRender(handle);
     });
   }, [src, handle]);
-  return (
-    <mesh geometry={geom} position={[0, 0, FRONT + 0.002]}>
-      {tex ? <meshBasicMaterial map={tex} toneMapped={false} /> : <meshBasicMaterial color="#000" />}
-    </mesh>
-  );
+  useScreenTexture(screen, tex);
+  return null;
 };
 
 const PhoneModel: React.FC<{ screen: { video?: string; image?: string; startFrom?: number }; taps: Tap[] }> = ({ screen, taps }) => {
-  const g = useMemo(() => {
-    const body = new THREE.ExtrudeGeometry(rounded(BW, BH, 0.16), { depth: DEPTH, bevelEnabled: true, bevelThickness: BEVEL, bevelSize: BEVEL, bevelSegments: 6, curveSegments: 32 });
-    body.translate(0, 0, -DEPTH / 2);
-    const glass = new THREE.ShapeGeometry(rounded(BW - 0.01, BH - 0.01, 0.155), 32);
-    const scr = fitUV(new THREE.ShapeGeometry(rounded(SW, SH, 0.115), 32), SW, SH);
-    const cam = new THREE.CircleGeometry(0.03, 32);
-    return { body, glass, scr, cam };
-  }, []);
-  const frameMat = useMemo(() => new THREE.MeshPhysicalMaterial({ color: '#9a9ca3', metalness: 1, roughness: 0.22, clearcoat: 0.5, clearcoatRoughness: 0.15, envMapIntensity: 1.2 }), []);
-  const glassMat = useMemo(() => new THREE.MeshPhysicalMaterial({ color: '#050507', metalness: 0, roughness: 0.08, clearcoat: 1 }), []);
-  const buttons: [number, number, number][] = [
-    [-1, 0.52, 0.11],
-    [-1, 0.28, 0.2],
-    [-1, 0.02, 0.2],
-    [1, 0.3, 0.3],
-  ];
+  const phone = usePhone();
+  const content = useMemo(() => phone?.root, [phone]);
+  if (!phone || !content) return null;
   return (
     <group>
-      <mesh geometry={g.body} material={frameMat} />
-      <mesh geometry={g.glass} material={glassMat} position={[0, 0, FRONT + 0.0005]} />
+      <primitive object={content} />
+      <primitive object={phone.screen} />
+      <primitive object={phone.island} />
       {screen.video ? (
         <Sequence from={-(screen.startFrom ?? 0)} layout="none">
-          <VideoScreen src={screen.video} geom={g.scr} />
+          <VideoScreen src={screen.video} screen={phone.screen} />
         </Sequence>
       ) : (
-        <ImageScreen src={screen.image!} geom={g.scr} />
+        <ImageScreen src={screen.image!} screen={phone.screen} />
       )}
-      <mesh geometry={g.cam} position={[0, SH / 2 - 0.07, FRONT + 0.003]}>
-        <meshBasicMaterial color="#08080a" />
-      </mesh>
-      {buttons.map(([side, y, h], i) => (
-        <mesh key={i} position={[side * (BW / 2 + BEVEL + 0.004), y, 0]} material={frameMat}>
-          <boxGeometry args={[0.012, h, 0.045]} />
-        </mesh>
-      ))}
       {taps.map((t, i) => (
-        <TapRing key={i} tap={t} />
+        <TapRing key={i} tap={t} rect={phone.rect} />
       ))}
     </group>
   );
 };
 
-export type Pose = { x: number; y: number; scale: number; rotX: number; rotY: number; rotZ: number };
-
 export const Phone3D: React.FC<{ width: number; height: number; pose: Pose; screen: { video?: string; image?: string; startFrom?: number }; taps?: Tap[] }> = ({ width, height, pose, screen, taps = [] }) => (
-  <ThreeCanvas width={width} height={height} camera={{ fov: 28, position: [0, 0, 6.2] }} gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }} style={{ position: 'absolute', inset: 0 }}>
+  <ThreeCanvas width={width} height={height} camera={{ fov: 28, position: [0, 0, 6.2], near: 2, far: 20 }} gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }} style={{ position: 'absolute', inset: 0 }}>
     <Studio />
     <group position={[pose.x, pose.y, 0]} scale={pose.scale} rotation={[pose.rotX, pose.rotY, pose.rotZ]}>
       <PhoneModel screen={screen} taps={taps} />
     </group>
   </ThreeCanvas>
 );
-
-export const testScreen = () => staticFile('inaction/hold-success.png');

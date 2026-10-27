@@ -48,3 +48,13 @@ Mixkit's music licence does not cover TV, radio, CDs, DVDs or video games.
 - Sound effects: "Single key press in a laptop" (Mixkit 2541), "Classic click" (Mixkit 1117).
 - Music: "Electro Dreams" by Alejandro Magaña (Mixkit 190), for the Bachs MCP announcement, edited at bar lines.
 - Music: "Infected Mushroom Vibes" by Alejandro Magaña (Mixkit 136), for the high-energy Bachs MCP launch cut, edited at bar lines.
+
+## 3D models
+
+- `public/mcphowto/model/phone.glb`: "Apple iPhone 15 Pro Max Black" by Polyman_3D
+  (https://sketchfab.com/3d-models/apple-iphone-15-pro-max-black-df17520841214c1792fb8a44c6783ee7),
+  CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). This Draco-compressed copy is
+  from github.com/adrianhajdin/iphone (public/models/scene.glb). In the video the screen and
+  camera island are redrawn so the recording plays on the glass; the model is otherwise unchanged.
+  Credit line for posts: "3D iPhone model by Polyman_3D (Sketchfab), CC BY 4.0".
+- `public/draco/`: the Draco decoder shipped with three.js (Apache 2.0).
