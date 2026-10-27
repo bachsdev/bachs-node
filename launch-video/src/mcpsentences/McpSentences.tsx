@@ -398,9 +398,9 @@ const SCREENS = [Balances, Payments, Disputes, Account];
 // ---------- the answer ----------
 
 // The dashboard is drawn at 1/Z size and scaled up, so it fills the frame like a real, dense screen.
+// It holds still: the only movement is the answer leaving it.
 const Z = 1.3;
-const CAM = (screen: number, f: number) => 1 + 0.035 * k(f, screen === 0 ? 0 : BEATS[screen].at, BEATS[screen].lift);
-const toScreen = (r: Rect, s: number) => ({ x: 960 + (r.x * Z - 960) * s, y: 540 + (r.y * Z - 540) * s });
+const toScreen = (r: Rect) => ({ x: r.x * Z, y: r.y * Z });
 
 const SentenceLayer: React.FC<{ i: number }> = ({ i }) => {
   const f = useCurrentFrame();
@@ -474,7 +474,6 @@ const Flights: React.FC<{ i: number }> = ({ i }) => {
   const b = BEATS[i];
   const s = SENTENCES[i];
   if (!rects || f < b.lift || f >= b.settle) return null;
-  const cam = CAM(i, b.lift);
   let n = 0;
   return (
     <>
@@ -485,11 +484,11 @@ const Flights: React.FC<{ i: number }> = ({ i }) => {
         if (!from || !to) return null;
         const start = b.lift + n++ * 3;
         const t = k(f, start, start + 32, Easing.bezier(0.5, 0, 0.15, 1));
-        const sc0 = (from.fs * Z * cam) / s.size;
-        const p0 = toScreen(from, cam);
+        const sc0 = (from.fs * Z) / s.size;
+        const p0 = toScreen(from);
         // positions are relative to the sentence box
         // the cell's text starts 4 px inside its highlight
-        const x0 = p0.x + 4 * Z * cam - 200;
+        const x0 = p0.x + 4 * Z - 200;
         const y0 = p0.y - s.top;
         const x = x0 + (to.x - 200 - x0) * t;
         const y = y0 + (to.y - s.top - y0) * t;
@@ -513,7 +512,7 @@ const Composer: React.FC = () => {
   const i = Math.max(0, BEATS.filter((b) => f >= b.at).length - 1);
   const b = BEATS[i];
   const shown = f >= edit.endAt - 16 ? 0 : 1;
-  const appear = k(f, 30, 50, OUT);
+  const appear = k(f, 12, 30, OUT);
   const typed = keyFrames(b.q, b.typeFrom, b.typeTo).filter((t) => f >= t).length;
   const typing = f >= b.typeFrom && typed < b.q.length;
   const clear = k(f, b.end - 16, b.end - 4);
@@ -593,9 +592,8 @@ export const McpSentences: React.FC = () => {
           // every screen stays laid out (invisible) so its cells can be measured
           const visible = f >= shownFrom && f < b.lift + 30;
           const dissolve = k(f, b.lift, b.lift + 24);
-          const s = CAM(i, f);
           return (
-            <AbsoluteFill key={i} style={{ opacity: visible ? 1 - dissolve : 0, filter: dissolve > 0 ? `blur(${dissolve * 6}px)` : undefined, transform: `scale(${s})` }}>
+            <AbsoluteFill key={i} style={{ opacity: visible ? 1 - dissolve : 0, filter: dissolve > 0 ? `blur(${dissolve * 6}px)` : undefined }}>
               <div style={{ position: 'absolute', left: 0, top: 0, width: 1920 / Z, height: 1080 / Z, transform: `scale(${Z})`, transformOrigin: '0 0' }}>
                 <Screen />
               </div>

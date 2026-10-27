@@ -246,38 +246,57 @@ const Handler: React.FC = () => {
 
 // ---------- the camera ----------
 
-// One continuous camera: it eases in on whatever is being typed and back out when a
-// delivery lands, so the result and the handler line it ran are in frame together.
-// [frame, x, y, scale]: the point (x, y) is held at the centre of the frame.
-const CAMERA: [number, number, number, number][] = [
-  [0, 960, 540, 1],
-  [22, 960, 540, 1],
-  [52, 560, 300, 1.4],
-  [125, 560, 300, 1.4],
-  [158, 960, 540, 1],
-  [248, 960, 540, 1],
-  [272, 560, 640, 1.25],
-  [292, 560, 640, 1.25],
-  [314, 960, 470, 1.1],
-  [488, 960, 470, 1.1],
-  [510, 560, 640, 1.25],
-  [524, 560, 640, 1.25],
-  [546, 960, 470, 1.1],
-  [640, 960, 470, 1.1],
-  [670, 1450, 700, 1.3],
-  [850, 1450, 700, 1.3],
-  [874, 560, 640, 1.25],
-  [908, 560, 640, 1.25],
-  [930, 960, 470, 1.1],
+// The camera only ever frames whole panes. Each state fits its pane, or all of
+// them, inside the frame above the caption with a margin; panes outside the
+// focus dim so they never read as cut off.
+type PaneId = 'listen' | 'trigger' | 'handler';
+type State = 'all' | PaneId;
+const BOX: Record<State, [number, number, number, number]> = {
+  all: [80, 40, 1840, 900],
+  listen: [80, 120, 1020, 620],
+  trigger: [80, 650, 1020, 900],
+  handler: [1060, 120, 1840, 900],
+};
+const fit = (st: State) => {
+  const [x0, y0, x1, y1] = BOX[st];
+  const sc = st === 'all' ? 1 : Math.min(1.5, 1740 / (x1 - x0), 820 / (y1 - y0));
+  return { x: (x0 + x1) / 2, y: st === 'all' ? 540 : (y0 + y1) / 2, sc, cy: st === 'all' ? 540 : 470 };
+};
+const SHOTS: [number, State][] = [
+  [0, 'all'],
+  [14, 'all'],
+  [38, 'listen'],
+  [150, 'listen'],
+  [176, 'trigger'],
+  [226, 'trigger'],
+  [250, 'all'],
+  [352, 'all'],
+  [374, 'trigger'],
+  [398, 'trigger'],
+  [420, 'all'],
+  [500, 'all'],
+  [524, 'handler'],
+  [600, 'handler'],
+  [622, 'trigger'],
+  [664, 'trigger'],
+  [686, 'all'],
 ];
-const camAt = (f: number) => {
+const lit = (st: State, id: PaneId | 'header') => (st === 'all' ? 1 : st === id ? 1 : id === 'header' ? 0 : 0.12);
+const shot = (f: number) => {
   let i = 0;
-  while (i < CAMERA.length - 1 && f >= CAMERA[i + 1][0]) i++;
-  const a = CAMERA[i];
-  const b = CAMERA[Math.min(i + 1, CAMERA.length - 1)];
-  const t = b[0] === a[0] ? 1 : k(f, a[0], b[0]);
-  const [x, y, sc] = [a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, a[3] + (b[3] - a[3]) * t];
-  return `translate(${960 - x * sc}px, ${540 - y * sc}px) scale(${sc})`;
+  while (i < SHOTS.length - 1 && f >= SHOTS[i + 1][0]) i++;
+  const [fa, a] = SHOTS[i];
+  const [fb, b] = SHOTS[Math.min(i + 1, SHOTS.length - 1)];
+  const t = fb === fa ? 1 : k(f, fa, fb);
+  const A = fit(a);
+  const B = fit(b);
+  const mix = (p: number, q: number) => p + (q - p) * t;
+  const sc = mix(A.sc, B.sc);
+  const x = mix(A.x, B.x);
+  const y = mix(A.y, B.y);
+  const cy = mix(A.cy, B.cy);
+  const op = (id: PaneId | 'header') => mix(lit(a, id), lit(b, id));
+  return { transform: `translate(${960 - x * sc}px, ${cy - y * sc}px) scale(${sc})`, op };
 };
 
 // ---------- captions and end card ----------
@@ -329,16 +348,23 @@ const EndCard: React.FC = () => {
 export const CliWebhooks: React.FC = () => {
   const f = useCurrentFrame();
   const leave = k(f, edit.endAt - 22, edit.endAt + 2);
+  const cam = shot(f);
   return (
     <AbsoluteFill style={{ background: c.ground, overflow: 'hidden' }}>
       <style>{fontFaceCss}</style>
       <AbsoluteFill style={{ opacity: 1 - leave, transform: `scale(${1 - 0.03 * leave})`, filter: leave > 0 ? `blur(${leave * 5}px)` : undefined }}>
-        <AbsoluteFill style={{ transformOrigin: '0 0', transform: camAt(f) }}>
-          <Img src={staticFile('brand/logo-white.png')} style={{ position: 'absolute', left: 84, top: 52, height: 30, opacity: k(f, 0, 20) }} />
-          <div style={{ position: 'absolute', right: 80, top: 50, fontFamily: fonts.mono, fontSize: 20, color: c.dim, opacity: k(f, 0, 20) }}>sandbox</div>
-          <Listen />
-          <Trigger />
-          <Handler />
+        <AbsoluteFill style={{ transformOrigin: '0 0', transform: cam.transform }}>
+          <Img src={staticFile('brand/logo-white.png')} style={{ position: 'absolute', left: 84, top: 52, height: 30, opacity: k(f, 0, 20) * cam.op('header') }} />
+          <div style={{ position: 'absolute', right: 80, top: 50, fontFamily: fonts.mono, fontSize: 20, color: c.dim, opacity: k(f, 0, 20) * cam.op('header') }}>sandbox</div>
+          <div style={{ opacity: cam.op('listen') }}>
+            <Listen />
+          </div>
+          <div style={{ opacity: cam.op('trigger') }}>
+            <Trigger />
+          </div>
+          <div style={{ opacity: cam.op('handler') }}>
+            <Handler />
+          </div>
         </AbsoluteFill>
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 210, background: `linear-gradient(rgba(18,20,42,0), ${c.ground} 55%)` }} />
         <Captions />

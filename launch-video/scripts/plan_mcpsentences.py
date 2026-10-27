@@ -13,8 +13,8 @@ QUESTIONS = [
     "Do I have disputes I need to respond to?",
     "Why can't I get paid out?",
 ]
-WINDOWS = [90, 330, 600, 840, 1080]  # 3 s, 11 s, 20 s, 28 s, 36 s
-TOTAL = 1260
+WINDOWS = [45, 240, 465, 670, 860]  # 1.5 s, 8 s, 15.5 s, 22.3 s, 28.7 s
+TOTAL = 1020
 
 
 def key_frames(text, start, end):
@@ -30,8 +30,8 @@ def key_frames(text, start, end):
 beats, events = [], []
 for i, q in enumerate(QUESTIONS):
     w0, w1 = WINDOWS[i], WINDOWS[i + 1]
-    t0 = w0 + 20
-    t1 = t0 + round(len(q) * 1.3)
+    t0 = w0 + 14
+    t1 = t0 + round(len(q) * 1.2)
     lift = t1 + 18
     settle = lift + 44
     beats.append(dict(q=q, at=w0, end=w1, typeFrom=t0, typeTo=t1, light=t1 + 8, lift=lift, settle=settle))
@@ -39,9 +39,9 @@ for i, q in enumerate(QUESTIONS):
     events += [dict(sfx="shuffle", at=lift), dict(sfx="chime", at=settle - 2)]
 
 edit = dict(
-    _note="Bachs MCP, 'Into sentences'. 30 fps. Music is Mixkit 760 'Relaxation 07' (Lily J), unedited from 17.5 s, so its lift at 53.5 s lands on the end card at 36 s. Light mode: key taps while a question types, a paper shuffle when the answer cells lift, one chime as the sentence settles.",
+    _note="Bachs MCP, 'Into sentences'. 30 fps. Music is Mixkit 760 'Relaxation 07' (Lily J), unedited from 24.85 s, so its lift at 53.5 s lands on the end card at 28.7 s. Light mode: key taps while a question types, a paper shuffle when the answer cells lift, one chime as the sentence settles.",
     fps=FPS, total=TOTAL, endAt=WINDOWS[-1],
-    music=dict(id=760, start=17.5, fade=1.5, lufs=-20),
+    music=dict(id=760, start=24.85, fade=1.5, lufs=-20),
     sfx=dict(key=dict(id=1125, peak=-30), shuffle=dict(id=2383, peak=-27), chime=dict(id=2867, peak=-24)),
     beats=beats, events=events,
 )

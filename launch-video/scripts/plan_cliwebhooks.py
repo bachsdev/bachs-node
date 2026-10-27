@@ -7,8 +7,8 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FPS = 30
-TOTAL = 1200
-END = 990  # 33 s: the track's lift
+TOTAL = 930
+END = 770  # 25.7 s: the track's lift
 
 
 def keys(text, start, per):
@@ -36,21 +36,21 @@ def type_(pane, text, start, per):
 
 
 events = []
-t = type_("listen", LISTEN, 24, 1.0)
+t = type_("listen", LISTEN, 20, 1.0)
 ready = round(t + 10)
-t = type_("trigger", TRIG1, 252, 1.0)
+t = type_("trigger", TRIG1, 190, 1.0)
 d1 = round(t + 16)
-t = type_("trigger", TRIG2, 492, 1.0)
+t = type_("trigger", TRIG2, 370, 1.0)
 d2 = round(t + 16)
 code = []
-t = 760
+t = 520
 for line in FIX:
     k = keys(line.lstrip(), t + 6, 1.1)
     code.append(dict(text=line, keys=k))
     t = k[-1] + 4
-t = type_("trigger", REPLAY, max(836, round(t + 14)), 0.75)
+t = type_("trigger", REPLAY, max(612, round(t + 12)), 0.75)
 d3 = round(t + 16)
-ctrlc = 962
+ctrlc = 740
 
 for ty in typing + code:
     events += [dict(sfx="key", at=f) for f in ty["keys"]]
@@ -61,17 +61,17 @@ inst = keys(install, END + 40, 0.9)
 events += [dict(sfx="key", at=f) for f in inst]
 
 edit = dict(
-    _note="Bachs CLI, 'Test webhooks on your machine'. 30 fps. Music is Mixkit 588 'Feedback Dreams' (Eugenio Mininni), unedited from 2.25 s: its bass enters during the replay and its lift lands on the end card at 33 s. Light mode: single keystrokes, a blip per delivery (lower for the 500), one confirm on the replayed 200.",
+    _note="Bachs CLI, 'Test webhooks on your machine'. 30 fps. Music is Mixkit 588 'Feedback Dreams' (Eugenio Mininni), unedited from 9.58 s: its bass enters during the replay and its lift lands on the end card at 25.7 s. Light mode: single keystrokes, a blip per delivery (lower for the 500), one confirm on the replayed 200.",
     fps=FPS, total=TOTAL, endAt=END,
-    music=dict(id=588, start=2.25, fade=1.5, lufs=-20),
+    music=dict(id=588, start=9.58, fade=1.5, lufs=-20),
     sfx=dict(key=dict(id=2538, peak=-29, pool=True), blip=dict(id=2568, peak=-22), low=dict(id=2569, peak=-23), confirm=dict(id=2580, peak=-24)),
-    typing=typing, code=code, ready=ready, deliveries=[d1, d2, d3], ctrlc=ctrlc, codeFrom=760,
+    typing=typing, code=code, ready=ready, deliveries=[d1, d2, d3], ctrlc=ctrlc, codeFrom=520,
     install=dict(text=install, keys=inst),
     captions=[
         dict(at=ready + 12, text="Real sandbox events on your machine. No deploy, no tunnel."),
-        dict(at=252, text="Send yourself any event, signed like a real one."),
-        dict(at=492, text="See what your handler returned, for every delivery."),
-        dict(at=760, text="Fix it, then replay the same event."),
+        dict(at=190, text="Send yourself any event, signed like a real one."),
+        dict(at=370, text="See what your handler returned, for every delivery."),
+        dict(at=520, text="Fix it, then replay the same event."),
     ],
     events=events,
 )

@@ -1,11 +1,11 @@
 {
- "_note": "Bachs MCP, 'Into sentences'. 30 fps. Music is Mixkit 760 'Relaxation 07' (Lily J), unedited from 17.5 s, so its lift at 53.5 s lands on the end card at 36 s. Light mode: key taps while a question types, a paper shuffle when the answer cells lift, one chime as the sentence settles.",
+ "_note": "Bachs MCP, 'Into sentences'. 30 fps. Music is Mixkit 760 'Relaxation 07' (Lily J), unedited from 24.85 s, so its lift at 53.5 s lands on the end card at 28.7 s. Light mode: key taps while a question types, a paper shuffle when the answer cells lift, one chime as the sentence settles.",
  "fps": 30,
- "total": 1260,
- "endAt": 1080,
+ "total": 1020,
+ "endAt": 860,
  "music": {
   "id": 760,
-  "start": 17.5,
+  "start": 24.85,
   "fade": 1.5,
   "lufs": -20
  },
@@ -26,641 +26,641 @@
  "beats": [
   {
    "q": "What lands in my account on Friday?",
-   "at": 90,
-   "end": 330,
-   "typeFrom": 110,
-   "typeTo": 156,
-   "light": 164,
-   "lift": 174,
-   "settle": 218
+   "at": 45,
+   "end": 240,
+   "typeFrom": 59,
+   "typeTo": 101,
+   "light": 109,
+   "lift": 119,
+   "settle": 163
   },
   {
    "q": "Which payments failed this week, and why?",
-   "at": 330,
-   "end": 600,
-   "typeFrom": 350,
-   "typeTo": 403,
-   "light": 411,
-   "lift": 421,
-   "settle": 465
+   "at": 240,
+   "end": 465,
+   "typeFrom": 254,
+   "typeTo": 303,
+   "light": 311,
+   "lift": 321,
+   "settle": 365
   },
   {
    "q": "Do I have disputes I need to respond to?",
-   "at": 600,
-   "end": 840,
-   "typeFrom": 620,
-   "typeTo": 672,
-   "light": 680,
-   "lift": 690,
-   "settle": 734
+   "at": 465,
+   "end": 670,
+   "typeFrom": 479,
+   "typeTo": 527,
+   "light": 535,
+   "lift": 545,
+   "settle": 589
   },
   {
    "q": "Why can't I get paid out?",
-   "at": 840,
-   "end": 1080,
-   "typeFrom": 860,
-   "typeTo": 892,
-   "light": 900,
-   "lift": 910,
-   "settle": 954
+   "at": 670,
+   "end": 860,
+   "typeFrom": 684,
+   "typeTo": 714,
+   "light": 722,
+   "lift": 732,
+   "settle": 776
   }
  ],
  "events": [
   {
    "sfx": "key",
-   "at": 111.16
+   "at": 60.06
   },
   {
    "sfx": "key",
-   "at": 112.33
+   "at": 61.13
   },
   {
    "sfx": "key",
-   "at": 113.49
+   "at": 62.19
   },
   {
    "sfx": "key",
-   "at": 114.66
+   "at": 63.25
   },
   {
    "sfx": "key",
-   "at": 116.64
+   "at": 65.06
   },
   {
    "sfx": "key",
-   "at": 117.8
+   "at": 66.12
   },
   {
    "sfx": "key",
-   "at": 118.97
+   "at": 67.19
   },
   {
    "sfx": "key",
-   "at": 120.13
+   "at": 68.25
   },
   {
    "sfx": "key",
-   "at": 121.3
+   "at": 69.31
   },
   {
    "sfx": "key",
-   "at": 122.46
+   "at": 70.38
   },
   {
    "sfx": "key",
-   "at": 124.44
+   "at": 72.18
   },
   {
    "sfx": "key",
-   "at": 125.61
+   "at": 73.25
   },
   {
    "sfx": "key",
-   "at": 126.77
+   "at": 74.31
   },
   {
    "sfx": "key",
-   "at": 128.75
+   "at": 76.12
   },
   {
    "sfx": "key",
-   "at": 129.91
+   "at": 77.18
   },
   {
    "sfx": "key",
-   "at": 131.08
+   "at": 78.25
   },
   {
    "sfx": "key",
-   "at": 133.06
+   "at": 80.05
   },
   {
    "sfx": "key",
-   "at": 134.22
+   "at": 81.12
   },
   {
    "sfx": "key",
-   "at": 135.39
+   "at": 82.18
   },
   {
    "sfx": "key",
-   "at": 136.55
+   "at": 83.24
   },
   {
    "sfx": "key",
-   "at": 137.72
+   "at": 84.31
   },
   {
    "sfx": "key",
-   "at": 138.88
+   "at": 85.37
   },
   {
    "sfx": "key",
-   "at": 140.05
+   "at": 86.43
   },
   {
    "sfx": "key",
-   "at": 141.21
+   "at": 87.5
   },
   {
    "sfx": "key",
-   "at": 143.19
+   "at": 89.3
   },
   {
    "sfx": "key",
-   "at": 144.35
+   "at": 90.37
   },
   {
    "sfx": "key",
-   "at": 145.52
+   "at": 91.43
   },
   {
    "sfx": "key",
-   "at": 147.5
+   "at": 93.24
   },
   {
    "sfx": "key",
-   "at": 148.66
+   "at": 94.3
   },
   {
    "sfx": "key",
-   "at": 149.83
+   "at": 95.36
   },
   {
    "sfx": "key",
-   "at": 150.99
+   "at": 96.43
   },
   {
    "sfx": "key",
-   "at": 152.16
+   "at": 97.49
   },
   {
    "sfx": "key",
-   "at": 153.32
+   "at": 98.55
   },
   {
    "sfx": "key",
-   "at": 154.49
+   "at": 99.62
   },
   {
    "sfx": "key",
-   "at": 156.0
+   "at": 101.0
   },
   {
    "sfx": "shuffle",
-   "at": 174
+   "at": 119
   },
   {
    "sfx": "chime",
-   "at": 216
+   "at": 161
   },
   {
    "sfx": "key",
-   "at": 351.16
+   "at": 255.07
   },
   {
    "sfx": "key",
-   "at": 352.31
+   "at": 256.14
   },
   {
    "sfx": "key",
-   "at": 353.47
+   "at": 257.21
   },
   {
    "sfx": "key",
-   "at": 354.63
+   "at": 258.28
   },
   {
    "sfx": "key",
-   "at": 355.79
+   "at": 259.35
   },
   {
    "sfx": "key",
-   "at": 357.75
+   "at": 261.17
   },
   {
    "sfx": "key",
-   "at": 358.91
+   "at": 262.24
   },
   {
    "sfx": "key",
-   "at": 360.07
+   "at": 263.31
   },
   {
    "sfx": "key",
-   "at": 361.22
+   "at": 264.38
   },
   {
    "sfx": "key",
-   "at": 362.38
+   "at": 265.45
   },
   {
    "sfx": "key",
-   "at": 363.54
+   "at": 266.52
   },
   {
    "sfx": "key",
-   "at": 364.7
+   "at": 267.59
   },
   {
    "sfx": "key",
-   "at": 365.85
+   "at": 268.66
   },
   {
    "sfx": "key",
-   "at": 367.01
+   "at": 269.73
   },
   {
    "sfx": "key",
-   "at": 368.98
+   "at": 271.55
   },
   {
    "sfx": "key",
-   "at": 370.14
+   "at": 272.62
   },
   {
    "sfx": "key",
-   "at": 371.29
+   "at": 273.69
   },
   {
    "sfx": "key",
-   "at": 372.45
+   "at": 274.76
   },
   {
    "sfx": "key",
-   "at": 373.61
+   "at": 275.83
   },
   {
    "sfx": "key",
-   "at": 374.76
+   "at": 276.9
   },
   {
    "sfx": "key",
-   "at": 375.92
+   "at": 277.97
   },
   {
    "sfx": "key",
-   "at": 377.89
+   "at": 279.78
   },
   {
    "sfx": "key",
-   "at": 379.05
+   "at": 280.85
   },
   {
    "sfx": "key",
-   "at": 380.2
+   "at": 281.92
   },
   {
    "sfx": "key",
-   "at": 381.36
+   "at": 282.99
   },
   {
    "sfx": "key",
-   "at": 382.52
+   "at": 284.06
   },
   {
    "sfx": "key",
-   "at": 384.48
+   "at": 285.88
   },
   {
    "sfx": "key",
-   "at": 385.64
+   "at": 286.95
   },
   {
    "sfx": "key",
-   "at": 386.8
+   "at": 288.02
   },
   {
    "sfx": "key",
-   "at": 387.96
+   "at": 289.09
   },
   {
    "sfx": "key",
-   "at": 389.11
+   "at": 290.16
   },
   {
    "sfx": "key",
-   "at": 390.62
+   "at": 291.55
   },
   {
    "sfx": "key",
-   "at": 392.59
+   "at": 293.37
   },
   {
    "sfx": "key",
-   "at": 393.74
+   "at": 294.44
   },
   {
    "sfx": "key",
-   "at": 394.9
+   "at": 295.51
   },
   {
    "sfx": "key",
-   "at": 396.06
+   "at": 296.58
   },
   {
    "sfx": "key",
-   "at": 398.02
+   "at": 298.4
   },
   {
    "sfx": "key",
-   "at": 399.18
+   "at": 299.47
   },
   {
    "sfx": "key",
-   "at": 400.34
+   "at": 300.54
   },
   {
    "sfx": "key",
-   "at": 401.5
+   "at": 301.61
   },
   {
    "sfx": "key",
-   "at": 403.0
+   "at": 303.0
   },
   {
    "sfx": "shuffle",
-   "at": 421
+   "at": 321
   },
   {
    "sfx": "chime",
-   "at": 463
+   "at": 363
   },
   {
    "sfx": "key",
-   "at": 621.13
+   "at": 480.05
   },
   {
    "sfx": "key",
-   "at": 622.27
+   "at": 481.09
   },
   {
    "sfx": "key",
-   "at": 624.19
+   "at": 482.87
   },
   {
    "sfx": "key",
-   "at": 625.32
+   "at": 483.92
   },
   {
    "sfx": "key",
-   "at": 627.25
+   "at": 485.69
   },
   {
    "sfx": "key",
-   "at": 628.38
+   "at": 486.74
   },
   {
    "sfx": "key",
-   "at": 629.52
+   "at": 487.78
   },
   {
    "sfx": "key",
-   "at": 630.65
+   "at": 488.83
   },
   {
    "sfx": "key",
-   "at": 631.78
+   "at": 489.88
   },
   {
    "sfx": "key",
-   "at": 633.71
+   "at": 491.65
   },
   {
    "sfx": "key",
-   "at": 634.84
+   "at": 492.7
   },
   {
    "sfx": "key",
-   "at": 635.97
+   "at": 493.75
   },
   {
    "sfx": "key",
-   "at": 637.11
+   "at": 494.79
   },
   {
    "sfx": "key",
-   "at": 638.24
+   "at": 495.84
   },
   {
    "sfx": "key",
-   "at": 639.37
+   "at": 496.88
   },
   {
    "sfx": "key",
-   "at": 640.51
+   "at": 497.93
   },
   {
    "sfx": "key",
-   "at": 641.64
+   "at": 498.97
   },
   {
    "sfx": "key",
-   "at": 642.77
+   "at": 500.02
   },
   {
    "sfx": "key",
-   "at": 644.7
+   "at": 501.8
   },
   {
    "sfx": "key",
-   "at": 645.83
+   "at": 502.84
   },
   {
    "sfx": "key",
-   "at": 647.76
+   "at": 504.62
   },
   {
    "sfx": "key",
-   "at": 648.89
+   "at": 505.67
   },
   {
    "sfx": "key",
-   "at": 650.02
+   "at": 506.71
   },
   {
    "sfx": "key",
-   "at": 651.15
+   "at": 507.76
   },
   {
    "sfx": "key",
-   "at": 652.29
+   "at": 508.8
   },
   {
    "sfx": "key",
-   "at": 654.21
+   "at": 510.58
   },
   {
    "sfx": "key",
-   "at": 655.35
+   "at": 511.63
   },
   {
    "sfx": "key",
-   "at": 656.48
+   "at": 512.67
   },
   {
    "sfx": "key",
-   "at": 658.41
+   "at": 514.45
   },
   {
    "sfx": "key",
-   "at": 659.54
+   "at": 515.5
   },
   {
    "sfx": "key",
-   "at": 660.67
+   "at": 516.54
   },
   {
    "sfx": "key",
-   "at": 661.8
+   "at": 517.59
   },
   {
    "sfx": "key",
-   "at": 662.94
+   "at": 518.63
   },
   {
    "sfx": "key",
-   "at": 664.07
+   "at": 519.68
   },
   {
    "sfx": "key",
-   "at": 665.2
+   "at": 520.73
   },
   {
    "sfx": "key",
-   "at": 666.34
+   "at": 521.77
   },
   {
    "sfx": "key",
-   "at": 668.26
+   "at": 523.55
   },
   {
    "sfx": "key",
-   "at": 669.39
+   "at": 524.59
   },
   {
    "sfx": "key",
-   "at": 670.53
+   "at": 525.64
   },
   {
    "sfx": "key",
-   "at": 672.0
+   "at": 527.0
   },
   {
    "sfx": "shuffle",
-   "at": 690
+   "at": 545
   },
   {
    "sfx": "chime",
+   "at": 587
+  },
+  {
+   "sfx": "key",
+   "at": 685.03
+  },
+  {
+   "sfx": "key",
+   "at": 686.06
+  },
+  {
+   "sfx": "key",
+   "at": 687.09
+  },
+  {
+   "sfx": "key",
+   "at": 688.85
+  },
+  {
+   "sfx": "key",
+   "at": 689.88
+  },
+  {
+   "sfx": "key",
+   "at": 690.91
+  },
+  {
+   "sfx": "key",
+   "at": 691.94
+  },
+  {
+   "sfx": "key",
+   "at": 693.28
+  },
+  {
+   "sfx": "key",
+   "at": 694.31
+  },
+  {
+   "sfx": "key",
+   "at": 696.06
+  },
+  {
+   "sfx": "key",
+   "at": 697.09
+  },
+  {
+   "sfx": "key",
+   "at": 698.85
+  },
+  {
+   "sfx": "key",
+   "at": 699.88
+  },
+  {
+   "sfx": "key",
+   "at": 700.91
+  },
+  {
+   "sfx": "key",
+   "at": 701.94
+  },
+  {
+   "sfx": "key",
+   "at": 703.69
+  },
+  {
+   "sfx": "key",
+   "at": 704.72
+  },
+  {
+   "sfx": "key",
+   "at": 705.75
+  },
+  {
+   "sfx": "key",
+   "at": 706.78
+  },
+  {
+   "sfx": "key",
+   "at": 707.81
+  },
+  {
+   "sfx": "key",
+   "at": 709.57
+  },
+  {
+   "sfx": "key",
+   "at": 710.6
+  },
+  {
+   "sfx": "key",
+   "at": 711.63
+  },
+  {
+   "sfx": "key",
+   "at": 712.66
+  },
+  {
+   "sfx": "key",
+   "at": 714.0
+  },
+  {
+   "sfx": "shuffle",
    "at": 732
   },
   {
-   "sfx": "key",
-   "at": 861.1
-  },
-  {
-   "sfx": "key",
-   "at": 862.2
-  },
-  {
-   "sfx": "key",
-   "at": 863.3
-  },
-  {
-   "sfx": "key",
-   "at": 865.17
-  },
-  {
-   "sfx": "key",
-   "at": 866.27
-  },
-  {
-   "sfx": "key",
-   "at": 867.37
-  },
-  {
-   "sfx": "key",
-   "at": 868.47
-  },
-  {
-   "sfx": "key",
-   "at": 869.9
-  },
-  {
-   "sfx": "key",
-   "at": 871.0
-  },
-  {
-   "sfx": "key",
-   "at": 872.87
-  },
-  {
-   "sfx": "key",
-   "at": 873.97
-  },
-  {
-   "sfx": "key",
-   "at": 875.84
-  },
-  {
-   "sfx": "key",
-   "at": 876.93
-  },
-  {
-   "sfx": "key",
-   "at": 878.03
-  },
-  {
-   "sfx": "key",
-   "at": 879.13
-  },
-  {
-   "sfx": "key",
-   "at": 881.0
-  },
-  {
-   "sfx": "key",
-   "at": 882.1
-  },
-  {
-   "sfx": "key",
-   "at": 883.2
-  },
-  {
-   "sfx": "key",
-   "at": 884.3
-  },
-  {
-   "sfx": "key",
-   "at": 885.4
-  },
-  {
-   "sfx": "key",
-   "at": 887.27
-  },
-  {
-   "sfx": "key",
-   "at": 888.37
-  },
-  {
-   "sfx": "key",
-   "at": 889.47
-  },
-  {
-   "sfx": "key",
-   "at": 890.57
-  },
-  {
-   "sfx": "key",
-   "at": 892.0
-  },
-  {
-   "sfx": "shuffle",
-   "at": 910
-  },
-  {
    "sfx": "chime",
-   "at": 952
+   "at": 774
   }
  ]
 }
