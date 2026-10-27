@@ -20,6 +20,7 @@ import { FrameLedger, FrameRiso, FrameSignal } from './mcpstyle/Frames';
 import { FrameBrandAnswer, FrameBrandCover } from './mcpstyle/BrandFrames';
 import { FrameBoard, FrameNetwork, FrameRoute } from './mcpstyle/TransitFrames';
 import { FrameMoney, FrameSearch, FrameTerminal } from './mcpstyle/PixelFrames';
+import { PhoneTest } from './mcphowto/PhoneTest';
 import { TOTAL as MCP_TOTAL } from './mcp/grid';
 
 const still = { durationInFrames: 1, fps: 30, width: 1920, height: 1080 };
@@ -40,6 +41,7 @@ export const Root: React.FC = () => (
     <Composition id="StyleSignal" component={FrameSignal} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="StyleRiso" component={FrameRiso} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="McpPixel" component={McpPixel} durationInFrames={MCP_PIXEL_TOTAL} fps={30} width={1920} height={1080} />
+    <Composition id="PhoneTest" component={PhoneTest} durationInFrames={90} fps={30} width={1920} height={1080} />
     <Composition id="McpHype" component={McpHype} durationInFrames={MCP_HYPE_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="McpLaunch" component={McpLaunch} durationInFrames={MCP_LAUNCH_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="BuildWith" component={BuildWith} durationInFrames={BUILDWITH_TOTAL} fps={30} width={1920} height={1080} />
