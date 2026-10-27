@@ -15,6 +15,7 @@ import { DOIT_TOTAL, DoIt } from './doit/DoIt';
 import { BUILDWITH_TOTAL, BuildWith } from './buildwith/BuildWith';
 import { MCP_LAUNCH_TOTAL, McpLaunch } from './mcplaunch/McpLaunch';
 import { MCP_HYPE_TOTAL, McpHype } from './mcphype/McpHype';
+import { MCP_PIXEL_TOTAL, McpPixel } from './mcppixel/McpPixel';
 import { FrameLedger, FrameRiso, FrameSignal } from './mcpstyle/Frames';
 import { FrameBrandAnswer, FrameBrandCover } from './mcpstyle/BrandFrames';
 import { FrameBoard, FrameNetwork, FrameRoute } from './mcpstyle/TransitFrames';
@@ -38,6 +39,7 @@ export const Root: React.FC = () => (
     <Composition id="StyleLedger" component={FrameLedger} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="StyleSignal" component={FrameSignal} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="StyleRiso" component={FrameRiso} durationInFrames={1} fps={30} width={1920} height={1080} />
+    <Composition id="McpPixel" component={McpPixel} durationInFrames={MCP_PIXEL_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="McpHype" component={McpHype} durationInFrames={MCP_HYPE_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="McpLaunch" component={McpLaunch} durationInFrames={MCP_LAUNCH_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="BuildWith" component={BuildWith} durationInFrames={BUILDWITH_TOTAL} fps={30} width={1920} height={1080} />

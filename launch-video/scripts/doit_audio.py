@@ -6,6 +6,7 @@ words and a mouse click on every real click in the SnapKit clips.
     python3 scripts/doit_audio.py buildwith  # src/buildwith/edit.json -> public/audio/buildwith-mix.wav
     python3 scripts/doit_audio.py mcplaunch  # src/mcplaunch/edit.json -> public/audio/mcplaunch-mix.wav
     python3 scripts/doit_audio.py mcphype    # src/mcphype/edit.json -> public/audio/mcphype-mix.wav
+    python3 scripts/doit_audio.py mcppixel   # src/mcppixel/edit.json -> public/audio/mcppixel-mix.wav
 
 The Mixkit files are downloaded into public/audio/mixkit/, which is not committed:
 Mixkit's licences allow using them in a video but not sharing the raw files.

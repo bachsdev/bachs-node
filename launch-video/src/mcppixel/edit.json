@@ -1,0 +1,13 @@
+{
+  "_note": "Bachs MCP launch in the campaign language. 30 fps on the 145 BPM grid of Mixkit 'Infected Mushroom Vibes' (a beat is 12.414 frames). Video 0 s is track 26.386 s: four bars of breakdown and riser carry the hook, the drop (track 33.007 s) lands on beat 16 with the title, and the track then runs unedited for 32 bars to its own final hit (track 85.972 s) on beat 144, the logo. Every scene starts on a bar line and hands over with a pixel wipe.",
+  "fps": 30,
+  "beatFrames": 12.41379,
+  "total": 1868,
+  "music": { "id": 136, "trackStart": 26.386, "spliceAt": 999, "spliceTo": 0 },
+  "ticks": [],
+  "clicks": [],
+  "sfx": {
+    "tick": { "id": 2541, "gain": -28 },
+    "click": { "id": 1117, "gain": -15 }
+  }
+}
