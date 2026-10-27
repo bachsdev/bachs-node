@@ -4,6 +4,7 @@ words and a mouse click on every real click in the SnapKit clips.
 
     python3 scripts/doit_audio.py            # src/doit/edit.json -> public/audio/doit-mix.wav
     python3 scripts/doit_audio.py buildwith  # src/buildwith/edit.json -> public/audio/buildwith-mix.wav
+    python3 scripts/doit_audio.py mcplaunch  # src/mcplaunch/edit.json -> public/audio/mcplaunch-mix.wav
 
 The Mixkit files are downloaded into public/audio/mixkit/, which is not committed:
 Mixkit's licences allow using them in a video but not sharing the raw files.
@@ -94,7 +95,19 @@ tick = decode(fetch("sfx", sfx["tick"]["id"]))
 click = decode(fetch("sfx", sfx["click"]["id"]))
 
 # A soft key tick as each opening line appears.
-for f in edit.get("ticks") or [o["from"] for o in edit["opener"]]:
+def key_frames(text, start, end):
+    """Keystroke frames with a pause at spaces and punctuation (same formula as keyFrames in McpLaunch.tsx)."""
+    w = [1.7 if ch == " " else 1.3 if ch in ".,?/:" else 1 for ch in text]
+    cum, out = 0, []
+    for x in w:
+        cum += x
+        out.append(start + (end - start) * cum / sum(w))
+    return out
+
+
+typing = edit.get("typing")
+ticks = edit.get("ticks") or (key_frames(typing["text"], typing["from"], typing["to"]) if typing else [o["from"] for o in edit["opener"]])
+for f in ticks:
     place(tick, f / FPS, sfx["tick"]["gain"])
 
 # A click wherever the pointer clicks inside a SnapKit clip.
@@ -108,6 +121,10 @@ for sl in edit.get("slots", []) + edit.get("sections", []):
                 if g["start"] <= t < g["start"] + g["len"] / FPS * g["rate"]:
                     place(click, (off + (t - g["start"]) / g["rate"] * FPS) / FPS - 0.005, sfx["click"]["gain"])
         off += g["len"]
+
+# Clicks on interface buttons the edit lists by frame.
+for f in edit.get("clicks", []):
+    place(click, f / FPS - 0.005, sfx["click"]["gain"])
 
 # Keep true peak under -1 dBTP.
 i, tp = lufs(mix)

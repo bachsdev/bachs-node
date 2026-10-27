@@ -1,0 +1,16 @@
+{
+  "_note": "Bachs MCP announcement. 30 fps on the 120 BPM grid of Mixkit 'Electro Dreams' (Alejandro Magaña): a bar is 60 frames. Video 0 s is track 8.04 s, so the first drop (track 16.04 s) lands on the title at frame 240, the calm break (track 48.04 s) carries the trust section from frame 1200 and the second drop (track 64.04 s) opens the coverage section at frame 1680. At 64.0 s the music splices to track 104.04 s so the song's own ending carries the logo, which lands on the downbeat at track 108.04 s (frame 2040).",
+  "fps": 30,
+  "total": 2205,
+  "music": { "id": 190, "trackStart": 8.04, "spliceAt": 64.0, "spliceTo": 104.04 },
+  "scenes": { "hook": 0, "title": 240, "connect": 360, "ask": 600, "trust": 1200, "areas": 1680, "works": 1920, "logo": 2040 },
+  "typing": { "text": "Why did my last payout fail?", "from": 100, "to": 176 },
+  "connectSteps": [372, 452, 532],
+  "askQs": [624, 739, 854, 969, 1084],
+  "trustPoints": [1200, 1320, 1440, 1560],
+  "clicks": [416, 510, 582, 1384],
+  "sfx": {
+    "tick": { "id": 2541, "gain": -28 },
+    "click": { "id": 1117, "gain": -15 }
+  }
+}
