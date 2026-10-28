@@ -53,6 +53,8 @@ Mixkit's music licence does not cover TV, radio, CDs, DVDs or video games.
 - Music: "Feedback Dreams" by Eugenio Mininni (Mixkit 588), for the Bachs CLI webhooks video, unedited from 9.58 s.
 - Music: "Forest Mist Whispers" by Alejandro Magaña (Mixkit 148), for the Bachs Global Payouts video, unedited from 24 s.
 - Sound effects for Global Payouts: "Interface device click" (2577), "Modern click box check" (1120), "Interface option select" (2573), "Page forward single chime" (1107).
+- Music: "Ambient" by Arulo (Mixkit 251), for the Bachs MCP in Claude video, unedited from 42.3 s.
+- Sound effects for MCP in Claude: "Laptop keyboard typing sequence" (2537, cut into single presses), "Game user interface tone" (2570), "Page turn chime" (1106).
 - Sound effects for those two: "Typewriter soft click" (1125), "Paper scroll in an office" (2383), "Confirmation tone" (2867), "Hard laptop keyboard typing" (2538, cut into single presses), "Cool interface click tone" (2568), "Negative tone interface tap" (2569), "Light button" (2580).
 
 ## 3D models

@@ -25,6 +25,7 @@ import { MCP_STORY_TOTAL, McpStory } from './mcpstory/McpStory';
 import { MCP_SENTENCES_TOTAL, McpSentences } from './mcpsentences/McpSentences';
 import { CLI_WEBHOOKS_TOTAL, CliWebhooks } from './cliwebhooks/CliWebhooks';
 import { PAYOUTS_TOTAL, Payouts } from './payouts/Payouts';
+import { MCP_CLAUDE_TOTAL, McpClaude } from './mcpclaude/McpClaude';
 import { TOTAL as MCP_TOTAL } from './mcp/grid';
 
 const still = { durationInFrames: 1, fps: 30, width: 1920, height: 1080 };
@@ -45,6 +46,7 @@ export const Root: React.FC = () => (
     <Composition id="StyleSignal" component={FrameSignal} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="StyleRiso" component={FrameRiso} durationInFrames={1} fps={30} width={1920} height={1080} />
     <Composition id="McpPixel" component={McpPixel} durationInFrames={MCP_PIXEL_TOTAL} fps={30} width={1920} height={1080} />
+    <Composition id="McpClaude" component={McpClaude} durationInFrames={MCP_CLAUDE_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="Payouts" component={Payouts} durationInFrames={PAYOUTS_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="CliWebhooks" component={CliWebhooks} durationInFrames={CLI_WEBHOOKS_TOTAL} fps={30} width={1920} height={1080} />
     <Composition id="McpSentences" component={McpSentences} durationInFrames={MCP_SENTENCES_TOTAL} fps={30} width={1920} height={1080} />
